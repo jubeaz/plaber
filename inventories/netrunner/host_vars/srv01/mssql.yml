@@ -1,0 +1,29 @@
+mssql_instance_name: "{{hostname}}"
+mssql_sa_password: "_r3QFLi5EnkfQU_4"
+mssql_svcaccount_method: 'domain' # domain, gmsa, local
+mssql_svcaccount_key: "eli" # default : 'NT AUTHORITY\\NETWORK SERVICE'
+
+mssql_sysadmins: ["WEYLAND\\acorrea"]
+mssql_executeaslogin: {
+  "WEYLAND\\anson" :  "WEYLAND\\acorrea"
+  }
+mssql_executeasuser: {
+  "master_dbo": {
+    "user": "WEYLAND\\acorrea",
+    "db"  : "master",
+    "impersonate" : "dbo"
+    },
+  "dbms_dbo": {
+    "user": "WEYLAND\\acorrea",
+    "db"  : "msdb",
+    "impersonate" : "dbo"
+    }
+  }
+mssql_linked_servers: {
+  "fenris" : {
+    "data_src": "fenris.haas.local",
+    "users_mapping": [
+      {"local_login": "WEYLAND\\acorrea","remote_login": "sa", "remote_password": "ftrum_Ya5d7DCQQN"}
+      ]
+    }
+  }

@@ -1,0 +1,7 @@
+
+#domain_password : "Jubeaz12345+-"
+domain_netbios_name: "HAAS"
+domain_name : "haas.local"
+
+trust_domain_dc_ansible_inventory_key : "dc_weyland" # ansible inventory name
+parent_domain_dc_ansible_inventory_key: "" # ansible inventory name

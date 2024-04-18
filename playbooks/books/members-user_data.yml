@@ -1,0 +1,30 @@
+---
+- name: "INSTALL USER DATA ON MEMBERS"
+  hosts: domain_server, domain_workstation
+  tasks:
+    - include_role: 
+        name: "windows_domain/install_softwares"
+      vars:
+        softwares: "{{packages | default([])}}"
+    - include_role:
+        name: "windows_domain/clone_repos"
+      vars:
+        repositories: "{{u.value}}"
+        user: "{{u.key}}"
+        net_bios: "{{domain_netbios_name}}"
+        password: "{{hostvars[domain_dc_ansible_inventory_key].domain_users_regular[u.key].password}}"
+      loop: "{{ user_repos|dict2items }}"
+      when: user_repos is defined
+      loop_control:
+        loop_var: u
+    - include_role:
+        name: "windows_domain/download_files"
+      vars:
+        downloads: "{{u.value}}"
+        user: "{{u.key}}"
+        net_bios: "{{domain_netbios_name}}"
+        password: "{{hostvars[domain_dc_ansible_inventory_key].domain_users_regular[u.key].password}}"
+      loop: "{{ user_downloads|dict2items }}"
+      loop_control:
+        loop_var: u
+      when: user_downloads is defined

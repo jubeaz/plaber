@@ -1,0 +1,20 @@
+---
+- name: GMSA HOSTS
+  hosts: domain_server, domain_workstation
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain/gmsa/gmsa_hosts', tags: 'gmsa'}
+
+- name: CONFIGURE LAPS ON SERVERS
+  hosts: domain_server,  domain_workstation
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain/laps/server', tags: 'laps-server', when: laps_path  | length > 0 and use_laps == true }
+
+- name: VERIFY AND SHOW LAPS PASSWORDS
+  hosts: dc
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain/laps/verify', tags: 'laps-verify', when: laps_path  | length > 0}
+  vars:
+    hosts_dict: "{{hostvars}}"

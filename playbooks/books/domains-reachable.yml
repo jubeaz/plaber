@@ -1,0 +1,15 @@
+---
+- name: ENSURE DOMAINS ARE REACHABLE
+  hosts: firewalls
+  become: true
+  max_fail_percentage: 0
+  become_user: root
+  #tags: 'build_computers_setup_1'
+  tasks: 
+    - name: add route
+      include_tasks: tasks/ensure-reachable.yml
+      vars:
+        info: "{{hostvars[inventory_hostname].ansible_facts}}"
+        interface: "{{item}}"
+        via: "{{ansible_host}}"
+      with_items: "{{domains_interfaces}}"

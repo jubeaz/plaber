@@ -1,0 +1,25 @@
+---
+- name: DCS AD DATA CONFIGURATION
+  hosts: dc
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain/password_policy', tags: 'policy', policy: "{{password_policy.default}}"}
+# CREATE OBJECTS
+    - { role: 'windows_domain/user_group_ou_computer/group',    tags: 'ad_domain_data', objects: "{{domain_groups}}",     action: "create" }
+    - { role: 'windows_domain/user_group_ou_computer/user',     tags: 'ad_domain_data', objects: "{{domain_users}}",      action: "create" }
+    - { role: 'windows_domain/user_group_ou_computer/computer', tags: 'ad_domain_data', objects: "{{domain_computers}}",  action: "create" }
+    - { role: 'windows_domain/gmsa/gmsa',                       tags: 'ad_domain_data', objects: "{{domain_gmsa}}",       action: "create" }
+    - { role: 'windows_domain/user_group_ou_computer/group',    tags: 'ad_domain_data', objects: "{{domain_groups}}",     action: "add_members" }
+# ADD kerberos ressource based constrained delegations
+    - { role: 'windows_domain/gmsa/gmsa',                       tags: 'ad_domain_data', objects: "{{domain_gmsa}}",              action: "add_delegates"}
+    - { role: 'windows_domain/user_group_ou_computer/user',     tags: 'ad_domain_data', objects: "{{domain_service_accounts}}",  action: "add_delegates" }
+    - { role: 'windows_domain/user_group_ou_computer/computer', tags: 'ad_domain_data', objects: "{{domain_computers}}",         action: "add_delegates" }
+# ADD kerberos unconstained and constrained delegations
+    - { role: 'windows_domain/kerberos_delegation',             tags: 'ad_domain_data', objects: "{{domain_service_accounts}}"}
+    - { role: 'windows_domain/kerberos_delegation',             tags: 'ad_domain_data', objects: "{{domain_gmsa}}"}
+    - { role: 'windows_domain/kerberos_delegation',             tags: 'ad_domain_data', objects: "{{domain_computers}}"}
+# AD Account Control
+    - { role: 'windows_domain/ad_account_control',              tags: 'ad_domain_data', objects: "{{domain_gmsa}}"}
+    - { role: 'windows_domain/ad_account_control',              tags: 'ad_domain_data', objects: "{{domain_users}}"}
+    - { role: 'windows_domain/ad_account_control',              tags: 'ad_domain_data', objects: "{{domain_computers}}"}
+

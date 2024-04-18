@@ -1,0 +1,8 @@
+laps_path:  {
+#    "BO_workstations" : { "name": "Workstations",   "path" : "OU=Black Ops,OU=Asa,DC=haas,DC=local"},
+#    "GO_workstations" : { "name": "Workstations",   "path" : "OU=Grey Ops,OU=Asa,DC=haas,DC=local"},
+#    "WO_workstations" : { "name": "Workstations",   "path" : "OU=White Ops,OU=Asa,DC=haas,DC=local"},
+#    "C_workstations"  : { "name": "Workstations",   "path" : "OU=Cybernetics,OU=Asa,DC=haas,DC=local"}
+}
+
+laps_readers: [] # group names

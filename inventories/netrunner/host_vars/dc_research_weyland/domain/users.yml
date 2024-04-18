@@ -1,0 +1,113 @@
+domain_service_accounts: {
+}
+
+domain_users_regular: {
+    "adm_arose" : {
+        "firstname"       : "adm_anson",
+        "surname"         : "rose",
+        "password"        : "z77w_TeCUCD_wLrD", 
+        "city"            : "-",
+        "description"     : "",
+        "groups"          : [], # only built-in
+        "path"            : "CN=Users,DC=research,DC=weyland,DC=local"
+    },
+    "adm_acorrea" : {
+        "firstname"       : "adm_Angelique",
+        "surname"         : "correa",
+        "password"        : "xx_9cryfn3dF5KW4", 
+        "city"            : "-",
+        "description"     : "",
+        "groups"          : [], # only built-in
+        "path"            : "CN=Users,DC=research,DC=weyland,DC=local"
+    },
+    "root_bstinson" : {
+        "firstname"       : "root_Bryan",
+        "surname"         : "Stinson",
+        "password"        : "tf4ZEHz_NKj7Ezuh", 
+        "city"            : "-",
+        "description"     : "",
+        "groups"          : [], # only built-in
+        "path"            : "CN=Users,DC=research,DC=weyland,DC=local"
+    },
+    "cslee" : {
+        "firstname"       : "epa_Chief",
+        "surname"         : "Slee",
+        "password"        : "v7pE_CSj3eD4MVCj", 
+        "city"            : "-",
+        "description"     : "",
+        "groups"          : [], # only built-in
+        "path"            : "CN=Users,DC=research,DC=weyland,DC=local"
+    },
+    "crite" : {
+        "firstname"       : "Clyde",
+        "surname"         : "Van Ritee",
+        "password"        : "KN5_pJqwYEN_Rf3k", 
+        "city"            : "-",
+        "description"     : "",
+        "groups"          : [], # only built-in
+        "path"            : "CN=Users,DC=research,DC=weyland,DC=local"
+    },
+    "emills" : {
+        "firstname"       : "Elizabeth",
+        "surname"         : "Mills",
+        "password"        : "Xy_Y4HuUnqh5JyFy", 
+        "city"            : "-",
+        "description"     : "",
+        "groups"          : [], # only built-in
+        "path"            : "CN=Users,DC=research,DC=weyland,DC=local"
+    },
+    "klynn" : {
+        "firstname"       : "K. P.",
+        "surname"         : "Lynn",
+        "password"        : "U54U4thUFarTD_La", 
+        "city"            : "-",
+        "description"     : "",
+        "groups"          : [], # only built-in
+        "path"            : "CN=Users,DC=research,DC=weyland,DC=local"
+    },
+    "myale" : {
+        "firstname"       : "Mark",
+        "surname"         : "Yale",
+        "password"        : "rA7g_eVz_MmZZWE4", 
+        "city"            : "-",
+        "description"     : "",
+        "groups"          : [], # only built-in
+        "path"            : "CN=Users,DC=research,DC=weyland,DC=local"
+    },
+    "mstone" : {
+        "firstname"       : "Mr.",
+        "surname"         : "Stone",
+        "password"        : "ysMJvvjxNjjgY_R5", 
+        "city"            : "-",
+        "description"     : "",
+        "groups"          : [], # only built-in
+        "path"            : "CN=Users,DC=research,DC=weyland,DC=local"
+    },
+    "sdiego" : {
+        "firstname"       : "Simone",
+        "surname"         : "Diego",
+        "password"        : "7gPR_JpoUPnxj_5R", 
+        "city"            : "-",
+        "description"     : "",
+        "groups"          : [], # only built-in
+        "path"            : "CN=Users,DC=research,DC=weyland,DC=local"
+    },
+    "yavdakov" : {
+        "firstname"       : "Yakov Erikovich",
+        "surname"         : "Avdakov",
+        "password"        : "CXNpg7Ut7nc_rMq_", 
+        "city"            : "-",
+        "description"     : "",
+        "groups"          : [], # only built-in
+        "path"            : "CN=Users,DC=research,DC=weyland,DC=local"
+    },
+    "zjudge" : {
+        "firstname"       : "Zealous",
+        "surname"         : "Judge",
+        "password"        : "_jcX7F97MiWV4kxT", 
+        "city"            : "-",
+        "description"     : "",
+        "groups"          : ["Domain Admins"], # only built-in
+        "path"            : "CN=Users,DC=research,DC=weyland,DC=local"
+    }
+}

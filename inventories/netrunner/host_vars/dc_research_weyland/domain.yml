@@ -1,0 +1,2 @@
+domain_dc_ansible_inventory_key: "dc_research_weyland" # ansible inventory name
+domain_site_name: "Titan"

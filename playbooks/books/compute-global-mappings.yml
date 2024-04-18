@@ -1,0 +1,93 @@
+---
+- name: DCS AD DATA CONFIGURATION
+  hosts: dc
+  max_fail_percentage: 0
+  tasks:
+    - name: clean previously computed glocal mappings
+      set_fact:
+        user_identity_mapping_gc: ""      
+        group_identity_mapping_gc: ""
+        computer_identity_mapping_gc: ""
+    ########
+    # users
+    ########
+    - name: Search all AD users
+      microsoft.ad.object_info:
+        #ldap_filter: (&(objectClass=user)(objectCategory=Person))
+        filter: ObjectClass -eq 'user' -and objectCategory -eq 'Person'
+        properties: 
+          - ObjectGUID
+          - objectSid
+      register: search_all_ad
+    - name: set user_identity_mapping
+      set_fact:
+        user_identity_mapping: "{{ user_identity_mapping | default([]) + [{ 'key' : item.Name, 'guid' : item.ObjectGUID, 'sid' : item.objectSid.Sid, 'sid_name' : item.objectSid.Name }] }}"
+        cacheable: yes		
+      with_items: "{{search_all_ad.objects}}"
+    - name: set user_identity_mapping_gc
+      set_fact:
+        user_identity_mapping_gc: "{{ user_identity_mapping_gc | default({}) | combine({ hostvars[item].domain_name : hostvars[item].user_identity_mapping }) }}"      
+      with_items: "{{ groups['dc'] }}"
+    - name: unset user_identity_mapping and search_all_ad
+      set_fact:
+        user_identity_mapping: ""  
+        search_all_ad: ""  
+    ########
+    # groups
+    ########
+    - name: Search all AD Groups
+      microsoft.ad.object_info:
+        #ldap_filter: (&(objectClass=user)(objectCategory=Person))
+        filter: ObjectClass -eq 'group' -and objectCategory -eq 'Group'
+        properties: 
+          - ObjectGUID
+          - objectSid
+      register: search_all_ad
+    - name: set group_identity_mapping
+      set_fact:
+        group_identity_mapping: "{{ group_identity_mapping | default([]) + [{ 'key' : item.Name, 'guid' : item.ObjectGUID, 'sid' : item.objectSid.Sid, 'sid_name' : item.objectSid.Name }] }}"
+        cacheable: yes		
+      with_items: "{{search_all_ad.objects}}"
+    - name: set group_identity_mapping_gc
+      set_fact:
+        group_identity_mapping_gc: "{{ group_identity_mapping_gc | default({}) | combine({ hostvars[item].domain_name : hostvars[item].group_identity_mapping }) }}"      
+      with_items: "{{ groups['dc'] }}"
+    - name: unset user_identity_mapping, search_all_ad
+      set_fact:
+        user_identity_mapping: ""      
+        search_all_ad: ""
+    ########
+    # computers
+    ########
+    - name: Search all AD Computers
+      microsoft.ad.object_info:
+        #ldap_filter: (&(objectClass=user)(objectCategory=Person))
+        filter: ObjectClass -eq 'computer' -and objectCategory -eq 'Computer'
+        properties: 
+          - ObjectGUID
+          - objectSid
+      register: search_all_ad
+    - name: set computer_identity_mapping
+      set_fact:
+        computer_identity_mapping: "{{ computer_identity_mapping | default([]) + [{ 'key' : item.Name, 'guid' : item.ObjectGUID, 'sid' : item.objectSid.Sid, 'sid_name' : item.objectSid.Name }] }}"
+        cacheable: yes		
+      with_items: "{{search_all_ad.objects}}"
+    - name: set computer_identity_mapping_gc
+      set_fact:
+        computer_identity_mapping_gc: "{{ computer_identity_mapping_gc | default({}) | combine({ hostvars[item].domain_name : hostvars[item].computer_identity_mapping }) }}"     
+      with_items: "{{ groups['dc'] }}"
+    - name: unset computer_identity_mapping, search_all_ad
+      set_fact:
+        computer_identity_mapping: ""      
+        search_all_ad: ""
+
+#    - name: debug
+#      debug:
+#        var: user_identity_mapping_gc
+#      when: inventory_hostname == 'dc03'
+#    - name: debug
+#      debug:
+#        var: group_identity_mapping_gc
+#    - name: debug
+#      debug:
+#        var: computer_identity_mapping_gc

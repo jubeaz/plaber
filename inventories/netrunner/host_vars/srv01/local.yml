@@ -1,0 +1,31 @@
+
+local_users: {
+    "arose" : {
+        "password"        : "z77w_TeCUCD_wLrD", 
+        "groups"          : ["Remote Management Users", "Administrators"]
+        }
+}
+local_groups: {
+    "Administrators" : [".\\arose"],
+    "Remote Management Users": ["weyland.local\\arose"],
+    "Remote Desktop Users" : [],
+}
+
+
+
+scripts : ["sidhistory.ps1"]
+vulns: ["disable_firewall"]
+
+
+features: ["NET-Framework-Core"]
+softwares: [  "git", "visualstudio2022community", "notepadplusplus"]
+repos: [
+    ["Mimikatz", "https://github.com/gentilkiwi/mimikatz.git"],
+    ["Rubeus", "https://github.com/GhostPack/Rubeus"]
+]
+repos_user: ""
+repos_password: ""
+download_files: [
+    ["GRMWDK_EN_7600_1.ISO", "https://download.microsoft.com/download/4/A/2/4A25C7D5-EFBE-4182-B6A9-AE6850409A78/GRMWDK_EN_7600_1.ISO"]
+]
+

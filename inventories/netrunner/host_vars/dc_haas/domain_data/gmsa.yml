@@ -1,0 +1,42 @@
+domain_gmsa : {
+#  "heimdall": {
+#    "gMSA_Name" : "heimdall",
+#    "gMSA_FQDN" : "heimdall.haas.local",
+#    "gMSA_SPNs" : ["HTTP/fenris", "HTTP/fenris.haas.local"],
+#    "gMSA_HostNames" : ["fenris"], # if set  gMSA_Groups is empty
+#    "gMSA_Groups" : [] # if set  gMSA_HostNames is empty
+#    },
+  "ichi": {
+    "gMSA_Name" : "ichi",
+    "gMSA_FQDN" : "ichi_v2.haas.local",
+    "gMSA_SPNs" : ["MSSQLSvc/fenris.haas.local:1433","MSSQLSvc/fenris.haas.local"],
+    "gMSA_Groups" : ["L_GMSA_ICHI"], # computer account must be in the group not in nested groups
+    "path"            : "CN=Managed Service Accounts,DC=haas,DC=local",            
+    "delegates"       : ["CN=emoon,CN=Users,DC=haas,DC=local", "CN=ws01,OU=Workstations,OU=Cybernetics,OU=Asa,DC=haas,DC=local"], # RBCD / must be DN msDS-AllowedToActOnBehalfOfOtherIdentity
+    "delegation_type" : "KCD", # "KCD", "KUD", false
+    "constrained"     : ["cifs/ws01", "cifs/ws01.haas.local"], # KCD / SPN list / msDS-AllowedToDelegateTo
+    "proto_transition": true,  # KCD default false
+    "sensitive"       : false,
+    "ADAC": {
+        "AllowReversiblePasswordEncryption": false,
+        "CannotChangePassword":              false,
+        "PasswordNeverExpires":              false,
+        "PasswordNotRequired":               false,
+        "AccountNotDelegated":               false,
+        "DoesNotRequirePreAuth":             false
+    }  
+  },
+  "janus": {
+    "gMSA_Name" : "janus",
+    "gMSA_FQDN" : "janus.haas.local",
+    "gMSA_SPNs" : ["MSSQLSvc/ws03.haas.local:1433","MSSQLSvc/ws03.haas.local"],
+    "gMSA_HostNames" : ["ws03"],
+    "gMSA_Groups" : [],
+    "path"            : "CN=Managed Service Accounts,DC=haas,DC=local",  
+    "delegates"       : ["CN=emoon,CN=Users,DC=haas,DC=local"], # RBCD / must be DN msDS-AllowedToActOnBehalfOfOtherIdentity
+    "delegation_type" : "KUD", # "KCD", "KUD", false
+    "constrained"     : ["cifs/ws01", "cifs/ws01.haas.local"], # KCD / SPN list / msDS-AllowedToDelegateTo
+    "proto_transition": true,  # KCD default false
+    "sensitive"       : false
+    }
+}

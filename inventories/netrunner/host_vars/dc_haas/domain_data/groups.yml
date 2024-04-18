@@ -1,0 +1,48 @@
+domain_groups : {
+    "U_LAPS_READER" : {
+        "scope": "universal", # universal, global or domainlocal default domainlocal
+        "managed_by" : "Domain Admins",
+        "path" : "OU=Groups,OU=Cybernetics,OU=Asa,DC=haas,DC=local",
+        "members" : [
+            "G_LAPS_READER",
+        ]
+    },
+    "G_LAPS_READER" : {
+        "scope": "global", # universal, global or domainlocal default domainlocal
+        "managed_by" : "Domain Admins",
+        "path" : "OU=Groups,OU=Cybernetics,OU=Asa,DC=haas,DC=local",
+        "members" : [
+            "emoon",
+        ]
+    },
+    "G_GMSA_ICHI" : {
+        "scope": "global", # universal, global or domainlocal default domainlocal
+        "managed_by" : "Domain Admins",
+        "path" : "OU=Groups,OU=Cybernetics,OU=Asa,DC=haas,DC=local",
+        "members" : [
+        ]
+    },
+    "L_LAPS_READER" : {
+        "scope": "domainlocal", # universal, global or domainlocal default domainlocal
+        "managed_by" : "Domain Admins",
+        "path" : "OU=Groups,OU=Cybernetics,OU=Asa,DC=haas,DC=local",
+        "members" : [
+            "U_LAPS_READER"
+        ]
+    },
+    "L_GMSA_ICHI" : {
+        "scope": "domainlocal", # universal, global or domainlocal default domainlocal
+        "managed_by" : "Domain Admins",
+        "path" : "OU=Groups,OU=Cybernetics,OU=Asa,DC=haas,DC=local",
+        "members" : [
+            "G_GMSA_ICHI",
+            "fenris$", # computer account must be in the group not in nested groups
+        ],
+        "foreign_users": [],
+        "foreign_gmsas": [],
+        "foreign_computers": [],
+        "foreign_groups": ["weyland.local\\G_LAPS_READER"]
+    } 
+}
+
+#         "foreign_members": ["weyland.local\\G_LAPS_READER"]

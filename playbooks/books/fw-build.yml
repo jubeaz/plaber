@@ -1,0 +1,113 @@
+---
+- name: BASE BUILD FIREWALL
+  hosts: firewalls
+  become: true
+  become_user: root
+  max_fail_percentage: 0
+  #tags: 'build_computers_setup_1'
+  roles:
+    - { role: mlocate }
+    - { role: pacman, when: "ansible_distribution == 'Archlinux'" }
+    - { role: reflector, when: "ansible_distribution == 'Archlinux'" }
+    - { role: update-pkgs }
+    - { role: time-sync }
+    - { role: gen-locale}
+    - { role: opensshd}
+
+  tasks:
+    - name: disable NAT interface
+      ansible.builtin.blockinfile:
+        path: /etc/systemd/network/80-dhcp.network
+        append_newline: true
+        prepend_newline: true
+        block: |
+          [Link]
+          Unmanaged=yes
+      when: disable_nat == true
+    - name: Ensure that DNS is set on public_interface
+      ansible.builtin.lineinfile:
+        path: /etc/systemd/network/eth1.network
+        regexp: '^DNS='
+        insertafter: '^Gateway='
+        line: 'DNS={{dns_server}}'
+      when: disable_nat == true
+    - name: reboot
+      ansible.builtin.reboot:
+      when: disable_nat == true
+    - name: install packages  
+      community.general.pacman:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ pacman_arch_packages | default([]) }}"
+      register: __pacman
+    - include_role:
+        name: "ufw"
+      vars:
+        ufw_in_ssh_ip: ["192.168.0.0/16"]
+        ufw_forward: true
+        ufw_nat: true
+
+#    - name: compute 
+#      debug:
+#        msg: "{{interface}} route to {{info[interface].ipv4.network}}/{{info[interface].ipv4.prefix}}"
+##        msg: "{{interface}} info {{info[interface]}}"
+#      vars:
+#        info: "{{hostvars[inventory_hostname].ansible_facts}}"
+#        interface: "{{item}}"
+#      with_items: "{{domains_interfaces}}"
+      
+# ufw route allow in on eth1 out on eth2 to 172.16.0.0/24 port 80 proto tcp
+#    - name: compute 
+#      debug:
+#        msg: "ufw route allow in on {{public_interface}} out on {{interface}} to  {{info[interface].ipv4.network}}/{{info[interface].ipv4.prefix}}"
+##        msg: "{{interface}} info {{info[interface]}}"
+#      vars:
+#        info: "{{hostvars[inventory_hostname].ansible_facts}}"
+#        interface: "{{item}}"
+#      with_items: "{{domains_interfaces}}"
+
+    - name: Allow local network to internal networks
+      community.general.ufw:
+        comment: "[local to internal] ip forward from {{public_interface}} to {{info[interface].ipv4.network}}/{{info[interface].ipv4.prefix}} on {{interface}}"
+        #direction: in
+        interface_in: "{{public_interface}}" 
+        interface_out: "{{interface}}"
+        proto: tcp
+        route: true
+        rule: allow
+        state: enabled
+        to_ip: "{{info[interface].ipv4.network}}/{{info[interface].ipv4.prefix}}"
+      vars:
+        info: "{{hostvars[inventory_hostname].ansible_facts}}"
+        interface: "{{item}}"
+      with_items: "{{domains_interfaces}}"
+
+    - debug:
+        var: internet_interface
+#
+    - name: allow internals to internet
+      community.general.ufw:
+        comment: "[internals to internet] ip forward from {{interface}} to {{internet_interface}} "
+        #direction: in
+        interface_in: "{{interface}}" 
+        interface_out: "{{internet_interface}}"
+        proto: tcp
+        route: true
+        rule: allow
+        state: enabled
+        to_ip: any
+      vars:
+        info: "{{hostvars[inventory_hostname].ansible_facts}}"
+        interface: "{{item}}"
+      with_items: "{{domains_interfaces}}"
+#
+    - name: Insert NAT rules for domains interface to internet
+      include_tasks: tasks/fw-add-nat.yml
+      vars:
+        info: "{{hostvars[inventory_hostname].ansible_facts}}"
+        interface: "{{internet_interface}}"
+        domain: "{{item}}"
+      with_items: "{{domains_interfaces}}"
+#
+#    - name: reboot
+#      ansible.builtin.reboot:

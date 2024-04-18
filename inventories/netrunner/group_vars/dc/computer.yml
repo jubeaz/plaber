@@ -1,0 +1,40 @@
+
+#domain_computers: "{{domain_fake_computers | ansible.builtin.combine(domain_real_computers)}}"
+domain_computers: "{{domain_fake_computers}}"
+
+domain_real_computers: {
+#    "fenris": {
+#        "name":             "fenris",
+#        "dns_hostname":     "fenris.haas.local",
+#        "description":      "mssql",
+#        "path":             "OU=Servers,OU=Cybernetics,OU=Asa,DC=haas,DC=local",            
+#        "delegates"       : [], # RBCD / must be DN msDS-AllowedToActOnBehalfOfOtherIdentity
+#        "delegation_type" : false, # "KCD", "KUD", false
+#        "constrained"     : [], # KCD / SPN list / msDS-AllowedToDelegateTo
+#        "proto_transition": false,  # KCD default false
+#        "sensitive"       : false
+#    }
+}
+
+domain_fake_computers: {
+#    "jaguarundi" : {
+#        "name":             "jaguarundi",
+#        "dns_hostname":     "jaguarundi.haas.local",
+#        "description":      "mssql",
+#        "path":             "OU=Servers,OU=Cybernetics,OU=Asa,DC=haas,DC=local",            
+#        "spns":             ["MSSQLSvc/Jaguarundi.haas.local:1433","MSSQLSvc/Jaguarundi.haas.local"],            
+#        "delegates"       : ["CN=emoon,CN=Users,DC=haas,DC=local"], # RBCD / must be DN msDS-AllowedToActOnBehalfOfOtherIdentity
+#        "delegation_type" : false, # "KCD", "KUD", false
+#        "constrained"     : [], # KCD / SPN list / msDS-AllowedToDelegateTo
+#        "proto_transition": false,  # KCD default false
+#        "sensitive"       : false,
+#        "ADAC": {
+#            "AllowReversiblePasswordEncryption": true,
+#            "CannotChangePassword":              true,
+#            "PasswordNeverExpires":              true,
+#            "PasswordNotRequired":               true,
+#            "AccountNotDelegated":               true,
+#            "DoesNotRequirePreAuth":             true
+#        }  
+#    }
+}

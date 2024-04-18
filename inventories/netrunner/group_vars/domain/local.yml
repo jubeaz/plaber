@@ -1,0 +1,28 @@
+local_admin_password: "Jubeaz12345+-"
+windows_update: false 
+
+local_users: {
+#    "arose" : {
+#        "password"        : "z77w_TeCUCD_wLrD", 
+#        "groups"          : ["Remote Management Users", "Administrators"]
+#        }
+}
+
+local_groups: {
+    "Administrators" : [],
+    "Remote Desktop Users" : [],
+    "Remote Management Users": []
+}
+
+
+#scripts: ["sidhistory.ps1"]
+#vulns: ["disable_firewall"]
+
+# server: https://learn.microsoft.com/en-us/windows-server/administration/server-core/server-core-roles-and-services
+# worksation: Get-WindowsCapability -Name RSAT* -Online |
+extra_features: []
+#softwares: []
+#repos: []
+#repos_user: ""
+#repos_password: ""
+#download_files: []

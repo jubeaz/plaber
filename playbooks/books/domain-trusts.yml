@@ -1,0 +1,39 @@
+---
+- name: TRUSTS CONFIGURATION PREPARE
+  hosts: trust
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_settings/manage_net_adapter' , tags: 'disable_nat_adapter', action: "disable", adapter: pub_adapter}
+    # dc forward trusted zone
+    - { role: 'windows_domain/dns_conditional_forwarder', tags: 'dns_conditional_forwarder' }
+  vars:
+    zone_name: "{{domain_trust_remote_domain_name}}"
+    master_server: "{{domain_trust_remote_dc_ip}}"
+    replication: "forest"
+
+- name: TRUSTS CONFIGURATION
+  hosts: trust
+  max_fail_percentage: 0
+  gather_facts: no
+  serial: 1 # add one trust at a time to avoid issues
+  roles:
+    - { role: 'windows_domain/trusts/trusts', tags: 'trust' }
+
+
+- name: TRUSTS CONFIGURATION END
+  hosts: trust
+  max_fail_percentage: 0
+  gather_facts: no
+  roles:
+    - { role: 'windows_settings/manage_net_adapter' , tags: 'disable_nat_adapter', action: "enable", adapter: pub_adapter}
+    # add DNS conditional forwarder on all trust dc for each other subdomains
+    - { role: 'windows_domain/dc_dns_conditional_forwarder', tags: 'dns_conditional_forwarder', when: transitive_trusts_domains is defined }
+  vars:
+    replication: "forest"
+    forward_info: "{{transitive_trusts_domains}}"
+
+- name: TRUSTS CONFIGURATION
+  hosts: trust
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain/trusts/trusts_check', tags: 'trust' }

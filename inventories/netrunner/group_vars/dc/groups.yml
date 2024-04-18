@@ -1,0 +1,18 @@
+domain_groups : {
+#    "L_GMSA_ICHI" : {
+#        "scope": "domainlocal", # universal, global or domainlocal default domainlocal
+#        "managed_by" : "Domain Admins",
+#        "path" : "OU=Groups,OU=Cybernetics,OU=Asa,DC=haas,DC=local",
+#        "members" : [
+#            "G_GMSA_ICHI"
+#        ],
+#        "foreign_users" : [ 
+#            ["arose@weyland.local"]
+#        ],
+#        "foreign_groups" : [ 
+#            "G_LAPS_READER@weyland.local",
+#            "G_LAPS_READER@research.weyland.local"
+#        ]
+#    } 
+}
+

@@ -1,0 +1,3 @@
+domain_ous: {
+#    "C_admins"        : { "name": "Admins",         "path" : "OU=Cybernetics,OU=Asa,DC=haas,DC=local"}
+}

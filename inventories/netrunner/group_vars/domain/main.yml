@@ -1,0 +1,11 @@
+#hostname: "dc01"
+is_windows_core: false
+
+force_dns_server: yes
+dns_server: 8.8.8.8
+two_adapters: "{{ true if public_ip is defined else false}}"
+
+# proxy settings (the lab need internet for some install, if you are behind a proxy you should set the proxy here)
+enable_http_proxy: no
+ad_http_proxy: http://x.x.x.x:xxxx
+ad_https_proxy: http://x.x.x.x:xxxx

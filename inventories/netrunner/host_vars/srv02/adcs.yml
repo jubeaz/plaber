@@ -1,0 +1,14 @@
+cert_templates: ["ESC1", "ESC2"]
+ca_vulns: ["ESC6"]
+web_enrollment: true # ESC8
+ca_common_name: "internal-ca"
+
+acls_adcs_templates: {
+  # 'FullControl', 'Read', 'Write', 'Enroll', 'Autoenroll'.
+  "fullcontrol_imcguire_esc1" : {"for": "imcguire", "to": "ESC1", "right": "FullControl", "inheritance": "None"}
+}
+
+acls_adcs_authority: {
+  # 'ManageCA', 'ManageCertificates', 'Read', 'Enroll'
+  "ManageCertificates_imcguire_internal_ca" : {"for": "imcguire", "to": "{{ca_common_name}}", "right": "ManageCertificates", "inheritance": "None"}
+}

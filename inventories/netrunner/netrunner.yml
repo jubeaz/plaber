@@ -1,0 +1,50 @@
+---
+all:
+  children:
+    firewalls:
+      hosts:
+        fw: {} 
+    domain:
+      children:
+        dc:
+          hosts:
+            dc_weyland: {dc_level: 0}    
+            dc_haas: {dc_level: 0} 
+            dc_research_weyland: {dc_level: 1}
+        dc_slave:
+          hosts:
+        trust:
+          hosts:
+            dc_weyland: {}    
+            dc_haas: {}
+        domain_server:
+          children:
+              adcs:
+                hosts:
+                  srv02: {}
+              iis:
+                hosts:
+                  srv02: {}
+              mssql:
+                hosts:
+                  srv02: {}
+                  srv01: {}           
+          hosts:
+        mssql_ssms:
+          hosts: 
+            ws01: {}             
+        webdav:
+          hosts:          
+            srv02: {}
+            srv01: {}            
+        domain_workstation:  
+          hosts:
+            ws01: {}
+  hosts:
+    dc_weyland:           {                    ansible_host: 172.16.1.1}
+    srv01:                {                    ansible_host: 172.16.1.10,  public_ip: 192.168.2.101, domain_prefix: 24, domain_gateway: 10.0.0.254, two_adapters: true,}
+    dc_haas:              {                    ansible_host: 172.16.0.1}
+    srv02:                {                    ansible_host: 172.16.0.10}
+    ws01:                 {                    ansible_host: 172.16.0.20}
+    dc_research_weyland:  {                    ansible_host: 172.16.2.1}
+    fw:                   {                    ansible_host: 192.168.2.100}

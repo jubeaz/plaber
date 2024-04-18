@@ -1,0 +1,3 @@
+mssql_svcaccount_method: 'local' # domain, gmsa, local
+mssql_svcaccount_local: 'NT AUTHORITY\\NETWORK SERVICE' # "NT AUTHORITY\\SYSTEM"
+mssql_svcaccount_key: '' # for domain or gmsa mssql_svcaccount_method

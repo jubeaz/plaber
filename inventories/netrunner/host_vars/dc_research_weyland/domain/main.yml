@@ -1,0 +1,8 @@
+
+#domain_password : "Jubeaz12345+-"
+domain_netbios_name: "RESEARCH"
+domain_name: "research.weyland.local"
+
+
+trust_domain_dc_ansible_inventory_key : "" # ansible inventory name
+parent_domain_dc_ansible_inventory_key: "dc_weyland" # ansible inventory name

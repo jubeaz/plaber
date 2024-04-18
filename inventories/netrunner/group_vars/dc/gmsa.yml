@@ -1,0 +1,23 @@
+domain_gmsa : {
+#  "ichi": {
+#    "gMSA_Name" : "ichi",
+#    "gMSA_FQDN" : "ichi_v2.haas.local",
+#    "gMSA_SPNs" : ["MSSQLSvc/fenris.haas.local:1433","MSSQLSvc/fenris.haas.local"],
+#    "gMSA_HostNames" : [],
+#    "gMSA_Groups" : ["L_GMSA_ICHI"],
+#    "path"            : "CN=Managed Service Accounts,DC=haas,DC=local",            
+#    "delegates"       : ["CN=emoon,CN=Users,DC=haas,DC=local", "CN=ws01,OU=Workstations,OU=Cybernetics,OU=Asa,DC=haas,DC=local"], # RBCD / must be DN msDS-AllowedToActOnBehalfOfOtherIdentity
+#    "delegation_type" : "KCD", # "KCD", "KUD", false
+#    "constrained"     : ["cifs/ws01", "cifs/ws01.haas.local"], # KCD / SPN list / msDS-AllowedToDelegateTo
+#    "proto_transition": true,  # KCD default false
+#    "sensitive"       : false,
+#    "ADAC": {
+#        "AllowReversiblePasswordEncryption": false,
+#        "CannotChangePassword":              false,
+#        "PasswordNeverExpires":              false,
+#        "PasswordNotRequired":               false,
+#        "AccountNotDelegated":               false,
+#        "DoesNotRequirePreAuth":             false
+#    }  
+#  }
+}

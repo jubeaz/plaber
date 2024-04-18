@@ -1,0 +1,7 @@
+---
+- name: CONFIGURE LAPS ON DCS
+  hosts: dc
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain/laps/dc', tags: 'laps-dc', when: laps_path  | length > 0}
+

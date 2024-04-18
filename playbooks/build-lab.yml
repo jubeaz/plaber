@@ -1,0 +1,39 @@
+---
+#- import_playbook: books/fw-build.yml
+#- import_playbook: books/domains-reachable.yml
+- import_playbook: books/compute-inventory.yml
+#- import_playbook: books/computers-build.yml
+#- import_playbook: books/domain-build.yml
+#- import_playbook: books/domain-ous.yml
+#- import_playbook: books/members-join.yml
+#- import_playbook: books/domain-trusts.yml
+#- import_playbook: books/domain-adcs.yml
+#- import_playbook: books/domain-setup-laps.yml
+#- import_playbook: books/domain-data.yml
+##- import_playbook: books/compute-global-mappings.yml
+
+#- import_playbook: books/members-laps-gmsa.yml
+#- import_playbook: books/domain-acl.yml
+#- import_playbook: books/computers-local-groups-users-rights.yml
+#- import_playbook: books/computers-security.yml
+#- import_playbook: books/members-iis.yml
+#- import_playbook: books/members-webdav.yml
+#- import_playbook: books/members-mssql.yml
+#- import_playbook: books/members-user_data.yml
+### TO DO DEFENDER + APPOCKER
+#
+
+# TO DO
+#- import_playbook: books/vulnerabilities.yml
+
+#- import_playbook: books/reboot.yml
+
+#- name: remove vagrant domain account
+#  hosts: dc
+#  roles:
+#    - { role: 'windows_domain/remove_vagrant', tags: 'remove_vagrant'}
+#- name: remove vagrant local account
+#  hosts: domain
+#  roles:
+#    - { role: 'windows_settings/remove_vagrant', tags: 'remove_vagrant'}
+

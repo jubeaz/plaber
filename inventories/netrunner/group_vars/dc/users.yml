@@ -1,0 +1,83 @@
+domain_users: "{{domain_service_accounts | ansible.builtin.combine(domain_users_regular)}}"
+
+domain_service_accounts: {
+#    "imcguire" : {
+#        "firstname"       : "Isabel",
+#        "surname"         : "McGuire",
+#        "password"        : "zazc9DN_KpftZAvn", 
+#        "city"            : "-",
+#        "description"     : "",
+#        "groups"          : [], # only built-in
+#        "path"            : "CN=Users,DC=haas,DC=local",
+#        "delegates"       : ["CN=emoon,CN=Users,DC=haas,DC=local"], # RBCD / must be DN msDS-AllowedToActOnBehalfOfOtherIdentity
+#        "delegation_type" : false, # "KCD", "KUD", false
+#        "constrained"     : ["cifs/ws01", "cifs/ws01.haas.local"], # KCD / SPN list / msDS-AllowedToDelegateTo
+#        "proto_transition": true,  # KCD default false
+#        "sensitive"       : false,  
+#        "spns"            : ["HTTP/archer.weyland.local","HTTP/archer"],
+#        "ADAC": {
+#            "AllowReversiblePasswordEncryption": true,
+#            "CannotChangePassword":              true,
+#            "PasswordNeverExpires":              true,
+#            "PasswordNotRequired":               true,
+#            "AccountNotDelegated":               true,
+#            "DoesNotRequirePreAuth":             true
+#        }
+#    },  
+#    "KCD_pt" : {
+#        "firstname"       : "KCD",
+#        "surname"         : "pt",
+#        "password"        : "zazc9DN_KpftZAvn", 
+#        "city"            : "-",
+#        "description"     : "",
+#        "groups"          : [], # only built-in
+#        "path"            : "CN=Users,DC=haas,DC=local",
+#        "delegates"       : ["CN=emoon,CN=Users,DC=haas,DC=local"], # RBCD / must be DN msDS-AllowedToActOnBehalfOfOtherIdentity
+#        "delegation_type" : "KCD", # "KCD", "KUD", false
+#        "constrained"     : ["cifs/ws01", "cifs/ws01.haas.local"], # KCD / SPN list / msDS-AllowedToDelegateTo
+#        "proto_transition": true,  # KCD default false
+#        "spns"            : ["KCDPT/archer.weyland.local","KCDPT/archer"]
+#    },  
+#    "KCD" : {
+#        "firstname"       : "KCD",
+#        "surname"         : "without",
+#        "password"        : "zazc9DN_KpftZAvn", 
+#        "city"            : "-",
+#        "description"     : "",
+#        "groups"          : [], # only built-in
+#        "path"            : "CN=Users,DC=haas,DC=local",
+#        "delegates"       : ["CN=emoon,CN=Users,DC=haas,DC=local"], # RBCD / must be DN msDS-AllowedToActOnBehalfOfOtherIdentity
+#        "delegation_type" : "KCD", # "KCD", "KUD", false
+#        "constrained"     : ["cifs/ws01", "cifs/ws01.haas.local"], # KCD / SPN list / msDS-AllowedToDelegateTo
+#        "proto_transition": false,  # KCD default false
+#        "sensitive"       : false,  
+#        "spns"            : ["KCD/archer.weyland.local","KCD/archer"]
+#    },  
+#    "KUD" : {
+#        "firstname"       : "KUD",
+#        "surname"         : "-",
+#        "password"        : "zazc9DN_KpftZAvn", 
+#        "city"            : "-",
+#        "description"     : "",
+#        "groups"          : [], # only built-in
+#        "path"            : "CN=Users,DC=haas,DC=local",
+#        "delegates"       : ["CN=emoon,CN=Users,DC=haas,DC=local"], # RBCD / must be DN msDS-AllowedToActOnBehalfOfOtherIdentity
+#        "delegation_type" : "KUD", # "KCD", "KUD", false
+#        "constrained"     : ["cifs/ws01", "cifs/ws01.haas.local"], # KCD / SPN list / msDS-AllowedToDelegateTo
+#        "proto_transition": true,  # KCD default false
+#        "sensitive"       : false,  
+#        "spns"            : ["KUD/archer.weyland.local","KUD/archer"]
+#    }
+}
+
+domain_users_regular: {
+#    "emoon" : {
+#        "firstname"       : "Estelle",
+#        "surname"         : "Moon",
+#        "password"        : "Nps4ffWx7omDc5_h", 
+#        "city"            : "-",
+#        "description"     : "",
+#        "groups"          : [], # only built-in
+#        "path"            : "CN=Users,DC=haas,DC=local"
+#    }
+}
