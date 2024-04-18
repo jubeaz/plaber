@@ -12,6 +12,7 @@ Set-ItemProperty -Path "HKLM:SOFTWARE\Microsoft\Windows\CurrentVersion\policies\
 try {
     Set-ItemProperty -Path "HKLM:SOFTWARE\Microsoft\PolicyManager\default\Start\HideRestart" -Name "value" -Value 0 -ErrorAction Stop
     Set-ItemProperty -Path "HKLM:SOFTWARE\Microsoft\PolicyManager\default\Start\HideShutDown" -Name "value" -Value 0 -ErrorAction Stop
+    New-ItemProperty -Path "HKLM:SOFTWARE\Microsoft\Windows NT\CurrentVersion\windows" -Name "ShutdownWarningDialoTimeout" -ProperyType DWord -value 1
 }
 catch {
     Write-Host "An error occurred: continuing"

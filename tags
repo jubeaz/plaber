@@ -875,7 +875,7 @@ Open firewall ports	ansible_roles/unused/vault/tasks/main.yml	/^- name: Open fir
 Open firewall ports	ansible_roles/xrdp/tasks/main.yml	/^- name: Open firewall ports$/;"	p	language:AnsiblePlaybook
 Parent DC ADD DNS configuration	playbooks/books/domain-build.yml	/^- name: Parent DC ADD DNS configuration$/;"	p	language:AnsiblePlaybook
 Parse 'X11 Layout' from current locale	ansible_roles/lxde/tasks/main.yml	/^- name: Parse 'X11 Layout' from current locale$/;"	p	language:AnsiblePlaybook
-PowerAction.ps1	providers/scripts/PowerAction.ps1	1;"	F	language:PowerShell	epoch:1713422789
+PowerAction.ps1	providers/scripts/PowerAction.ps1	1;"	F	language:PowerShell	epoch:1713430552
 Prepare to trust flush and renew dns	ansible_roles/windows_domain/trusts/trusts/tasks/main.yml	/^- name: "Prepare to trust flush and renew dns"$/;"	p	language:AnsiblePlaybook
 Promote the server to aditionnal DC	ansible_roles/windows_domain/slave_dc/tasks/main.yml	/^- name: Promote the server to aditionnal DC$/;"	p	language:AnsiblePlaybook
 README.md	README.md	1;"	F	language:Markdown	epoch:1713424033
@@ -1196,7 +1196,7 @@ activate guest account	ansible_roles/windows_vulns/openshares/tasks/main.yml	/^-
 actual_dacl	ansible_roles/windows_domain/laps/dc/library/win_ad_dacl.ps1	/^$actual_dacl = $actual_sd.GetAccessRules($true, $false, [System.Security.Principal.SecurityIdent/;"	v	language:PowerShell
 actual_sd	ansible_roles/windows_domain/laps/dc/library/win_ad_dacl.ps1	/^$actual_sd = $ad_object.nTSecurityDescriptor$/;"	v	language:PowerShell
 ad_object	ansible_roles/windows_domain/laps/dc/library/win_ad_dacl.ps1	/^$ad_object = Get-ADObject -Identity $path -Properties nTSecurityDescriptor @common_ad_parameters$/;"	v	language:PowerShell
-adcs.yml	inventories/netrunner/host_vars/srv02/adcs.yml	1;"	F	language:Yaml	epoch:1713421136
+adcs.yml	inventories/netrunner/host_vars/haas_srv02/adcs.yml	1;"	F	language:Yaml	epoch:1713421136
 add child domain to parent domain	ansible_roles/windows_domain/domain_child/tasks/main.yml	/^- name: add child domain to parent domain$/;"	p	language:AnsiblePlaybook
 add pulseaudio switch on connect	ansible_roles/bluetooth-headset/tasks/main.yml	/^- name: add pulseaudio switch on connect$/;"	p	language:AnsiblePlaybook
 add users to group	ansible_roles/minidlna/tasks/main.yml	/^- name: add users to group$/;"	p	language:AnsiblePlaybook
@@ -1407,7 +1407,7 @@ common_params	ansible_roles/windows_domain/laps/dc/library/win_gpo_reg.ps1	/^   
 comparison_props	ansible_roles/windows_domain/laps/dc/library/win_ad_dacl.ps1	/^$comparison_props = @($/;"	v	language:PowerShell
 compressed_file	providers/scripts/Install-WMF3Hotfix.ps1	/^$compressed_file = "$tmp_dir\\$($filename).zip"$/;"	v	language:PowerShell
 compute-global-mappings.yml	playbooks/books/compute-global-mappings.yml	1;"	F	language:Yaml	epoch:1713421101
-compute-inventory.yml	playbooks/books/compute-inventory.yml	1;"	F	language:Yaml	epoch:1713421101
+compute-inventory.yml	playbooks/books/compute-inventory.yml	1;"	F	language:Yaml	epoch:1713448772
 computer.yml	inventories/netrunner/group_vars/dc/computer.yml	1;"	F	language:Yaml	epoch:1713421136
 computer.yml	inventories/netrunner/host_vars/dc_haas/domain_data/computer.yml	1;"	F	language:Yaml	epoch:1713421136
 computer.yml	inventories/netrunner/host_vars/dc_research_weyland/domain/computer.yml	1;"	F	language:Yaml	epoch:1713421136
@@ -1481,9 +1481,9 @@ domain.yml	inventories/netrunner/group_vars/domain/domain.yml	1;"	F	language:Yam
 domain.yml	inventories/netrunner/host_vars/dc_haas/domain.yml	1;"	F	language:Yaml	epoch:1713421136
 domain.yml	inventories/netrunner/host_vars/dc_research_weyland/domain.yml	1;"	F	language:Yaml	epoch:1713421136
 domain.yml	inventories/netrunner/host_vars/dc_weyland/domain.yml	1;"	F	language:Yaml	epoch:1713421136
-domain.yml	inventories/netrunner/host_vars/srv01/domain.yml	1;"	F	language:Yaml	epoch:1713421136
-domain.yml	inventories/netrunner/host_vars/srv02/domain.yml	1;"	F	language:Yaml	epoch:1713421136
-domain.yml	inventories/netrunner/host_vars/ws01/domain.yml	1;"	F	language:Yaml	epoch:1713421136
+domain.yml	inventories/netrunner/host_vars/haas_srv02/domain.yml	1;"	F	language:Yaml	epoch:1713421136
+domain.yml	inventories/netrunner/host_vars/haas_ws01/domain.yml	1;"	F	language:Yaml	epoch:1713421136
+domain.yml	inventories/netrunner/host_vars/wld_srv01/domain.yml	1;"	F	language:Yaml	epoch:1713421136
 domains-reachable.yml	playbooks/books/domains-reachable.yml	1;"	F	language:Yaml	epoch:1713421101
 download some files	ansible_roles/windows_domain/download_files/tasks/main.yml	/^- name: download some files$/;"	p	language:AnsiblePlaybook
 dse	ansible_roles/windows_domain/laps/dc/library/win_ad_object.ps1	/^    $dse = New-Object -TypeName System.DirectoryServices.DirectoryEntry -ArgumentList $ctor_args/;"	v	language:PowerShell
@@ -1583,9 +1583,9 @@ local.yml	inventories/netrunner/group_vars/domain/local.yml	1;"	F	language:Yaml	
 local.yml	inventories/netrunner/host_vars/dc_haas/local.yml	1;"	F	language:Yaml	epoch:1713421136
 local.yml	inventories/netrunner/host_vars/dc_research_weyland/local.yml	1;"	F	language:Yaml	epoch:1713421136
 local.yml	inventories/netrunner/host_vars/dc_weyland/local.yml	1;"	F	language:Yaml	epoch:1713421136
-local.yml	inventories/netrunner/host_vars/srv01/local.yml	1;"	F	language:Yaml	epoch:1713421136
-local.yml	inventories/netrunner/host_vars/srv02/local.yml	1;"	F	language:Yaml	epoch:1713421136
-local.yml	inventories/netrunner/host_vars/ws01/local.yml	1;"	F	language:Yaml	epoch:1713421136
+local.yml	inventories/netrunner/host_vars/haas_srv02/local.yml	1;"	F	language:Yaml	epoch:1713421136
+local.yml	inventories/netrunner/host_vars/haas_ws01/local.yml	1;"	F	language:Yaml	epoch:1713421136
+local.yml	inventories/netrunner/host_vars/wld_srv01/local.yml	1;"	F	language:Yaml	epoch:1713421136
 logins.yml	ansible_roles/windows_domain/mssql/mssql_link/tasks/logins.yml	1;"	F	language:Yaml	epoch:1713422289
 main	ansible_roles/nordvpn/files/nordvpn.sh	/^main() {$/;"	f	language:Sh
 main	ansible_roles/pacman/files/reboot-required.sh	/^main() {$/;"	f	language:Sh
@@ -1863,9 +1863,9 @@ main.yml	inventories/netrunner/host_vars/dc_research_weyland/main.yml	1;"	F	lang
 main.yml	inventories/netrunner/host_vars/dc_weyland/domain/main.yml	1;"	F	language:Yaml	epoch:1713421136
 main.yml	inventories/netrunner/host_vars/dc_weyland/main.yml	1;"	F	language:Yaml	epoch:1713421136
 main.yml	inventories/netrunner/host_vars/fw/main.yml	1;"	F	language:Yaml	epoch:1713421136
-main.yml	inventories/netrunner/host_vars/srv01/main.yml	1;"	F	language:Yaml	epoch:1713421136
-main.yml	inventories/netrunner/host_vars/srv02/main.yml	1;"	F	language:Yaml	epoch:1713421136
-main.yml	inventories/netrunner/host_vars/ws01/main.yml	1;"	F	language:Yaml	epoch:1713421136
+main.yml	inventories/netrunner/host_vars/haas_srv02/main.yml	1;"	F	language:Yaml	epoch:1713421136
+main.yml	inventories/netrunner/host_vars/haas_ws01/main.yml	1;"	F	language:Yaml	epoch:1713421136
+main.yml	inventories/netrunner/host_vars/wld_srv01/main.yml	1;"	F	language:Yaml	epoch:1713421136
 may_contain	ansible_roles/windows_domain/laps/dc/library/win_ad_object.ps1	/^$may_contain = Get-AnsibleParam -obj $params -name "may_contain" -type "list"$/;"	v	language:PowerShell
 members-iis.yml	playbooks/books/members-iis.yml	1;"	F	language:Yaml	epoch:1713421101
 members-join.yml	playbooks/books/members-join.yml	1;"	F	language:Yaml	epoch:1713421101
@@ -1881,8 +1881,8 @@ msg	ansible_roles/windows_domain/laps/dc/library/win_ad_dacl.ps1	/^            $
 msg	ansible_roles/windows_domain/laps/dc/library/win_ad_dacl.ps1	/^        $msg = "Found undefined ace entry index $($raw_aces.Count) rights. Valid options $($vali/;"	v	language:PowerShell
 msg	ansible_roles/windows_domain/laps/dc/library/win_ad_dacl.ps1	/^        $msg = "Invalid value for ace entry index $($raw_aces.Count) inheritance_type, '$($ace.i/;"	v	language:PowerShell
 mssql gmsa	playbooks/notes.md	/^## mssql gmsa$/;"	s	language:Markdown	chapter:core
-mssql.yml	inventories/netrunner/host_vars/srv01/mssql.yml	1;"	F	language:Yaml	epoch:1713421136
-mssql.yml	inventories/netrunner/host_vars/srv02/mssql.yml	1;"	F	language:Yaml	epoch:1713421136
+mssql.yml	inventories/netrunner/host_vars/haas_srv02/mssql.yml	1;"	F	language:Yaml	epoch:1713421136
+mssql.yml	inventories/netrunner/host_vars/wld_srv01/mssql.yml	1;"	F	language:Yaml	epoch:1713421136
 myWindowsID	providers/scripts/ConfigureRemotingForAnsible.ps1	/^$myWindowsID=[System.Security.Principal.WindowsIdentity]::GetCurrent()$/;"	v	language:PowerShell
 myWindowsID	providers/scripts/EnableWinRM.ps1	/^$myWindowsID=[System.Security.Principal.WindowsIdentity]::GetCurrent()$/;"	v	language:PowerShell
 myWindowsPrincipal	providers/scripts/ConfigureRemotingForAnsible.ps1	/^$myWindowsPrincipal=new-object System.Security.Principal.WindowsPrincipal($myWindowsID)$/;"	v	language:PowerShell
@@ -1892,7 +1892,7 @@ name	ansible_roles/windows_domain/laps/dc/library/win_gpo.ps1	/^$name = Get-Ansi
 name	ansible_roles/windows_domain/laps/dc/library/win_gpo_link.ps1	/^$name = Get-AnsibleParam -obj $params -name "name" -type "str" -failifempty $true$/;"	v	language:PowerShell
 name	ansible_roles/windows_domain/laps/dc/library/win_gpo_reg.ps1	/^$name = Get-AnsibleParam -obj $params -name "name" -type "str" -failifempty $true$/;"	v	language:PowerShell
 net_profiles.yml	ansible_roles/windows_settings/firewall/tasks/net_profiles.yml	1;"	F	language:Yaml	epoch:1713422289
-netrunner.yml	inventories/netrunner/netrunner.yml	1;"	F	language:Yaml	epoch:1713421136
+netrunner.yml	inventories/netrunner/netrunner.yml	1;"	F	language:Yaml	epoch:1713448647
 network.yml	ansible_roles/unused/libvirt/tasks/network.yml	1;"	F	language:Yaml	epoch:1713422289
 network.yml	inventories/netrunner/host_vars/fw/network.yml	1;"	F	language:Yaml	epoch:1713421136
 new_params	ansible_roles/windows_domain/laps/dc/library/win_gpo.ps1	/^        $new_params = @{$/;"	v	language:PowerShell
@@ -1904,7 +1904,6 @@ nordvpn.sh	ansible_roles/nordvpn/files/nordvpn.sh	1;"	F	language:Sh	epoch:171342
 notes	playbooks/notes.md	/^# notes$/;"	c	language:Markdown
 notes.md	inventories/netrunner/notes.md	1;"	F	language:Markdown	epoch:1713421136
 notes.md	playbooks/notes.md	1;"	F	language:Markdown	epoch:1713421101
-notes.md	providers/virtualbox/netrunner/notes.md	1;"	F	language:Markdown	epoch:1713422950
 noupdate.ps1	ansible_roles/windows_settings/no_updates/files/noupdate.ps1	1;"	F	language:PowerShell	epoch:1713422289
 object_type	ansible_roles/windows_domain/laps/dc/library/win_ad_dacl.ps1	/^    $object_type = ConvertTo-SchemaGuid -Value $ace `$/;"	v	language:PowerShell
 open firewall ports for zabbix agent	ansible_roles/unused/zabbix-client/tasks/main.yml	/^- name: open firewall ports for zabbix agent$/;"	p	language:AnsiblePlaybook
@@ -1995,9 +1994,9 @@ security.yml	inventories/netrunner/group_vars/domain/security.yml	1;"	F	language
 security.yml	inventories/netrunner/host_vars/dc_haas/security.yml	1;"	F	language:Yaml	epoch:1713421136
 security.yml	inventories/netrunner/host_vars/dc_research_weyland/security.yml	1;"	F	language:Yaml	epoch:1713421136
 security.yml	inventories/netrunner/host_vars/dc_weyland/security.yml	1;"	F	language:Yaml	epoch:1713421136
-security.yml	inventories/netrunner/host_vars/srv01/security.yml	1;"	F	language:Yaml	epoch:1713421136
-security.yml	inventories/netrunner/host_vars/srv02/security.yml	1;"	F	language:Yaml	epoch:1713421136
-security.yml	inventories/netrunner/host_vars/ws01/security.yml	1;"	F	language:Yaml	epoch:1713421136
+security.yml	inventories/netrunner/host_vars/haas_srv02/security.yml	1;"	F	language:Yaml	epoch:1713421136
+security.yml	inventories/netrunner/host_vars/haas_ws01/security.yml	1;"	F	language:Yaml	epoch:1713421136
+security.yml	inventories/netrunner/host_vars/wld_srv01/security.yml	1;"	F	language:Yaml	epoch:1713421136
 selectorset	providers/scripts/ConfigureRemotingForAnsible.ps1	/^        $selectorset = @{$/;"	v	language:PowerShell
 selectorset	providers/scripts/ConfigureRemotingForAnsible.ps1	/^    $selectorset = @{$/;"	v	language:PowerShell
 set AutoUpdate DetectionFrequency	ansible_roles/windows_settings/update_planning/tasks/main.yml	/^- name: set AutoUpdate DetectionFrequency$/;"	p	language:AnsiblePlaybook
