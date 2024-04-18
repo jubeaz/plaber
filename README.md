@@ -27,3 +27,16 @@ ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml 
 ```bash
 ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/enable-lab.yml
 ```
+
+
+# to fix
+
+## vagrant
+
+a server with a public IP does not have properly set network on
+`private_network` interface
+
+manual solution
+```powershell
+netsh.exe int ipv4 set address 'Ethernet 2' static 172.16.1.10 mask=255.255.255.0 gateway=172.16.1.254
+```
