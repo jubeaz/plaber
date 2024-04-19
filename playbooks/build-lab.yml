@@ -1,7 +1,8 @@
 ---
-#- import_playbook: books/fw-build.yml
-#- import_playbook: books/domains-reachable.yml
+- import_playbook: books/domains-reachable.yml
 - import_playbook: books/compute-inventory.yml
+
+
 #- import_playbook: books/computers-build.yml
 #- import_playbook: books/domain-build.yml
 #- import_playbook: books/domain-ous.yml
