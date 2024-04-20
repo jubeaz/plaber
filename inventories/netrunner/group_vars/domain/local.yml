@@ -21,8 +21,17 @@ local_groups: {
 # server: https://learn.microsoft.com/en-us/windows-server/administration/server-core/server-core-roles-and-services
 # worksation: Get-WindowsCapability -Name RSAT* -Online |
 extra_features: []
-#softwares: []
-#repos: []
-#repos_user: ""
-#repos_password: ""
-#download_files: []
+#softwares: [  "git", "visualstudio2022community", "notepadplusplus"]
+#
+#user_repos: {
+#    jubeaz: [
+#        ["Mimikatz", "https://github.com/gentilkiwi/mimikatz.git"],
+#        ["Rubeus", "https://github.com/GhostPack/Rubeus"]
+#    ]
+#}
+#user_downloads: {
+#    jubeaz: [
+#        ["GRMWDK_EN_7600_1.ISO", "https://download.microsoft.com/download/4/A/2/4A25C7D5-EFBE-4182-B6A9-AE6850409A78/GRMWDK_EN_7600_1.ISO"]
+#    ]
+#}
+

@@ -7,7 +7,7 @@
 vagrant up
 ```
 
-## build all  vms
+## stop all  vms
 ```bash
 vagrant halt
 ```
@@ -28,7 +28,20 @@ for b in $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep b
 
 # ansible
 
-## build
+## build fw
+```
+ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/build-fw.yml
+```
+
+* restart firewall :
+    * `echo "vboxmanage controlvm $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep fw | cut -d'"' -f 2) acpipowerbutton"`
+    * `vboxmanage controlvm $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep fw | cut -d'"' -f 2) acpipowerbutton`
+* correct public ip machines:
+    * `echo "vboxmanage startvm  $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep fw | cut -d'"' -f 2) --type headless"`
+    * `vboxmanage startvm $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep fw | cut -d'"' -f 2) --type headless`
+
+
+## build lab
 ```
 ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/build-lab.yml
 ```
@@ -42,6 +55,10 @@ ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml 
 # to fix
 
 ## ansible
+
+### sccm
+the tool `extadsch.exe` report an error but it is successfull need to grep ` Successfully extended the Active Directory schema.` to define success
+### laps
 need to wait
 
 ```bash

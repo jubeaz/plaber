@@ -4,8 +4,6 @@
   tasks:
     - include_role: 
         name: "windows_domain/install_softwares"
-      vars:
-        softwares: "{{packages | default([])}}"
     - include_role:
         name: "windows_domain/clone_repos"
       vars:

@@ -15,3 +15,22 @@ extra_features: [
     "Rsat.RemoteDesktop.Services.Tools~~~~0.0.1.0",
     "Rsat.ServerManager.Tools~~~~0.0.1.0"
 ]
+
+
+
+#features: ["NET-Framework-Core"]
+softwares: [  "git", "visualstudio2022community", "notepadplusplus"]
+
+user_repos: {
+    jubeaz: [
+        ["Mimikatz", "https://github.com/gentilkiwi/mimikatz.git"],
+        ["Rubeus", "https://github.com/GhostPack/Rubeus"]
+    ]
+}
+user_downloads: {
+    jubeaz: [
+        ["GRMWDK_EN_7600_1.ISO", "https://download.microsoft.com/download/4/A/2/4A25C7D5-EFBE-4182-B6A9-AE6850409A78/GRMWDK_EN_7600_1.ISO"]
+    ]
+}
+
+
