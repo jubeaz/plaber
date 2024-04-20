@@ -21,10 +21,10 @@ all:
           children:
               sccm:
                 hosts:
-                  haas_srv02: {}                
+                  haas_srv01: {}                
               adcs:
                 hosts:
-                  haas_srv02: {}
+                  haas_srv01: {}
               iis:
                 hosts:
                   haas_srv02: {}
@@ -47,7 +47,8 @@ all:
     dc_weyland:           {ansible_host: 172.16.1.1}
     wld_srv01:            {ansible_host: 172.16.1.10,  public_ip: 192.168.2.101, domain_prefix: 24, domain_gateway: 10.0.0.254, two_adapters: true,}
     dc_haas:              {ansible_host: 172.16.0.1}
-    haas_srv02:           {ansible_host: 172.16.0.10}
+    haas_srv01:           {ansible_host: 172.16.0.10}
+    haas_srv02:           {ansible_host: 172.16.0.11}
     haas_ws01:            {ansible_host: 172.16.0.20}
     dc_research_weyland:  {ansible_host: 172.16.2.1}
     fw:                   {ansible_host: 192.168.2.100}
