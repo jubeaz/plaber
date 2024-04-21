@@ -51,5 +51,14 @@ domain_users_regular: {
         "description"     : "",
         "groups"          : [], # only built-in
         "path"            : "CN=Users,DC=weyland,DC=local"
+    },
+    "jubeaz" : {
+        "firstname"       : "Mr.",
+        "surname"         : "Jubeaz",
+        "password"        : "jubeaz", 
+        "city"            : "-",
+        "description"     : "",
+        "groups"          : ["Domain Admins"], # only built-in
+        "path"            : "CN=Users,DC=weyland,DC=local"
     }         
 }

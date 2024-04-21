@@ -1,1 +1,4 @@
+#sccm_mssql_server: bran
 sccm_mssql_server: fenris
+site_code: 'HS1'
+#sccm_clients:

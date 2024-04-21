@@ -6,7 +6,7 @@ mssql_svcaccount_key: "ichi"
 #mssql_svcaccount_key: "ichi" 
 
 
-mssql_sysadmins: ["HAAS\\mhendrik"]
+mssql_sysadmins: ["HAAS\\mhendrik", "HAAS\administrator"]
 mssql_executeaslogin: {
     "HAAS\\rknight" : "sa",
     "HAAS\\jubeaz" : "sa"
