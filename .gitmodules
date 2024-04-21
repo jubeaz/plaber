@@ -1,4 +1,0 @@
-[submodule "ansible_roles"]
-	path = ansible_roles
-	url = git@github.com:jubeaz/ansible_roles.git
-	branch = master
