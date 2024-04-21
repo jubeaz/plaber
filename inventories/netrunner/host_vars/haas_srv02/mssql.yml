@@ -1,15 +1,15 @@
 mssql_instance_name: "{{hostname}}"
 mssql_sa_password: "ftrum_Ya5d7DCQQN"
-mssql_svcaccount_method: 'gmsa' # domain, gmsa, local
-mssql_svcaccount_key: "ichi" 
+#mssql_svcaccount_method: 'gmsa' # domain, gmsa, local
+#mssql_svcaccount_key: "ichi" 
 #mssql_svcaccount_method: 'local' # domain, gmsa, local
 #mssql_svcaccount_key: "ichi" 
+mssql_svcaccount_method: 'domain' # domain, gmsa, local
+mssql_svcaccount_key: "ichi" # default : 'NT AUTHORITY\\NETWORK SERVICE'
 
-
-mssql_sysadmins: ["HAAS\\mhendrik", "HAAS\administrator"]
+mssql_sysadmins: ["HAAS\\mhendrik", "HAAS\\jubeaz", "HAAS\\administrator", "HAAS\\BRAN$", "HAAS\\ichi"]
 mssql_executeaslogin: {
-    "HAAS\\rknight" : "sa",
-    "HAAS\\jubeaz" : "sa"
+    "HAAS\\rknight" : "sa"
     }
 mssql_executeasuser: {
     "master_dbo": {

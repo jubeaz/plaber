@@ -65,6 +65,16 @@ domain_service_accounts: {
         "proto_transition": true,  # KCD default false
         "sensitive"       : false,  
         "spns"            : ["KUD/archer.weyland.local","KUD/archer"]
+    },
+    "ichi": {
+        "firstname"       : "sccm",
+        "surname"         : "sql",
+        "password"        : "SCCM_SQL_SERVICEACCOUNT", 
+        "city"            : "-",
+        "description"     : "sql service",
+        "groups"          : [], # only built-in
+        "path"            : "CN=Users,DC=haas,DC=local",
+        "spns"            : ["MSSQLSvc/fenris.haas.lab:1433","MSSQLSvc/fenris.haas.lab"]
     }
 }
 

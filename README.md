@@ -57,6 +57,25 @@ ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml 
 ## ansible
 
 ### sccm
+```
+ERROR: Failed to get sql service account, Server:<fenris.haas.local>, instance:<>.  $$<Configuration Manager Prereq><04-21-2024 07:33:58.583+00><thread=4668 (0x123C)>
+bran.haas.local;    SQL Server service running account;    Error;    The logon account for the SQL Server service cannot be a local user account, NT SERVICE\<sql service name> or LOCAL SERVICE.  You must configure the SQL Server service to use a valid domain account, NETWORK SERVICE, or LOCAL SYSTEM.  $$<Configuration Manager Prereq><04-21-2024 07:33:58.583+00><thread=4668 (0x123C)>
+```
+
+
+faudrait esayer de le passer en svcaccount (domain):
+* mssql:
+    * jouter en mssql_sysadmins:
+        * `"HAAS\BRAN$"`
+        * `"HAAS\ichi"`
+        * `"HAAS\administrator"`        
+* server mssql:
+    * ajouter dans le groupe administrators:
+        * `"HAAS\BRAN$"`
+        * `"HAAS\ichi"`
+
+i
+
 the tool `extadsch.exe` report an error but it is successfull need to grep ` Successfully extended the Active Directory schema.` to define success
 ### laps
 need to wait
