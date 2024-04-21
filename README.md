@@ -1,34 +1,57 @@
-# plaber
+# plaber 
+
+derived from [GOAD](https://github.com/Orange-Cyberdefense/GOAD/tree/main)
 
 
-# vagrant
-## build all  vms
+
+# RUN LAB
+
+## start all vms
+
+```bash
+for b in $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep bname: | cut -d'"' -f 2); do echo "vboxmanage startvm $b --type headless"; vboxmanage startvm $b --type headless; done
+
+for b in $(cat Vagrantfile  | grep bname: | cut -d'"' -f 2); do echo "vboxmanage startvm $b --type headless"; vboxmanage startvm $b --type headless; done
+```
+
+## enable fw
+```bash
+ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/enable-lab.yml
+```
+
+## enjoy
+
+# BUILD
+## vagrant
+### build all  vms
 ```bash
 vagrant up
 ```
 
-## stop all  vms
+### stop all  vms
 ```bash
 vagrant halt
 ```
 
 
-## disable all buildint NAT interfaces
+### disable all buildint NAT interfaces
 ```bash
 for b in $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep bname: | cut -d'"' -f 2); do echo "vboxmanage modifyvm $b --cableconnected1 off"; vboxmanage modifyvm $b  --cableconnected1 off; done
+
+for b in $(cat Vagrantfile  | grep bname: | cut -d'"' -f 2); do echo "vboxmanage modifyvm $b --cableconnected1 off"; vboxmanage modifyvm $b  --cableconnected1 off; done
 ```
 
 
-## start all vagrant box
+### start all vagrant box
 ```bash
 for b in $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep bname: | cut -d'"' -f 2); do echo "vboxmanage startvm $b --type headless"; vboxmanage startvm $b --type headless; done
+
+for b in $(cat Vagrantfile  | grep bname: | cut -d'"' -f 2); do echo "vboxmanage startvm $b --type headless"; vboxmanage startvm $b --type headless; done
 ```
 
+## ansible
 
-
-# ansible
-
-## build fw
+### build fw
 ```
 ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/build-fw.yml
 ```
@@ -36,12 +59,13 @@ ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml 
 * restart firewall :
     * `echo "vboxmanage controlvm $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep fw | cut -d'"' -f 2) acpipowerbutton"`
     * `vboxmanage controlvm $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep fw | cut -d'"' -f 2) acpipowerbutton`
+    * `vboxmanage controlvm $(cat Vagrantfile  | grep fw | cut -d'"' -f 2) acpipowerbutton`
+    * `vboxmanage startvm $(cat Vagrantfile  | grep fw | cut -d'"' -f 2) --type headless`
 * correct public ip machines:
-    * `echo "vboxmanage startvm  $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep fw | cut -d'"' -f 2) --type headless"`
-    * `vboxmanage startvm $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep fw | cut -d'"' -f 2) --type headless`
+    * `evil-winrm -i 192.168.2.101 -u vagrant -p vagrant`
+    * `netsh.exe int ipv4 set address 'Ethernet 2' static 172.16.1.10 mask=255.255.255.0 gateway=172.16.1.254`
 
-
-## build lab
+### build lab
 ```
 ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/build-lab.yml
 ```
@@ -52,11 +76,12 @@ ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml 
 ```
 
 
-# to fix
+# TO FIX
 
 ## ansible
 
 ### sccm
+#### sccm install
 ```
 ERROR: Failed to get sql service account, Server:<fenris.haas.local>, instance:<>.  $$<Configuration Manager Prereq><04-21-2024 07:33:58.583+00><thread=4668 (0x123C)>
 bran.haas.local;    SQL Server service running account;    Error;    The logon account for the SQL Server service cannot be a local user account, NT SERVICE\<sql service name> or LOCAL SERVICE.  You must configure the SQL Server service to use a valid domain account, NETWORK SERVICE, or LOCAL SYSTEM.  $$<Configuration Manager Prereq><04-21-2024 07:33:58.583+00><thread=4668 (0x123C)>
@@ -74,9 +99,11 @@ faudrait esayer de le passer en svcaccount (domain):
         * `"HAAS\BRAN$"`
         * `"HAAS\ichi"`
 
-i
 
+
+#### sccm ad schema update
 the tool `extadsch.exe` report an error but it is successfull need to grep ` Successfully extended the Active Directory schema.` to define success
+
 ### laps
 need to wait
 
@@ -92,7 +119,7 @@ fatal: [dc_weyland]: FAILED! => {"attempts": 3, "changed": false, "msg": "Unhand
 
 ## vagrant
 
-## public / private interface
+### public / private interface
 a server with a public IP does not have properly set network on
 `private_network` interface
 
@@ -102,6 +129,11 @@ evil-winrm -i 192.168.2.101 -u vagrant -p vagrant
 netsh.exe int ipv4 set address 'Ethernet 2' static 172.16.1.10 mask=255.255.255.0 gateway=172.16.1.254
 ```
 
-## shutdown on acpipowerbutton
+### shutdown on acpipowerbutton
 
 script in error `providers/scripts/PowerAction.ps1`
+
+
+# TODO
+* sidhistory
+* mecm / mssql GMSA mode (tester en ajoutant `"HAAS\BRAN$"` dans le groupe `L_GMSA_ICHI`)
