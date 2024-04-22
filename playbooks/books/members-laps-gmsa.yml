@@ -1,4 +1,10 @@
 ---
+- name: ENSURE DNS
+  hosts: domain_server, domain_workstation
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain/member_dns', tags: 'gmsa'}
+
 - name: GMSA HOSTS
   hosts: domain_server, domain_workstation
   max_fail_percentage: 0

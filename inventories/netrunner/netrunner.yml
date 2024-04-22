@@ -32,6 +32,9 @@ all:
                 hosts:
                   haas_srv02: {}
                   wld_srv01: {}           
+              mssql_reporting:
+                hosts:
+                  haas_srv02: {}     
           hosts:
         mssql_ssms:
           hosts: 

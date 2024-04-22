@@ -1,3 +1,6 @@
 mssql_svcaccount_method: 'local' # domain, gmsa, local
 mssql_svcaccount_local: 'NT AUTHORITY\\NETWORK SERVICE' # "NT AUTHORITY\\SYSTEM"
 mssql_svcaccount_key: '' # for domain or gmsa mssql_svcaccount_method
+
+sql_instance_name: MSSQLSERVER
+sql_version: MSSQL_2022

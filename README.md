@@ -25,7 +25,7 @@ ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml 
 ## vagrant
 ### build all  vms
 ```bash
-vagrant up
+vagrant up --debug --timestamp
 ```
 
 ### stop all  vms
@@ -47,6 +47,14 @@ for b in $(cat Vagrantfile  | grep bname: | cut -d'"' -f 2); do echo "vboxmanage
 for b in $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep bname: | cut -d'"' -f 2); do echo "vboxmanage startvm $b --type headless"; vboxmanage startvm $b --type headless; done
 
 for b in $(cat Vagrantfile  | grep bname: | cut -d'"' -f 2); do echo "vboxmanage startvm $b --type headless"; vboxmanage startvm $b --type headless; done
+
+for b in $(cat Vagrantfile  | grep _fw | cut -d'"' -f 2); do echo "vboxmanage startvm $b --type headless"; vboxmanage startvm $b --type headless; done
+
+for b in $(cat Vagrantfile  | grep _dc | cut -d'"' -f 2); do echo "vboxmanage startvm $b --type headless"; vboxmanage startvm $b --type headless; done
+
+for b in $(cat Vagrantfile  | grep _srv | cut -d'"' -f 2); do echo "vboxmanage startvm $b --type headless"; vboxmanage startvm $b --type headless; done
+for b in $(cat Vagrantfile  | grep _ws | cut -d'"' -f 2); do echo "vboxmanage startvm $b --type headless"; vboxmanage startvm $b --type headless; done
+
 ```
 
 ## ansible
@@ -80,6 +88,10 @@ ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml 
 
 ## ansible
 
+## `The trust relationship between this workstation and the primary domain failed.`
+
+need to reset DNS user role `windows_domain/member_dns`
+
 ### sccm
 #### sccm install
 
@@ -111,6 +123,48 @@ the tool `extadsch.exe` report an error but it is successfull need to grep ` Suc
 ### laps (TO TEST)
 
 ### problem
+
+
+force `Repadmin /replicate`
+
+```
+ok: [dc_weyland] => {
+    "sync_status.stdout_lines": [
+        "Replication Summary Start Time: 2024-04-22 16:48:31",
+        "",
+        "",
+        "",
+        "Beginning data collection for replication summary, this may take awhile:",
+        "",
+        "  .....",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "Source DSA          largest delta    fails/total %%   error",
+        "",
+        " DC01                      01m:13s    0 /   4    0  ",
+        "",
+        " DC02                      47m:03s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "Destination DSA     largest delta    fails/total %%   error",
+        "",
+        " DC01                      47m:03s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
+        "",
+        " DC02                      01m:13s    0 /   4    0  ",
+        "",
+        "",
+        "",
+        "",
+        ""
+
+```
+
 ```bash
 TASK [windows_domain/laps/dc : Configure Password Properties] ******************************************
 changed: [dc_haas]
@@ -149,6 +203,15 @@ script in error `providers/scripts/PowerAction.ps1`
 
 
 # TODO
+
+## vagrant
+```
+  config.vm.provider "virtualbox" do |vb|
+       vb.customize ["modifyvm", :id, "--nictype1", "Am79C973"]        
+  end
+```
+
+## ansible
 * sidhistory
     * relax trust
     * add sidhistory to some accounts

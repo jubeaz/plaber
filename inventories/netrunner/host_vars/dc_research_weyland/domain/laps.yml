@@ -1,8 +1,8 @@
 laps_path:  {
-#    "BO_workstations" : { "name": "Workstations",   "path" : "OU=Black Ops,OU=Titan,DC=research,DC=weyland,DC=local"},
-#    "GO_workstations" : { "name": "Workstations",   "path" : "OU=Grey Ops,OU=Titan,DC=research,DC=weyland,DC=local"},
-#    "WO_workstations" : { "name": "Workstations",   "path" : "OU=White Ops,OU=Titan,DC=research,DC=weyland,DC=local"},
-#    "IT_workstations" : { "name": "Workstations",   "path" : "OU=IT,OU=Titan,DC=research,DC=weyland,DC=local"}
+    "BO_workstations" : { "name": "Workstations",   "path" : "OU=Black Ops,OU=Titan,DC=research,DC=weyland,DC=local"},
+    "GO_workstations" : { "name": "Workstations",   "path" : "OU=Grey Ops,OU=Titan,DC=research,DC=weyland,DC=local"},
+    "WO_workstations" : { "name": "Workstations",   "path" : "OU=White Ops,OU=Titan,DC=research,DC=weyland,DC=local"},
+    "IT_workstations" : { "name": "Workstations",   "path" : "OU=IT,OU=Titan,DC=research,DC=weyland,DC=local"}
 }
 
 laps_readers: ["L_LAPS_READER"]

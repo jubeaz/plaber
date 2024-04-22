@@ -53,6 +53,13 @@
     sa_password: "{{mssql_sa_password}}"
     linked_servers: "{{mssql_linked_servers | default({}) }}"
 
+- name: "Install SQL Server reporting"
+  hosts: mssql_reporting
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain/mssql/mssql_reporting', tags: 'mssql_reporting'}
+
+
 - name: "INSTALL SQL SERVER MANAGEMENT STUDIO"
   hosts: mssql_ssms
   roles:
