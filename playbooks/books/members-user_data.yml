@@ -4,6 +4,7 @@
   tasks:
     - include_role: 
         name: "windows_domain/install_softwares"
+      when: softwares | default([]) | length > 0
     - include_role:
         name: "windows_domain/clone_repos"
       vars:
