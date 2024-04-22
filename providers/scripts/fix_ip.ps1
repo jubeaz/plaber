@@ -5,6 +5,6 @@ param ([String] $if_name, [String] $ip, [String] $mask, [String] $gw)
 	if ($gw -ne "None"){
 		netsh.exe int ipv4 set address $if_name static $ip mask=$mask gateway=$gw 
 	} else {
-		netsh.exe int ipv4 set address "Ethernet 2" static $ip mask=$mask
+		netsh.exe int ipv4 set address $if_name static $ip mask=$mask
 	}
 

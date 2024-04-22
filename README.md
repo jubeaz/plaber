@@ -82,6 +82,10 @@ ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml 
 
 ### sccm
 #### sccm install
+
+wrong mssql version + no reporting ?
+
+
 ```
 ERROR: Failed to get sql service account, Server:<fenris.haas.local>, instance:<>.  $$<Configuration Manager Prereq><04-21-2024 07:33:58.583+00><thread=4668 (0x123C)>
 bran.haas.local;    SQL Server service running account;    Error;    The logon account for the SQL Server service cannot be a local user account, NT SERVICE\<sql service name> or LOCAL SERVICE.  You must configure the SQL Server service to use a valid domain account, NETWORK SERVICE, or LOCAL SYSTEM.  $$<Configuration Manager Prereq><04-21-2024 07:33:58.583+00><thread=4668 (0x123C)>
@@ -104,9 +108,9 @@ faudrait esayer de le passer en svcaccount (domain):
 #### sccm ad schema update
 the tool `extadsch.exe` report an error but it is successfull need to grep ` Successfully extended the Active Directory schema.` to define success
 
-### laps
-need to wait
+### laps (TO TEST)
 
+### problem
 ```bash
 TASK [windows_domain/laps/dc : Configure Password Properties] ******************************************
 changed: [dc_haas]
@@ -116,14 +120,22 @@ FAILED - RETRYING: [dc_weyland]: Configure Password Properties (1 retries left).
 An exception occurred during task execution. To see the full traceback, use -vvv. The error was:    at Microsoft.ActiveDirectory.Management.Commands.ADCmdletBase`1.ProcessRecord()
 fatal: [dc_weyland]: FAILED! => {"attempts": 3, "changed": false, "msg": "Unhandled exception while executing module: The FSMO role ownership could not be verified because its directory partition has not replicated successfully with at least one replication partner"}
 ```
-
+### solution
 force NTDS replication (repadmin /syncall /AdeP) and add serial: 1 
 
 ## vagrant
 
-### public / private interface
+### public / private interface (TO TEST)
 a server with a public IP does not have properly set network on
 `private_network` interface
+
+```powershell
+		netsh.exe int ipv4 set address "Ethernet 2" static $ip mask=$mask
+```
+replace by
+```powershell
+		netsh.exe int ipv4 set address $if_name static $ip mask=$mask
+```
 
 manual solution
 ```powershell
