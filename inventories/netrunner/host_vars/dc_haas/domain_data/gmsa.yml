@@ -1,11 +1,4 @@
 domain_gmsa : {
-#  "heimdall": {
-#    "gMSA_Name" : "heimdall",
-#    "gMSA_FQDN" : "heimdall.haas.local",
-#    "gMSA_SPNs" : ["HTTP/fenris", "HTTP/fenris.haas.local"],
-#    "gMSA_HostNames" : ["fenris"], # if set  gMSA_Groups is empty
-#    "gMSA_Groups" : [] # if set  gMSA_HostNames is empty
-#    },
 #  "ichi": {
 #    "gMSA_Name" : "ichi",
 #    "gMSA_FQDN" : "ichi_v2.haas.local",

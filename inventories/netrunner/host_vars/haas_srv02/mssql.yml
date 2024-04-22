@@ -31,36 +31,3 @@ mssql_linked_servers: {
             ]
         }
     }
-
-
-#           "mssql":{
-#               "sa_password": "Sup1_sa_P@ssw0rd!",
-#               "svcaccount" : "sql_svc",
-#               "sysadmins" : [
-#                   "NORTH\\jon.snow"
-#               ],
-#               "executeaslogin" : {
-#                   "NORTH\\samwell.tarly" : "sa",
-#                   "NORTH\\brandon.stark" :  "NORTH\\jon.snow"
-#               },
-#               "executeasuser" : {
-#                   "arya_master_dbo": {
-#                       "user": "NORTH\\arya.stark",
-#                       "db"  : "master",
-#                       "impersonate" : "dbo"
-#                   },
-#                   "arya_dbms_dbo": {
-#                       "user": "NORTH\\arya.stark",
-#                       "db"  : "msdb",
-#                       "impersonate" : "dbo"
-#                   }
-#               },
-#               "linked_servers": {
-#                   "BRAAVOS" : {
-#                       "data_src": "braavos.essos.local",
-#                       "users_mapping": [
-#                           {"local_login": "NORTH\\jon.snow","remote_login": "sa", "remote_password": "sa_P@ssw0rd!Ess0s"}
-#                       ]
-#                   }
-#               }
-#           }

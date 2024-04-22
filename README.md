@@ -117,6 +117,8 @@ An exception occurred during task execution. To see the full traceback, use -vvv
 fatal: [dc_weyland]: FAILED! => {"attempts": 3, "changed": false, "msg": "Unhandled exception while executing module: The FSMO role ownership could not be verified because its directory partition has not replicated successfully with at least one replication partner"}
 ```
 
+force NTDS replication (repadmin /syncall /AdeP) and add serial: 1 
+
 ## vagrant
 
 ### public / private interface
@@ -136,4 +138,7 @@ script in error `providers/scripts/PowerAction.ps1`
 
 # TODO
 * sidhistory
-* mecm / mssql GMSA mode (tester en ajoutant `"HAAS\BRAN$"` dans le groupe `L_GMSA_ICHI`)
+    * relax trust
+    * add sidhistory to some accounts
+* mecm 
+    * mssql GMSA mode (tester en ajoutant `"HAAS\BRAN$"` dans le groupe `L_GMSA_ICHI`)
