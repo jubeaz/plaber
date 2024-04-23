@@ -39,6 +39,7 @@ all:
         mssql_ssms:
           hosts: 
             haas_ws01: {}             
+            haas_srv02: {}             
         webdav:
           hosts:          
             haas_srv02: {}

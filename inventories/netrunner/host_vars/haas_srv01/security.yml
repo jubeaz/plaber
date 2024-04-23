@@ -1,0 +1,6 @@
+firewall_profiles: {
+  "Domain": {"enabled": "False", "inbound": "allow", "outbound": "allow"},
+  "Public": {"enabled": "False", "inbound": "allow", "outbound": "allow"},
+  "Private": {"enabled": "False", "inbound": "allow", "outbound": "allow"},
+}
+

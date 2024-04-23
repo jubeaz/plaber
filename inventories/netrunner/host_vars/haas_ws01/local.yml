@@ -4,7 +4,7 @@ local_groups: {
 #    "Remote Management Users": []
 }
 
-
+# Get-WindowsCapability -Name RSAT* -Online | Select-Object -Property DisplayName, State
 extra_features: [
     "Rsat.CertificateServices.Tools~~~~0.0.1.0",
     "Rsat.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.0",
@@ -13,7 +13,8 @@ extra_features: [
     "Rsat.GroupPolicy.Management.Tools~~~~0.0.1.0",
     "Rsat.RemoteAccess.Management.Tools~~~~0.0.1.0",
     "Rsat.RemoteDesktop.Services.Tools~~~~0.0.1.0",
-    "Rsat.ServerManager.Tools~~~~0.0.1.0"
+    "Rsat.ServerManager.Tools~~~~0.0.1.0",
+    "Rsat.DHCP.Tools~~~~0.0.1.0"
 ]
 
 

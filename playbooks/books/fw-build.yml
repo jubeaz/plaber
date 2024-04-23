@@ -109,5 +109,5 @@
         domain: "{{item}}"
       with_items: "{{domains_interfaces}}"
 #
-#    - name: reboot
-#      ansible.builtin.reboot:
+    - name: reboot
+      ansible.builtin.reboot:

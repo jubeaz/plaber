@@ -1,28 +1,34 @@
-firewall_rules: {
-   "mssql_default_instance": {
-      "name": "SQLServer default instance",
-      "enabled": true, 
-      "action": "allow", 
-      "profiles": ["Domain"], 
-      "direction": "inbound", # inbound, outbound
-      "localip": ["any"], 
-      "localport": [1433],  
-      "protocol": "tcp", # any or value
-      "remoteip": ["172.16.0.10", "172.16.0.20"],  
-      "remoteport": ["any"] 
-      #"group": "ansible" # default ansible
-    },
-   "mssql_browser_service": {
-      "name": "SQLServer browser service",
-      "enabled": true, 
-      "action": "allow", 
-      "profiles": ["Domain"], 
-      "direction": "inbound", # inbound, outbound
-      "localip": ["any"], 
-      "localport": [1433],  
-      "protocol": "udp", # any or value
-      "remoteip": ["172.16.0.10", "172.16.0.20"],  
-      "remoteport": ["any"] 
-      #"group": "ansible" # default ansible
-    }
+firewall_profiles: {
+  "Domain": {"enabled": "False", "inbound": "allow", "outbound": "allow"},
+  "Public": {"enabled": "False", "inbound": "allow", "outbound": "allow"},
+  "Private": {"enabled": "False", "inbound": "allow", "outbound": "allow"},
 }
+
+#firewall_rules: {
+#   "mssql_default_instance": {
+#      "name": "SQLServer default instance",
+#      "enabled": true, 
+#      "action": "allow", 
+#      "profiles": ["Domain"], 
+#      "direction": "inbound", # inbound, outbound
+#      "localip": ["any"], 
+#      "localport": [1433],  
+#      "protocol": "tcp", # any or value
+#      "remoteip": ["172.16.0.10", "172.16.0.20"],  
+#      "remoteport": ["any"] 
+#      #"group": "ansible" # default ansible
+#    },
+#   "mssql_browser_service": {
+#      "name": "SQLServer browser service",
+#      "enabled": true, 
+#      "action": "allow", 
+#      "profiles": ["Domain"], 
+#      "direction": "inbound", # inbound, outbound
+#      "localip": ["any"], 
+#      "localport": [1433],  
+#      "protocol": "udp", # any or value
+#      "remoteip": ["172.16.0.10", "172.16.0.20"],  
+#      "remoteport": ["any"] 
+#      #"group": "ansible" # default ansible
+#    }
+#}

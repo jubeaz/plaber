@@ -47,14 +47,6 @@ for b in $(cat Vagrantfile  | grep bname: | cut -d'"' -f 2); do echo "vboxmanage
 for b in $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep bname: | cut -d'"' -f 2); do echo "vboxmanage startvm $b --type headless"; vboxmanage startvm $b --type headless; done
 
 for b in $(cat Vagrantfile  | grep bname: | cut -d'"' -f 2); do echo "vboxmanage startvm $b --type headless"; vboxmanage startvm $b --type headless; done
-
-for b in $(cat Vagrantfile  | grep _fw | cut -d'"' -f 2); do echo "vboxmanage startvm $b --type headless"; vboxmanage startvm $b --type headless; done
-
-for b in $(cat Vagrantfile  | grep _dc | cut -d'"' -f 2); do echo "vboxmanage startvm $b --type headless"; vboxmanage startvm $b --type headless; done
-
-for b in $(cat Vagrantfile  | grep _srv | cut -d'"' -f 2); do echo "vboxmanage startvm $b --type headless"; vboxmanage startvm $b --type headless; done
-for b in $(cat Vagrantfile  | grep _ws | cut -d'"' -f 2); do echo "vboxmanage startvm $b --type headless"; vboxmanage startvm $b --type headless; done
-
 ```
 
 ## ansible
@@ -93,6 +85,8 @@ ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml 
 need to reset DNS user role `windows_domain/member_dns`
 
 ### sccm
+
+https://www.prajwaldesai.com/install-sql-server-2022-for-sccm-configmgr/
 #### sccm install
 
 wrong mssql version + no reporting ?
@@ -124,82 +118,62 @@ the tool `extadsch.exe` report an error but it is successfull need to grep ` Suc
 
 ### problem
 
-
-force `Repadmin /replicate`
+https://learn.microsoft.com/en-us/troubleshoot/windows-server/active-directory/replication-error-8524
 
 ```
 ok: [dc_weyland] => {
-    "sync_status.stdout_lines": [
-        "Replication Summary Start Time: 2024-04-22 16:48:31",
-        "",
-        "",
-        "",
+    "sync_summary.stdout_lines": [
+        "Replication Summary Start Time: 2024-04-23 06:07:59",
         "Beginning data collection for replication summary, this may take awhile:",
-        "",
-        "  .....",
-        "",
-        "",
-        "",
-        "",
-        "",
         "Source DSA          largest delta    fails/total %%   error",
-        "",
-        " DC01                      01m:13s    0 /   4    0  ",
-        "",
-        " DC02                      47m:03s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
-        "",
-        "",
-        "",
-        "",
-        "",
+        " DC01                      09m:15s    0 /   4    0  ",
+        " DC02                      09m:55s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
         "Destination DSA     largest delta    fails/total %%   error",
-        "",
-        " DC01                      47m:03s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
-        "",
-        " DC02                      01m:13s    0 /   4    0  ",
-        "",
-        "",
-        "",
-        "",
-        ""
+        " DC01                      09m:55s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
+        " DC02                      09m:10s    0 /   4    0  ",
+    ]
+}
+ok: [dc_haas] => {
+    "sync_summary.stdout_lines": [
+        "Replication Summary Start Time: 2024-04-23 06:07:54",
+        "Beginning data collection for replication summary, this may take awhile:",
+        "Source DSA          largest delta    fails/total %%   error",
+        "Destination DSA     largest delta    fails/total %%   error",
+    ]
+}
+ok: [dc_research_weyland] => {
+    "sync_summary.stdout_lines": [
+        "Replication Summary Start Time: 2024-04-23 06:07:54",
+        "Beginning data collection for replication summary, this may take awhile:",
+        "Source DSA          largest delta    fails/total %%   error",
+        " DC01                      09m:10s    0 /   4    0  ",
+        " DC02                      09m:50s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
+        "Destination DSA     largest delta    fails/total %%   error",
+        " DC01                      09m:55s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
+        " DC02                      09m:10s    0 /   4    0  ",
+    ]
+}
 
+TASK [windows_domain/laps/dc : debug] ******************************************************************
+ok: [dc_weyland] => {
+    "sync_queue.stdout_lines": [
+        "Repadmin: running command /Queue against full DC localhost",
+        "Queue contains 0 items.",
+    ]
+}
+ok: [dc_haas] => {
+    "sync_queue.stdout_lines": [
+        "Repadmin: running command /Queue against full DC localhost",
+        "Queue contains 0 items.",
+    ]
+}
+ok: [dc_research_weyland] => {
+    "sync_queue.stdout_lines": [
+        "Repadmin: running command /Queue against full DC localhost",
+        "Queue contains 0 items.",
+    ]
+}
 ```
-
-```bash
-TASK [windows_domain/laps/dc : Configure Password Properties] ******************************************
-changed: [dc_haas]
-FAILED - RETRYING: [dc_weyland]: Configure Password Properties (3 retries left).
-FAILED - RETRYING: [dc_weyland]: Configure Password Properties (2 retries left).
-FAILED - RETRYING: [dc_weyland]: Configure Password Properties (1 retries left).
-An exception occurred during task execution. To see the full traceback, use -vvv. The error was:    at Microsoft.ActiveDirectory.Management.Commands.ADCmdletBase`1.ProcessRecord()
-fatal: [dc_weyland]: FAILED! => {"attempts": 3, "changed": false, "msg": "Unhandled exception while executing module: The FSMO role ownership could not be verified because its directory partition has not replicated successfully with at least one replication partner"}
-```
-### solution
-force NTDS replication (repadmin /syncall /AdeP) and add serial: 1 
-
-## vagrant
-
-### public / private interface (TO TEST)
-a server with a public IP does not have properly set network on
-`private_network` interface
-
-```powershell
-		netsh.exe int ipv4 set address "Ethernet 2" static $ip mask=$mask
-```
-replace by
-```powershell
-		netsh.exe int ipv4 set address $if_name static $ip mask=$mask
-```
-
-manual solution
-```powershell
-evil-winrm -i 192.168.2.101 -u vagrant -p vagrant
-netsh.exe int ipv4 set address 'Ethernet 2' static 172.16.1.10 mask=255.255.255.0 gateway=172.16.1.254
-```
-
-### shutdown on acpipowerbutton
-
-script in error `providers/scripts/PowerAction.ps1`
 
 
 # TODO

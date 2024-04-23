@@ -14,10 +14,14 @@ connection_profiles: {
 }
 
 firewall_profiles: {
-#  "Domain": {"status": "enabled", "inbound": "allow", "outbound": "allow"},
-#  "Public": {"status": "enabled", "inbound": "allow", "outbound": "allow"},
-#  "Private": {"status": "enabled", "inbound": "allow", "outbound": "allow"},
-#  # enabled, disabled, # ["Domain", "Private", "Public"], # "allow", "block", "not_configured",  # "allow", "block", "not_configured"
+#  "Domain": {"enabled": "False", "inbound": "allow", "outbound": "allow"},
+#  "Public": {"enabled": "False", "inbound": "allow", "outbound": "allow"},
+#  "Private": {"enabled": "False", "inbound": "allow", "outbound": "allow"},
+# enabled: True, False, NotConfigured
+# inbound: Block, Allow, NotConfigured
+# outbound: Block, Allow, NotConfigured
+# key: ["Domain", "Private", "Public"], 
+
 }
 
 firewall_rules: {
