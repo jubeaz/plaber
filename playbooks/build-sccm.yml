@@ -4,3 +4,7 @@
 
 
 - import_playbook: books/members-sccm.yml
+#- import_playbook: books/dhcp.yml
+#- import_playbook: books/sccm-config.yml
+#- import_playbook: books/sccm-pxe.yml
+#- import_playbook: books/sccm-client.yml

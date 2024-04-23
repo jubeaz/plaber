@@ -2,17 +2,17 @@
 - name: "SCCM"
   hosts: dc
   tasks:
-    - include_role:
-        name: "windows_domain/dhcp"
-      vars:
-        dns_ip: "{{ansible_host}}"
-        ip_root: "{{'.'.join(dns_ip.split('.')[:3])}}"
-        ip_from: "{{ip_root}}.{{dhcp[0]}}"
-        ip_to: "{{ip_root}}.{{dhcp[1]}}"
-        ip_mask: "{{dhcp[2]}}"
-        lease_duration: "{{dhcp[3]}}"
-        dc_fqdn: "{{domain_dc_name}}"
-      when: dhcp is defined
+#    - include_role:
+#        name: "windows_domain/dhcp"
+#      vars:
+#        dns_ip: "{{ansible_host}}"
+#        ip_root: "{{'.'.join(dns_ip.split('.')[:3])}}"
+#        ip_from: "{{ip_root}}.{{dhcp[0]}}"
+#        ip_to: "{{ip_root}}.{{dhcp[1]}}"
+#        ip_mask: "{{dhcp[2]}}"
+#        lease_duration: "{{dhcp[3]}}"
+#        dc_fqdn: "{{domain_dc_name}}"
+#      when: dhcp is defined
     - include_role:
         name: "windows_domain/sccm/install_extend_adschema"
       when: sccm_server | length > 0
