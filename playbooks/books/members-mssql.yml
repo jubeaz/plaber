@@ -44,6 +44,7 @@
   vars:
     ISGMSA: "{{true if mssql_svcaccount_method == 'gmsa' else false}}" 
     sql_instance_name: "{{mssql_instance_name}}"
+    sql_version: "{{mssql_version}}"
     SQLSVCACCOUNT: "{{sql_svcaccount_name}}"
     SQLSVCPASSWORD: "{{sql_svcaccount_password}}"
     SQLYSADMIN: "{{sql_svcaccount_name}}"

@@ -1,4 +1,4 @@
-mssql_instance_name: "{{hostname}}"
+#mssql_instance_name: "{{hostname}}"
 mssql_sa_password: "_r3QFLi5EnkfQU_4"
 mssql_svcaccount_method: 'gmsa' # domain, gmsa, local
 mssql_svcaccount_key: "eli" # default : 'NT AUTHORITY\\NETWORK SERVICE'

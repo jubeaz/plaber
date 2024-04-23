@@ -1,4 +1,11 @@
 #sccm_mssql_server: bran
 sccm_mssql_server: fenris
-site_code: 'HS1'
-#sccm_clients:
+sccm_site_code: 'HS1'
+sccm_network_access_account: "hagen"
+sccm_push_account: "howler"
+sccm_clients: ['fenris', 'bran', 'architect']
+sccm_pxe_pass: "qKjhz__Qyd_YLTu4"
+sccm_account_da: "mbellamy"
+sccm_pxe_location: "LDAP://CN=Computers,DC=haas,DC=local"
+sccm_pxe_admin_pass: "NuvqREtyaT_k9E5C"
+sccm_admins: ["HAAS\\U_SCCM_ADMINS"]

@@ -109,11 +109,6 @@ faudrait esayer de le passer en svcaccount (domain):
         * `"HAAS\BRAN$"`
         * `"HAAS\ichi"`
 
-
-
-#### sccm ad schema update
-the tool `extadsch.exe` report an error but it is successfull need to grep ` Successfully extended the Active Directory schema.` to define success
-
 ### laps (TO TEST)
 
 ### problem
@@ -151,26 +146,6 @@ ok: [dc_research_weyland] => {
         "Destination DSA     largest delta    fails/total %%   error",
         " DC01                      09m:55s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
         " DC02                      09m:10s    0 /   4    0  ",
-    ]
-}
-
-TASK [windows_domain/laps/dc : debug] ******************************************************************
-ok: [dc_weyland] => {
-    "sync_queue.stdout_lines": [
-        "Repadmin: running command /Queue against full DC localhost",
-        "Queue contains 0 items.",
-    ]
-}
-ok: [dc_haas] => {
-    "sync_queue.stdout_lines": [
-        "Repadmin: running command /Queue against full DC localhost",
-        "Queue contains 0 items.",
-    ]
-}
-ok: [dc_research_weyland] => {
-    "sync_queue.stdout_lines": [
-        "Repadmin: running command /Queue against full DC localhost",
-        "Queue contains 0 items.",
     ]
 }
 ```

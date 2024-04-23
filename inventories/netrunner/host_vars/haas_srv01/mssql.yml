@@ -1,4 +1,4 @@
-mssql_instance_name: "{{hostname}}"
+#mssql_instance_name: "{{hostname}}"
 mssql_sa_password: "ftrum_Ya5d7DCQQN"
 #mssql_svcaccount_method: 'local' # domain, gmsa, local
 #mssql_svcaccount_local: 'NT AUTHORITY\\SYSTEM' # "NT AUTHORITY\\SYSTEM"

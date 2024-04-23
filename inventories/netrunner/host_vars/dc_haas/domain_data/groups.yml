@@ -1,4 +1,19 @@
 domain_groups : {
+    "U_SCCM_ADMINS" : {
+        "scope": "universal", # universal, global or domainlocal default domainlocal
+        "managed_by" : "Domain Admins",
+        "path" : "OU=Groups,OU=Cybernetics,OU=Asa,DC=haas,DC=local",
+        "members" : [
+            "G_SCCM_ADMINS",
+        ]
+    },
+    "G_SCCM_ADMINS" : {
+        "scope": "global", # universal, global or domainlocal default domainlocal
+        "managed_by" : "Domain Admins",
+        "path" : "OU=Groups,OU=Cybernetics,OU=Asa,DC=haas,DC=local",
+        "members" : [
+        ]
+    },
     "U_LAPS_READER" : {
         "scope": "universal", # universal, global or domainlocal default domainlocal
         "managed_by" : "Domain Admins",
