@@ -30,16 +30,19 @@ all:
                   haas_srv02: {}
               mssql:
                 hosts:
-                  haas_srv02: {}
+                  haas_srv01: {}     
+                  haas_srv02: {}     
                   wld_srv01: {}           
               mssql_reporting:
                 hosts:
+                  haas_srv01: {}     
                   haas_srv02: {}     
           hosts:
         mssql_ssms:
           hosts: 
             haas_ws01: {}             
-            haas_srv02: {}             
+            haas_srv01: {}    
+            haas_srv02: {}           
         webdav:
           hosts:          
             haas_srv02: {}

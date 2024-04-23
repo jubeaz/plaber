@@ -80,6 +80,21 @@ domain_service_accounts: {
         #"proto_transition": true,  # KCD default false
         "sensitive"       : false,  
         "spns"            : ["MSSQLSvc/fenris.haas.lab:1433","MSSQLSvc/fenris.haas.lab"]
+    },
+    "drafter": {
+        "firstname"       : "sccm",
+        "surname"         : "sql local",
+        "password"        : "9Zjpo_mwCMcpgfrE", 
+        "city"            : "-",
+        "description"     : "sql service",
+        "groups"          : [], # only built-in
+        "path"            : "CN=Users,DC=haas,DC=local",
+        "delegates"       : [], # RBCD / must be DN msDS-AllowedToActOnBehalfOfOtherIdentity
+        "delegation_type" : false, # "KCD", "KUD", false
+        "constrained"     : ["cifs/ws01", "cifs/ws01.haas.local"], # KCD / SPN list / msDS-AllowedToDelegateTo
+        #"proto_transition": true,  # KCD default false
+        "sensitive"       : false,  
+        "spns"            : ["MSSQLSvc/bran.haas.lab:1433","MSSQLSvc/bran.haas.lab"]
     }
 }
 
