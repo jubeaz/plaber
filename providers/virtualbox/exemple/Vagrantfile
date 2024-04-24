@@ -1,0 +1,57 @@
+# config version 2
+Vagrant.configure("2") do |config|
+    ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
+    # some vars
+    boxes = [
+        {
+            # value defined by network team
+            b_mac_address: "5CA1AB1E0001", 
+            #b_image: "kalilinux/rolling",
+            b_image: "archlinux/archlinux",
+            b_name: "forensic",
+            b_ram: 1 * 1024,
+            b_vcpu: 2,
+            #b_version: "",
+            b_version: "20240103.204422", 
+            b_ostype: "linux", # linux or windows
+            is_disk_encrypted: true 
+        }
+    ]
+    # https://developer.hashicorp.com/vagrant/docs/vagrantfile/machine_settings
+
+    config.vm.boot_timeout = 600
+    config.vm.graceful_halt_timeout = 600
+    config.winrm.retry_limit = 30
+    config.winrm.retry_delay = 10
+    config.winrm.transport = "plaintext"
+    config.winrm.basic_auth_only = true
+
+    boxes.each do |box| 
+        config.vm.define box[:b_name] do |t|
+            t.vm.box_check_update = false
+            t.vm.box = box[:b_image]
+            if box.has_key?(:b_version)
+                t.vm.box_version = box[:b_version]
+            end
+            # virtualbox provider
+            if box[:b_ostype] == "windows"
+                t.vm.guest = :windows
+                t.vm.communicator = "winrm"        
+            end
+            t.vm.provider "virtualbox" do |v|
+                v.gui = true
+                v.name = box[:b_name]
+                v.memory = box[:b_ram]
+                v.cpus = box[:b_vcpu]
+                # https://www.virtualbox.org/manual/ch08.html
+                #v.customize ["modifyvm", :id, "--cpuexecutioncap", "50"]
+            end
+            # network 
+            # https://developer.hashicorp.com/vagrant/docs/networking/public_network
+            # add extra bidged nic with mac address for DHCP reservation
+            t.vm.network "public_network", bridge: "br0" :mac => box[:mac_address]
+            # provisionning
+            # config.vm.provision
+        end
+    end
+end

@@ -21,6 +21,10 @@ ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml 
 
 ## enjoy
 
+## stop all vms
+```bash
+for b in $(cat Vagrantfile  | grep bname: | cut -d'"' -f 2); do vboxmanage controlvm $b acpipowerbutton; done
+```
 # BUILD
 ## vagrant
 ### build all  vms
