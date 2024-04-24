@@ -1,7 +1,7 @@
 ---
-- name: "SCCM"
-  hosts: dc
-  tasks:
+#- name: "SCCM"
+#  hosts: dc
+#  tasks:
 #    - include_role:
 #        name: "windows_domain/dhcp"
 #      vars:
@@ -13,15 +13,75 @@
 #        lease_duration: "{{dhcp[3]}}"
 #        dc_fqdn: "{{domain_dc_name}}"
 #      when: dhcp is defined
-    - include_role:
-        name: "windows_domain/sccm/install_extend_adschema"
-      when: sccm_server | length > 0
+#    - include_role:
+#        name: "windows_domain/sccm/install_extend_adschema"
+#      when: sccm_server | length > 0
+#
+#- name: "INSTALL SCCM"
+#  hosts: sccm
+#  max_fail_percentage: 0
+#  roles:
+#    - { role: 'windows_domain/sccm/install_iis', tags: 'sccm_iis'}
+#    - { role: 'windows_domain/sccm/install_adk', tags: 'sccm_adk'}
+#    - { role: 'windows_domain/sccm/install_wsus', tags: 'sccm_wsus'}
+#    - { role: 'windows_domain/sccm/install_mecm', tags: 'sccm_mecm'}
 
-- name: "INSTALL SCCM"
-  hosts: sccm
-  max_fail_percentage: 0
-  roles:
-    - { role: 'windows_domain/sccm/install_iis', tags: 'sccm_iis'}
-    - { role: 'windows_domain/sccm/install_adk', tags: 'sccm_adk'}
-    - { role: 'windows_domain/sccm/install_wsus', tags: 'sccm_wsus'}
-    - { role: 'windows_domain/sccm/install_mecm', tags: 'sccm_mecm'}
+#- name: "CONFIG SCCM"
+#  hosts: sccm
+#  max_fail_percentage: 0
+#  roles:
+#    - { role: 'windows_domain/sccm/config/discovery', tags: 'sccm_discovery'}
+#    - { role: 'windows_domain/sccm/config/boundary', tags: 'sccm_boundary'}
+#    - { role: 'windows_domain/sccm/config/accounts', tags: 'sccm_accounts'}
+#    - { role: 'windows_domain/sccm/config/client_push', tags: 'sccm_client_push'}
+#    - { role: 'windows_domain/sccm/config/naa', tags: 'sccm_naa'}
+#    - { role: 'windows_domain/sccm/config/client_install', tags: 'sccm_client_install'}
+#    - { role: 'windows_domain/sccm/config/users', tags: 'sccm_users'}
+#  vars:
+#    cma_users: {
+#      push_account: {
+#        name: "{{domain_name}}\\{{sccm_push_account}}",
+#        password: "{{hostvars[domain_dc_ansible_inventory_key].domain_users_regular[sccm_push_account].password}}"
+#      },
+#      naa_user: {
+#        name: "{{domain_name}}\\{{sccm_network_access_account}}",
+#        password: "{{hostvars[domain_dc_ansible_inventory_key].domain_users_regular[sccm_network_access_account].password}}"
+#      },
+#      account_da: {
+#        name: "{{domain_name}}\\{{sccm_account_da}}",
+#        password: "{{hostvars[domain_dc_ansible_inventory_key].domain_users_regular[sccm_account_da].password}}"
+#      }
+#    }
+
+
+#- name: "Setup SCCM PXE"
+#  hosts: sccm
+#  roles:
+#    - { role: 'sccm/config/pxe', tags: 'sccm_pxe'}
+#    - { role: 'sccm/pxe', tags: 'sccm_pxe' }
+#  vars:
+#    domain: "{{lab.hosts[dict_key].domain}}"
+#    domain_username: "{{domain}}\\Administrator"
+#    domain_password: "{{lab.domains[domain].domain_password}}"
+#    site_code: "{{lab.domains[domain].sccm.site_code}}"
+#    pxe_pass: "{{lab.domains[domain].sccm.pxe_pass| default('')}}"
+#    sccm_server: "{{lab.domains[domain].sccm.sccm_server | default('')}}"
+#    admin_pass: "{{lab.domains[domain].sccm.pxe_admin_pass}}"
+#    ou_location: "{{lab.domains[domain].sccm.pxe_location}}"
+#    naa_user_name: "{{lab.domains[domain].sccm.naa_user| default('')}}"
+#    naa_user: "{{domain}}\\{{naa_user_name}}"
+#    naa_pass: "{{lab.domains[domain].users[naa_user_name].password}}"
+#
+#
+# name: "client install"
+#  hosts: sccm
+#  roles:
+#    - { role: 'sccm/config/client_install', tags: 'sccm_client_install' }
+#  vars:
+#    domain: "{{lab.hosts[dict_key].domain}}"
+#    domain_username: "{{domain}}\\Administrator"
+#    domain_password: "{{lab.domains[domain].domain_password}}"
+#    sccm_server: "{{lab.domains[domain].sccm.sccm_server | default('')}}"
+#    site_code: "{{lab.domains[domain].sccm.site_code}}"
+#    clients: "{{lab.domains[domain].sccm.clients| default([])}}"
+#
