@@ -86,6 +86,14 @@ need to reset DNS user role `windows_domain/member_dns`
 
 ### sccm
 
+to full retest
+
+intall console sur windows 10
+https://learn.microsoft.com/fr-fr/mem/configmgr/core/servers/deploy/install/install-consoles
+
+C:\setup\cd.retail.LN\SMSSETUP\BIN\I386\ConsoleSetup.exe /q "TargetDir=%ProgramFiles%\ConfigMgr Console" DefaultSiteServerName=bran.haas.local
+
+
 https://www.prajwaldesai.com/install-sql-server-2022-for-sccm-configmgr/
 
 
