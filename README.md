@@ -87,27 +87,7 @@ need to reset DNS user role `windows_domain/member_dns`
 ### sccm
 
 https://www.prajwaldesai.com/install-sql-server-2022-for-sccm-configmgr/
-#### sccm install
 
-wrong mssql version + no reporting ?
-
-
-```
-ERROR: Failed to get sql service account, Server:<fenris.haas.local>, instance:<>.  $$<Configuration Manager Prereq><04-21-2024 07:33:58.583+00><thread=4668 (0x123C)>
-bran.haas.local;    SQL Server service running account;    Error;    The logon account for the SQL Server service cannot be a local user account, NT SERVICE\<sql service name> or LOCAL SERVICE.  You must configure the SQL Server service to use a valid domain account, NETWORK SERVICE, or LOCAL SYSTEM.  $$<Configuration Manager Prereq><04-21-2024 07:33:58.583+00><thread=4668 (0x123C)>
-```
-
-
-faudrait esayer de le passer en svcaccount (domain):
-* mssql:
-    * jouter en mssql_sysadmins:
-        * `"HAAS\BRAN$"`
-        * `"HAAS\ichi"`
-        * `"HAAS\administrator"`        
-* server mssql:
-    * ajouter dans le groupe administrators:
-        * `"HAAS\BRAN$"`
-        * `"HAAS\ichi"`
 
 ### laps (TO TEST)
 
