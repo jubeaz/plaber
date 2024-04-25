@@ -3,99 +3,94 @@
 derived from [GOAD](https://github.com/Orange-Cyberdefense/GOAD/tree/main)
 
 
+notes:
+* vagrant is only used for initial provisionning since default nat interface is disconnected afte provisionning
 
-# RUN LAB
 
-## start all vms
+# Run lab
+
+* start all vms
 
 ```bash
-for b in $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep bname: | cut -d'"' -f 2); do echo "vboxmanage startvm $b --type headless"; vboxmanage startvm $b --type headless; done
+for b in $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage startvm $b --type headless; done
 
-for b in $(cat Vagrantfile  | grep bname: | cut -d'"' -f 2); do echo "vboxmanage startvm $b --type headless"; vboxmanage startvm $b --type headless; done
+for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage startvm $b --type headless; done
 ```
 
-## enable fw
+* enable fw
 ```bash
 ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/enable-lab.yml
 ```
 
-## enjoy
+* enjoy
 
-## stop all vms
+# Stop lab
+* stop all vms
 ```bash
-for b in $(cat Vagrantfile  | grep bname: | cut -d'"' -f 2); do vboxmanage controlvm $b acpipowerbutton; done
+for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage controlvm $b acpipowerbutton; done
 ```
 # BUILD
 ## vagrant
-### build all  vms
+* build all  vms
 ```bash
 vagrant up --debug --timestamp
 ```
 
-### stop all  vms
+* stop all  vms
 ```bash
 vagrant halt
 ```
 
 
-### disable all buildint NAT interfaces
+* disable all vms buildint NAT interfaces
 ```bash
-for b in $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep bname: | cut -d'"' -f 2); do echo "vboxmanage modifyvm $b --cableconnected1 off"; vboxmanage modifyvm $b  --cableconnected1 off; done
+for b in $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage modifyvm $b  --cableconnected1 off; done
 
-for b in $(cat Vagrantfile  | grep bname: | cut -d'"' -f 2); do echo "vboxmanage modifyvm $b --cableconnected1 off"; vboxmanage modifyvm $b  --cableconnected1 off; done
+for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage modifyvm $b  --cableconnected1 off; done
 ```
 
 
-### start all vagrant box
+* restart all vms
 ```bash
-for b in $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep bname: | cut -d'"' -f 2); do echo "vboxmanage startvm $b --type headless"; vboxmanage startvm $b --type headless; done
+for b in $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage startvm $b --type headless; done
 
-for b in $(cat Vagrantfile  | grep bname: | cut -d'"' -f 2); do echo "vboxmanage startvm $b --type headless"; vboxmanage startvm $b --type headless; done
+for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage startvm $b --type headless; done
 ```
 
 ## ansible
 
-### build fw
+* build fw
 ```
 ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/build-fw.yml
 ```
 
-* restart firewall :
-    * `echo "vboxmanage controlvm $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep fw | cut -d'"' -f 2) acpipowerbutton"`
-    * `vboxmanage controlvm $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep fw | cut -d'"' -f 2) acpipowerbutton`
-    * `vboxmanage controlvm $(cat Vagrantfile  | grep fw | cut -d'"' -f 2) acpipowerbutton`
-    * `vboxmanage startvm $(cat Vagrantfile  | grep fw | cut -d'"' -f 2) --type headless`
-* correct public ip machines:
-    * `evil-winrm -i 192.168.2.101 -u vagrant -p vagrant`
-    * `netsh.exe int ipv4 set address 'Ethernet 2' static 172.16.1.10 mask=255.255.255.0 gateway=172.16.1.254`
-
-### build lab
+* build lab
 ```
 ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/build-lab.yml
 ```
 
-## enable 
+* enable 
 ```bash
 ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/enable-lab.yml
 ```
 
+# To fix on vagrant
 
-# TO FIX
+# To fix on ansible
 
-## ansible
 
 ## `The trust relationship between this workstation and the primary domain failed.`
 
 need to reset DNS user role `windows_domain/member_dns`
 
-### sccm
+## sccm
 
 to full retest
 
 intall console sur windows 10
 https://learn.microsoft.com/fr-fr/mem/configmgr/core/servers/deploy/install/install-consoles
 
-C:\setup\cd.retail.LN\SMSSETUP\BIN\I386\ConsoleSetup.exe /q "TargetDir=%ProgramFiles%\ConfigMgr Console" DefaultSiteServerName=bran.haas.local
+C:\setup\cd.retail.LN\SMSSETUP\BIN\I386\consolesetup.exe /q "TargetDir=%ProgramFiles%\ConfigMgr Console" DefaultSiteServerName=bran.haas.local
 
 
 https://www.prajwaldesai.com/install-sql-server-2022-for-sccm-configmgr/
@@ -146,13 +141,31 @@ ok: [dc_research_weyland] => {
 # TODO
 
 ## vagrant
+### disconnect nic0 after halt
+
+
+https://developer.hashicorp.com/vagrant/docs/triggers
+
 ```
-  config.vm.provider "virtualbox" do |vb|
-       vb.customize ["modifyvm", :id, "--nictype1", "Am79C973"]        
-  end
+            t.trigger.after :halt do |trigger|
+                trigger.info = "More information with ruby magic"
+                trigger.ruby do |env,machine|
+                    puts `VBoxManage modifyvm #{machine.id} --cableconnected1 off`
+                end
+            end
+```
+
+```
+VBoxManage: error: The machine 'forensic' is already locked for a session (or being unlocked)
+VBoxManage: error: Details: code VBOX_E_INVALID_OBJECT_STATE (0x80bb0007), component MachineWrap, interface IMachine, callee nsISupports
+VBoxManage: error: Context: "LockMachine(a->session, LockType_Write)" at line 640 of file VBoxManageModifyVM.cpp
 ```
 
 ## ansible
+* domain gpo deployment
+    * https://www.tutos.eu/1015
+    * https://github.com/LoicVeirman/HardenAD/blob/Master/Modules/groupPolicy.psm1
+    * faire une gpo qui interdit à un groupe (`account_services`) d'ouvrir une session interactive
 * sidhistory
     * relax trust
     * add sidhistory to some accounts

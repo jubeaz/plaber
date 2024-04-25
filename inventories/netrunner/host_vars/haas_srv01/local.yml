@@ -1,2 +1,7 @@
 
 features: ["NET-Framework-Core"]
+local_groups: {
+    "Administrators" : ["haas.local\\L_LOCAL_ADMINS"]
+#    "Remote Desktop Users" : [],
+#    "Remote Management Users": []
+}
