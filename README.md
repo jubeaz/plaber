@@ -85,6 +85,7 @@ need to reset DNS user role `windows_domain/member_dns`
 
 ## sccm
 
+la commande d'installation de la console ne passe pas.
 to full retest
 
 intall console sur windows 10
