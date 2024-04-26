@@ -4,6 +4,14 @@ local_groups: {
 #    "Remote Management Users": []
 }
 
+
+local_users: {
+    "LA_jubeaz" : {
+        "password"        : "jubeaz", 
+        "groups"          : ["Administrators"]
+        }
+}
+
 # Get-WindowsCapability -Name RSAT* -Online | Select-Object -Property DisplayName, State
 extra_features: [
     "Rsat.CertificateServices.Tools~~~~0.0.1.0",

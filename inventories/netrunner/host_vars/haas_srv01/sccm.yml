@@ -9,3 +9,4 @@ sccm_account_da: "mbellamy"
 sccm_pxe_location: "LDAP://CN=Computers,DC=haas,DC=local"
 sccm_pxe_admin_pass: "NuvqREtyaT_k9E5C"
 sccm_admins: ["HAAS\\U_SCCM_ADMINS"]
+sccm_group_discovery: "L_SCCM_MANAGED"

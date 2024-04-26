@@ -3,3 +3,11 @@ local_groups: {
 #    "Remote Desktop Users" : [],
 #    "Remote Management Users": []
 }
+
+
+local_users: {
+    "LA_jubeaz" : {
+        "password"        : "jubeaz", 
+        "groups"          : ["Administrators"]
+        }
+}

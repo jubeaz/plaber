@@ -71,6 +71,21 @@ domain_groups : {
         "foreign_gmsas": [],
         "foreign_computers": [],
         "foreign_groups": []
+    },
+    "L_SCCM_MANAGED" : {
+        "scope": "domainlocal", # universal, global or domainlocal default domainlocal
+        "managed_by" : "Domain Admins",
+        "path" : "CN=Users,DC=haas,DC=local",
+        "members" : [ 
+            "fenris$",
+            "architect$",
+            "bran$",
+            "DC03$"
+        ],
+        "foreign_users": [],
+        "foreign_gmsas": [],
+        "foreign_computers": [],
+        "foreign_groups": []
     } 
 }
 

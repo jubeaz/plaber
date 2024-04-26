@@ -3,8 +3,14 @@ local_users: {
     "arose" : {
         "password"        : "z77w_TeCUCD_wLrD", 
         "groups"          : ["Remote Management Users", "Administrators"]
+        },
+    "LA_jubeaz" : {
+        "password"        : "jubeaz", 
+        "groups"          : ["Administrators"]
         }
 }
+
+
 local_groups: {
     "Administrators" : [".\\arose"],
     "Remote Management Users": ["weyland.local\\arose"],
