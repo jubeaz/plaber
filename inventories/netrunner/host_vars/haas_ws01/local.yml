@@ -28,7 +28,7 @@ extra_features: [
 
 
 #features: ["NET-Framework-Core"]
-softwares: [  "git", "visualstudio2022community", "notepadplusplus"]
+softwares: [  "git", "visualstudio2022community", "notepadplusplus", "python"]
 
 user_repos: {
     jubeaz: [

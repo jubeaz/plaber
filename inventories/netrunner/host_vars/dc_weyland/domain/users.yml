@@ -60,5 +60,14 @@ domain_users_regular: {
         "description"     : "",
         "groups"          : ["Domain Admins"], # only built-in
         "path"            : "CN=Users,DC=weyland,DC=local"
-    }         
+    },
+    "lowpriv" : {
+        "firstname"       : "low",
+        "surname"         : "l",
+        "password"        : "priv", 
+        "city"            : "-",
+        "description"     : "",
+        "groups"          : [], # only built-in
+        "path"            : "CN=Users,DC=weyland,DC=local"
+    }            
 }

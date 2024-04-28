@@ -5,47 +5,47 @@
   become_user: root
   max_fail_percentage: 0
   #tags: 'build_computers_setup_1'
-  roles:
-    - { role: mlocate }
-    - { role: pacman, when: "ansible_distribution == 'Archlinux'" }
-    - { role: reflector, when: "ansible_distribution == 'Archlinux'" }
-    - { role: update-pkgs }
-    - { role: time-sync }
-    - { role: gen-locale}
-    - { role: opensshd}
+#  roles:
+#    - { role: mlocate }
+#    - { role: pacman, when: "ansible_distribution == 'Archlinux'" }
+#    - { role: reflector, when: "ansible_distribution == 'Archlinux'" }
+#    - { role: update-pkgs }
+#    - { role: time-sync }
+#    - { role: gen-locale}
+#    - { role: opensshd}
 
   tasks:
-    - name: disable NAT interface
-      ansible.builtin.blockinfile:
-        path: /etc/systemd/network/80-dhcp.network
-        append_newline: true
-        prepend_newline: true
-        block: |
-          [Link]
-          Unmanaged=yes
-      when: disable_nat == true
-    - name: Ensure that DNS is set on public_interface
-      ansible.builtin.lineinfile:
-        path: /etc/systemd/network/eth1.network
-        regexp: '^DNS='
-        insertafter: '^Gateway='
-        line: 'DNS={{dns_server}}'
-      when: disable_nat == true
-    - name: reboot
-      ansible.builtin.reboot:
-      when: disable_nat == true
-    - name: install packages  
-      community.general.pacman:
-        name: "{{ item }}"
-        state: present
-      loop: "{{ pacman_arch_packages | default([]) }}"
-      register: __pacman
-    - include_role:
-        name: "ufw"
-      vars:
-        ufw_in_ssh_ip: ["192.168.0.0/16"]
-        ufw_forward: true
-        ufw_nat: true
+#    - name: disable NAT interface
+#      ansible.builtin.blockinfile:
+#        path: /etc/systemd/network/80-dhcp.network
+#        append_newline: true
+#        prepend_newline: true
+#        block: |
+#          [Link]
+#          Unmanaged=yes
+#      when: disable_nat == true
+#    - name: Ensure that DNS is set on public_interface
+#      ansible.builtin.lineinfile:
+#        path: /etc/systemd/network/eth1.network
+#        regexp: '^DNS='
+#        insertafter: '^Gateway='
+#        line: 'DNS={{dns_server}}'
+#      when: disable_nat == true
+#    - name: reboot
+#      ansible.builtin.reboot:
+#      when: disable_nat == true
+#    - name: install packages  
+#      community.general.pacman:
+#        name: "{{ item }}"
+#        state: present
+#      loop: "{{ pacman_arch_packages | default([]) }}"
+#      register: __pacman
+#    - include_role:
+#        name: "ufw"
+#      vars:
+#        ufw_in_ssh_ip: ["192.168.0.0/16"]
+#        ufw_forward: true
+#        ufw_nat: true
 
 #    - name: compute 
 #      debug:
@@ -82,8 +82,23 @@
         interface: "{{item}}"
       with_items: "{{domains_interfaces}}"
 
-    - debug:
-        var: internet_interface
+    - name: Allow local network to internal networks (UDP)
+      community.general.ufw:
+        comment: "[local to internal] ip forward from {{public_interface}} to {{info[interface].ipv4.network}}/{{info[interface].ipv4.prefix}} on {{interface}} (UDP)"
+        #direction: in
+        interface_in: "{{public_interface}}" 
+        interface_out: "{{interface}}"
+        proto: udp
+        route: true
+        rule: allow
+        state: enabled
+        to_ip: "{{info[interface].ipv4.network}}/{{info[interface].ipv4.prefix}}"
+      vars:
+        info: "{{hostvars[inventory_hostname].ansible_facts}}"
+        interface: "{{item}}"
+      with_items: "{{domains_interfaces}}"
+#    - debug:
+#        var: internet_interface
 #
     - name: allow internals to internet
       community.general.ufw:
@@ -92,6 +107,22 @@
         interface_in: "{{interface}}" 
         interface_out: "{{internet_interface}}"
         proto: tcp
+        route: true
+        rule: allow
+        state: enabled
+        to_ip: any
+      vars:
+        info: "{{hostvars[inventory_hostname].ansible_facts}}"
+        interface: "{{item}}"
+      with_items: "{{domains_interfaces}}"
+
+    - name: allow internals to internet (UDP)
+      community.general.ufw:
+        comment: "[internals to internet] ip forward from {{interface}} to {{internet_interface}} (UDP)"
+        #direction: in
+        interface_in: "{{interface}}" 
+        interface_out: "{{internet_interface}}"
+        proto: udp
         route: true
         rule: allow
         state: enabled
