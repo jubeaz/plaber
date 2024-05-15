@@ -4,3 +4,4 @@ firewall_profiles: {
   "Private": {"enabled": "False", "inbound": "allow", "outbound": "allow"},
 }
 
+windows_defender: true
