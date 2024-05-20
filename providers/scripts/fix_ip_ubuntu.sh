@@ -13,9 +13,10 @@ echo "      nameservers:"                           >> /etc/netplan/50-vagrant.y
 echo "          search: [mydomain, otherdomain]"    >> /etc/netplan/50-vagrant.yaml
 echo "          addresses: [8.8.8.8]"               >> /etc/netplan/50-vagrant.yaml
 sed -i "s/true/false/g" /etc/netplan/50-cloud-init.yaml
-netplan apply
 sed -i "s/^#PasswordAuthentication yes.*/PasswordAuthentication yes/g" /etc/ssh/sshd_config
-systemctl restart sshd
+reboot now
+#systemctl restart sshd
+#netplan apply
 #sed -i "s/Name=eth.*/Name=eth0/g" /etc/systemd/network/80-dhcp.network
 ##echo "[Link]" >> /etc/systemd/network/80-dhcp.network
 ##echo  "Unmanaged=yes" >> /etc/systemd/network/80-dhcp.network
