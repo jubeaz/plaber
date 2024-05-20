@@ -14,6 +14,7 @@ echo "          search: [mydomain, otherdomain]"    >> /etc/netplan/50-vagrant.y
 echo "          addresses: [8.8.8.8]"               >> /etc/netplan/50-vagrant.yaml
 sed -i "s/true/false/g" /etc/netplan/50-cloud-init.yaml
 sed -i "s/^#PasswordAuthentication yes.*/PasswordAuthentication yes/g" /etc/ssh/sshd_config
+sed -i 's/ChallengeResponseAuthentication no/ChallengeResponseAuthentication yes/g' /etc/ssh/sshd_config 
 reboot now
 #systemctl restart sshd
 #netplan apply
