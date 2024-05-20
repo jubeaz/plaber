@@ -5,7 +5,7 @@ local_users: {
         "groups"          : ["Remote Management Users", "Administrators"]
         },
     "LA_jubeaz" : {
-        "password"        : "jubeaz", 
+        "password"        : "Jubeaz12345+-", 
         "groups"          : ["Administrators"]
         }
 }

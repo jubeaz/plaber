@@ -7,7 +7,7 @@ local_groups: {
 
 local_users: {
     "LA_jubeaz" : {
-        "password"        : "jubeaz", 
+        "password"        : "Jubeaz12345+-", 
         "groups"          : ["Administrators"]
         }
 }

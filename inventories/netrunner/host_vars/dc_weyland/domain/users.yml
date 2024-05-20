@@ -64,7 +64,7 @@ domain_users_regular: {
     "lowpriv" : {
         "firstname"       : "low",
         "surname"         : "l",
-        "password"        : "priv", 
+        "password"        : "jubeaz", 
         "city"            : "-",
         "description"     : "",
         "groups"          : [], # only built-in
