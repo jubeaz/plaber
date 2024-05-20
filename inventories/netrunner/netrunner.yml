@@ -4,6 +4,13 @@ all:
     firewalls:
       hosts:
         fw: {} 
+    nonwindows:
+      hosts:
+        fw: {} 
+        haas_lin01: {} 
+    linux:
+      hosts:
+        haas_lin01: {} 
     domain:
       children:
         dc:
@@ -59,6 +66,7 @@ all:
     dc_haas:              {ansible_host: 172.16.0.1}
     haas_srv01:           {ansible_host: 172.16.0.10}
     haas_srv02:           {ansible_host: 172.16.0.11}
+    haas_lin01:           {ansible_host: 172.16.0.12}
     haas_ws01:            {ansible_host: 172.16.0.20}
     dc_research_weyland:  {ansible_host: 172.16.2.1}
     fw:                   {ansible_host: 192.168.2.100}

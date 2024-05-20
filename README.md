@@ -4,7 +4,7 @@ derived from [GOAD](https://github.com/Orange-Cyberdefense/GOAD/tree/main)
 
 
 notes:
-* vagrant is only used for initial provisionning since default nat interface is disconnected afte provisionning
+* vagrant is only used for initial provisionning since default nat interface is disconnected after provisionning
 
 
 # Run lab
@@ -48,7 +48,6 @@ for b in $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep n
 
 for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage modifyvm $b  --cableconnected1 off; done
 ```
-
 
 * restart all vms
 ```bash
@@ -142,28 +141,20 @@ ok: [dc_research_weyland] => {
 
 # TODO
 
-## vagrant
-### disconnect nic0 after halt
-
-
-https://developer.hashicorp.com/vagrant/docs/triggers
-
-```
-            t.trigger.after :halt do |trigger|
-                trigger.info = "More information with ruby magic"
-                trigger.ruby do |env,machine|
-                    puts `VBoxManage modifyvm #{machine.id} --cableconnected1 off`
-                end
-            end
-```
-
-```
-VBoxManage: error: The machine 'forensic' is already locked for a session (or being unlocked)
-VBoxManage: error: Details: code VBOX_E_INVALID_OBJECT_STATE (0x80bb0007), component MachineWrap, interface IMachine, callee nsISupports
-VBoxManage: error: Context: "LockMachine(a->session, LockType_Write)" at line 640 of file VBoxManageModifyVM.cpp
-```
-
 ## ansible
+
+* make a dmz with a public linux box and filter from public to domain only allow linux box
+* reorganize inventory:
+    - linux:
+        - firewall:
+        - otherlinux:
+
+### linux
+* work on public interface to simulate a public website
+* do something with this box
+
+### domain
+
 * domain gpo deployment
     * https://www.tutos.eu/1015
     * https://github.com/LoicVeirman/HardenAD/blob/Master/Modules/groupPolicy.psm1
