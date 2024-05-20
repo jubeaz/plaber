@@ -218,6 +218,7 @@ Vagrant.configure("2") do |config|
         #  alway provision an internal network on Ethernet 2
         n_info = box[:net]
         target.vm.network :private_network, ip: box[:ip], virtualbox__intnet: n_info[:name]
+        target.vm.provision :shell, :path => "../../scripts/fix_ip_ubuntu.sh", privileged: true, args: [n_info[:gw]]
             #box[:nets].each do |bn|
             #  n_info = bn[:net]
             #  puts "  Provision Network #{n_info[:name]} with IP #{bn[:ip]}"
