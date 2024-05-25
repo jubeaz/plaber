@@ -1,39 +1,38 @@
 ---
-# Load datas
 - name: "INSTALL MSSQL EXPRESS"
   hosts: mssql
   max_fail_percentage: 0
   tasks:
-    - name: set service account login password
+    - name: Set service account login password
       ansible.builtin.set_fact:
-        sql_svcaccount_name: "{{mssql_svcaccount_local | default('')}}"
+        sql_svcaccount_name: "{{ mssql_svcaccount_local | default('') }}"
         sql_svcaccount_password: ""
 
-    - name: set service account login as domain service
+    - name: Set service account login as domain service
       ansible.builtin.set_fact:
-        sql_svcaccount_name: "{{domain_name}}\\{{mssql_svcaccount_key}}"
+        sql_svcaccount_name: "{{ domain_name }}\\{{ mssql_svcaccount_key }}"
       when: mssql_svcaccount_method == 'domain'
 
-    - name: set service account login as gmsa
+    - name: Set service account login as gmsa
       ansible.builtin.set_fact:
-        sql_svcaccount_name: "{{domain_name}}\\{{mssql_svcaccount_key}}$"
+        sql_svcaccount_name: "{{ domain_name }}\\{{ mssql_svcaccount_key }}$"
       when: mssql_svcaccount_method == 'gmsa'
 
-    - name: set service account password for domain service
+    - name: Set service account password for domain service
       ansible.builtin.set_fact:
-        sql_svcaccount_password: "{{hostvars[domain_dc_ansible_inventory_key].domain_users[mssql_svcaccount_key].password}}"
+        sql_svcaccount_password: "{{ hostvars[domain_dc_ansible_inventory_key].domain_users[mssql_svcaccount_key].password }}"
       when: mssql_svcaccount_method == 'domain'
 
 #    - name: print some vars
 #      debug:
-#        msg: 
-#          - "SQLSVCACCOUNT: {{sql_svcaccount_name}}"
-#          - "SQLSVCPASSWORD: {{sql_svcaccount_password}}"
-#          - "sql_sysadmins: {{mssql_sysadmins | default([]) }}"
-#          - "executeaslogin: {{mssql_executeaslogin  | default({}) }}"
-#          - "executeasuser:  {{mssql_executeasuser | default({}) }}"
-#          - "sa_password: {{mssql_sa_password}}"
-#          - "linked_servers: {{mssql_linked_servers | default({}) }}"
+#        msg:
+#          - "SQLSVCACCOUNT: {{ sql_svcaccount_name }}"
+#          - "SQLSVCPASSWORD: {{ sql_svcaccount_password }}"
+#          - "sql_sysadmins: {{ mssql_sysadmins | default([])  }}"
+#          - "executeaslogin: {{ mssql_executeaslogin  | default({})  }}"
+#          - "executeasuser:  {{ mssql_executeasuser | default({})  }}"
+#          - "sa_password: {{ mssql_sa_password }}"
+#          - "linked_servers: {{ mssql_linked_servers | default({})  }}"
 
 - name: "INSTALL MSSQL EXPRESS"
   hosts: mssql
@@ -42,17 +41,17 @@
     - { role: 'windows_domain/mssql/mssql', tags: 'mssql'}
     - { role: 'windows_domain/mssql/mssql_link', tags: 'mssql, mssql_link'}
   vars:
-    ISGMSA: "{{true if mssql_svcaccount_method == 'gmsa' else false}}" 
-    sql_instance_name: "{{mssql_instance_name}}"
-    sql_version: "{{mssql_version}}"
-    SQLSVCACCOUNT: "{{sql_svcaccount_name}}"
-    SQLSVCPASSWORD: "{{sql_svcaccount_password}}"
-    SQLYSADMIN: "{{sql_svcaccount_name}}"
-    sql_sysadmins: "{{mssql_sysadmins | default([]) }}"
-    executeaslogin: "{{mssql_executeaslogin  | default({}) }}"
-    executeasuser:  "{{mssql_executeasuser | default({}) }}"
-    sa_password: "{{mssql_sa_password}}"
-    linked_servers: "{{mssql_linked_servers | default({}) }}"
+    ISGMSA: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
+    sql_instance_name: "{{ mssql_instance_name }}"
+    sql_version: "{{ mssql_version }}"
+    SQLSVCACCOUNT: "{{ sql_svcaccount_name }}"
+    SQLSVCPASSWORD: "{{ sql_svcaccount_password }}"
+    SQLYSADMIN: "{{ sql_svcaccount_name }}"
+    sql_sysadmins: "{{ mssql_sysadmins | default([])  }}"
+    executeaslogin: "{{ mssql_executeaslogin  | default({})  }}"
+    executeasuser:  "{{ mssql_executeasuser | default({})  }}"
+    sa_password: "{{ mssql_sa_password }}"
+    linked_servers: "{{ mssql_linked_servers | default({})  }}"
 
 - name: "Install SQL Server reporting"
   hosts: mssql_reporting

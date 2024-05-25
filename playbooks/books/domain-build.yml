@@ -9,7 +9,7 @@
 
 - name: CHILD DC AD CONFIGURATION
   hosts: dc
-  gather_facts: no
+  gather_facts: false
   max_fail_percentage: 0
   tags: 'build_domains_child_domains'
   roles:
@@ -17,8 +17,8 @@
     # child forward parent zone
     - { role: 'windows_domain/dns_conditional_forwarder', tags: 'dns_conditional_forwarder', when: "dc_level == 1" }
   vars:
-    master_server: "{{domain_parent_dc_ip}}"
-    zone_name: "{{domain_parent_domain_name}}"
+    master_server: "   {{ domain_parent_dc_ip }}"
+    zone_name: "   {{ domain_parent_domain_name }}"
     replication: "none"
 
 # parent add DNS value of child DC

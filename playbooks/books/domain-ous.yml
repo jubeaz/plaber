@@ -3,4 +3,4 @@
   hosts: dc
   max_fail_percentage: 0
   roles:
-    - { role: 'windows_domain/user_group_ou_computer/ou',       tags: 'ad_domain_data', objects: "{{domain_ous}}",        action: "create" }
+    - { role: 'windows_domain/user_group_ou_computer/ou',       tags: 'ad_domain_data', objects: "{{ domain_ous }}",        action: "create" }

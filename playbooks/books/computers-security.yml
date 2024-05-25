@@ -6,6 +6,4 @@
     - { role: "windows_settings/uac",              tags: 'windows_security'}
     - { role: "windows_settings/windows_defender", tags: 'windows_security'}
     - { role: "windows_settings/run_as_ppl",       tags: 'windows_security'}
-    - { role: "windows_settings/firewall",         tags: 'windows_security'}    
-
-
+    - { role: "windows_settings/firewall",         tags: 'windows_security'}

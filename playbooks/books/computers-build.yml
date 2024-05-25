@@ -4,10 +4,9 @@
   max_fail_percentage: 0
   tags: 'build_computers_setup_1'
   roles:
-    - { role: 'windows_settings/base_setup',      tags: 'base_setup',       http_proxy: "{{enable_http_proxy}}"}
+    - { role: 'windows_settings/base_setup',      tags: 'base_setup',       http_proxy: "{{ enable_http_proxy }}"}
     - { role: 'windows_settings/keyboard',        tags: 'windows_keyboard', layout: "fr-FR" }
     - { role: 'windows_settings/update_planning', tags: 'update_planning',  when: windows_update | default(true) == true}
     - { role: 'windows_settings/updates',         tags: 'updates',          when: windows_update | default(true) == true}
     - { role: 'windows_settings/admin_password',  tags: 'admin_password'}
     - { role: 'windows_settings/hostname',        tags: 'hostname'}
-

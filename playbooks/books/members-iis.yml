@@ -1,6 +1,4 @@
 ---
-# Load datas
-
 - name: "INSTALL IIS"
   hosts: iis
   max_fail_percentage: 0

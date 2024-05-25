@@ -23,4 +23,4 @@
   roles:
     - { role: 'windows_domain/laps/verify', tags: 'laps-verify', when: laps_path  | length > 0}
   vars:
-    hosts_dict: "{{hostvars}}"
+    hosts_dict: "{{ hostvars}} "

@@ -1,6 +1,7 @@
 ---
 - name: Ensure domains are reachable
   import_playbook: books/domains-reachable.yml
+  
 - name: Compute extended inventory
   import_playbook: ooks/compute-inventory.yml
 

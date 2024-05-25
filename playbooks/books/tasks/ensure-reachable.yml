@@ -1,9 +1,9 @@
-
+---
 #- debug:
-#    msg: "ip route add {{info[interface].ipv4.network}}/{{info[interface].ipv4.prefix}} via {{via}}"
+#    msg: "ip route add {{ info[interface].ipv4.network }}/{{ info[interface].ipv4.prefix }} via {{ via }}"
 
-- name: "check route exist to {{info[interface].ipv4.network}}/{{info[interface].ipv4.prefix}} via {{via}}"
-  local_action: ansible.builtin.shell ip route | grep {{info[interface].ipv4.network}}/{{info[interface].ipv4.prefix}}
+- name: "check route exist to {{ info[interface].ipv4.network }}/{{ info[interface].ipv4.prefix }} via {{ via }}"
+  local_action: ansible.builtin.shell ip route | grep {{ info[interface].ipv4.network }}/{{ info[interface].ipv4.prefix }}
   register: check_route
   ignore_errors: True
 
@@ -11,6 +11,6 @@
 #    var: check_route
 #  when: check_route.stdout_lines | length == 1
 
-- name: "Add route to {{info[interface].ipv4.network}}/{{info[interface].ipv4.prefix}} via {{via}}"
-  local_action: ansible.builtin.command sudo ip route add {{info[interface].ipv4.network}}/{{info[interface].ipv4.prefix}} via {{via}}
+- name: "Add route to {{ info[interface].ipv4.network }}/{{ info[interface].ipv4.prefix }} via {{ via }}"
+  local_action: ansible.builtin.command sudo ip route add {{ info[interface].ipv4.network }}/{{ info[interface].ipv4.prefix }} via {{ via }}
   when: check_route.stdout_lines | length == 0

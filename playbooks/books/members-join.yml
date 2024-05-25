@@ -15,4 +15,4 @@
   max_fail_percentage: 0
   roles:
     - { role: 'windows_domain/member_workstation', tags: 'workstation'}
-    - { role: 'windows_domain/install_capabilities', tags: 'install_features', capabilities: "{{extra_features}}"}
+    - { role: 'windows_domain/install_capabilities', tags: 'install_features', capabilities: "{{ extra_features }}"}

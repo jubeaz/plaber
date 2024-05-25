@@ -1,5 +1,4 @@
 ---
-# Load datas
 - name: "ADJUST RIGHTS CONFIGURATION"
   hosts: domain
   max_fail_percentage: 0
