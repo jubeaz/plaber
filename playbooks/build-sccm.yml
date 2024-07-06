@@ -1,8 +1,9 @@
 ---
+
 - name: Ensure domains are reachable
   import_playbook: books/domains-reachable.yml
 - name: Compute extended inventory
-  import_playbook: ooks/compute-inventory.yml
+  import_playbook: books/compute-inventory.yml
 
 - name: Deploy SCCM
   import_playbook: books/members-sccm.yml

@@ -38,7 +38,7 @@
     - { role: 'windows_domain/sccm/config/client_install', tags: 'sccm_client_install'}
     - { role: 'windows_domain/sccm/config/users', tags: 'sccm_users'}
   vars:
-    sccm_group_discovery_dn: "CN="sccm_group_discovery",{{hostvars[domain_dc_ansible_inventory_key].domain_groups[sccm_group_discovery].path}}"
+    sccm_group_discovery_dn: "CN='sccm_group_discovery',{{hostvars[domain_dc_ansible_inventory_key].domain_groups[sccm_group_discovery].path}}"
     cma_users: {
       push_account: {
         name: "{{domain_name}}\\{{sccm_push_account}}",
