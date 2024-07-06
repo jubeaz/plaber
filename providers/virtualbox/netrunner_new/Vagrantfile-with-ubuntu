@@ -57,7 +57,7 @@ Vagrant.configure("2") do |config|
       cpu: 2
     },
     { 
-      # internal and public
+      # only internal
       bname: "nrunner_wld_srv01", 
       ip: "172.16.1.10", 
   	  net: net_defs[:weyland], 
@@ -123,6 +123,18 @@ Vagrant.configure("2") do |config|
       box: "gusztavvargadr/windows-server",
       ram: 4*1024,
       os: "windows", 
+      cpu: 2
+    },
+    { 
+      # internal and public
+      bname: "nrunner_rsc_lin01", 
+      ip_p: "192.168.2.101",
+      ip: "172.16.3.11", 
+  	  net: net_defs[:research], 
+      box: "ubuntu/focal64", 
+      box_version: "20240519.0.0", 
+      os: "linux", 
+      ram: 2*1024, 
       cpu: 2
     }
   ]
