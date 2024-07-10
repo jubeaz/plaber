@@ -7,66 +7,61 @@ all:
     nonwindows:
       hosts:
         fw: {} 
-        haas_lin01: {} 
+#        rsc_lin01: {} 
     linux:
       hosts:
-        haas_lin01: {} 
+#        rsc_lin01: {} 
     domain:
       children:
         dc:
           hosts:
-            dc_weyland: {dc_level: 0}    
+            dc_wld: {dc_level: 0}    
             dc_haas: {dc_level: 0} 
-            dc_research_weyland: {dc_level: 1}
+            dc_rsc: {dc_level: 1}
         dc_slave:
           hosts:
         trust:
           hosts:
-            dc_weyland: {}    
+            dc_wld: {}    
             dc_haas: {}
         domain_server:
           children:
               sccm:
                 hosts:
-                  haas_srv01: {}                
+                  rsc_srv01: {}                
               adcs:
                 hosts:
                   haas_srv01: {}
               iis:
                 hosts:
-                  haas_srv02: {}
+                  rsc_srv01: {}
               mssql:
                 hosts:
                   haas_srv01: {}     
-                  haas_srv02: {}     
+                  rsc_srv01: {}     
                   wld_srv01: {}           
               mssql_reporting:
                 hosts:
                   haas_srv01: {}     
-                  haas_srv02: {}     
+                  rsc_srv01: {}     
           hosts:
         sccm_console:
           hosts: 
-            haas_ws01: {}             
+            rsc_ws01: {}             
         mssql_ssms:
           hosts: 
-            haas_ws01: {}             
-            haas_srv01: {}    
-            haas_srv02: {}           
-        webdav:
-          hosts:          
-            haas_srv02: {}
-            wld_srv01: {}            
+            rsc_ws01: {}                 
+   
         domain_workstation:  
           hosts:
-            haas_ws01: {}
+            rsc_ws01: {}
   hosts:
-    dc_weyland:           {ansible_host: 172.16.1.1}
-    wld_srv01:            {ansible_host: 172.16.1.10,  public_ip: 192.168.2.101, domain_prefix: 24, domain_gateway: 10.0.0.254, two_adapters: true,}
-    dc_haas:              {ansible_host: 172.16.0.1}
-    haas_srv01:           {ansible_host: 172.16.0.10}
-    haas_srv02:           {ansible_host: 172.16.0.11}
-    haas_lin01:           {ansible_host: 172.16.0.12}
-    haas_ws01:            {ansible_host: 172.16.0.20}
-    dc_research_weyland:  {ansible_host: 172.16.2.1}
+    dc_wld:               {ansible_host: 172.16.1.1}
+    wld_srv01:            {ansible_host: 172.16.1.10}
+    dc_haas:              {ansible_host: 172.16.2.1}
+    haas_srv01:           {ansible_host: 172.16.2.10}
+    dc_rsc:               {ansible_host: 172.16.3.1}
+    rsc_srv01:            {ansible_host: 172.16.3.10}
+#    rsc_lin01:            {ansible_host: 172.16.0.11,  public_ip: 192.168.2.101, domain_prefix: 24, domain_gateway: 10.0.2.254, two_adapters: true,}
+    rsc_ws01:             {ansible_host: 172.16.3.20}
     fw:                   {ansible_host: 192.168.2.100}

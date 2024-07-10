@@ -1,0 +1,70 @@
+---
+all:
+  children:
+    firewalls:
+      hosts:
+        fw: {} 
+    nonwindows:
+      hosts:
+        fw: {} 
+#        rsc_lin01: {} 
+    linux:
+      hosts:
+#        rsc_lin01: {} 
+    domain:
+      children:
+        dc:
+          hosts:
+            dc_wld: {dc_level: 0}    
+            dc_haas: {dc_level: 0} 
+            dc_rsc: {dc_level: 1}
+        dc_slave:
+          hosts:
+        trust:
+          hosts:
+            dc_wld: {}    
+            dc_haas: {}
+        domain_server:
+          children:
+              sccm:
+                hosts:
+                  rsc_srv01: {}                
+              adcs:
+                hosts:
+                  haas_srv01: {}
+              iis:
+                hosts:
+                  rsc_srv01: {}
+              mssql:
+                hosts:
+                  haas_srv01: {}     
+                  rsc_srv01: {}     
+                  wld_srv01: {}           
+              mssql_reporting:
+                hosts:
+                  haas_srv01: {}     
+                  rsc_srv01: {}     
+          hosts:
+        sccm_console:
+          hosts: 
+            rsc_ws01: {}             
+        mssql_ssms:
+          hosts: 
+            rsc_ws01: {}                 
+        webdav:
+          hosts:          
+#            rsc_srv01: {}
+#            wld_srv01: {}            
+        domain_workstation:  
+          hosts:
+            rsc_ws01: {}
+  hosts:
+    dc_wld:               {ansible_host: 172.16.1.1}
+    wld_srv01:            {ansible_host: 172.16.1.10}
+    dc_haas:              {ansible_host: 172.16.2.1}
+    haas_srv01:           {ansible_host: 172.16.2.10}
+    dc_rsc:               {ansible_host: 172.16.3.1}
+    rsc_srv01:            {ansible_host: 172.16.3.10}
+#    rsc_lin01:            {ansible_host: 172.16.0.11,  public_ip: 192.168.2.101, domain_prefix: 24, domain_gateway: 10.0.2.254, two_adapters: true,}
+    rsc_ws01:             {ansible_host: 172.16.3.20}
+    fw:                   {ansible_host: 192.168.2.100}

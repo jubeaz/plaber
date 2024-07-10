@@ -1,9 +1,0 @@
-laps_path:  {
-    "E_workstations"    : { "name": "Workstations", "path": "OU=Executives,OU=Argus,DC=weyland,DC=local"},
-    "S_workstations"    : { "name": "Workstations", "path": "OU=Sales,OU=Argus,DC=weyland,DC=local"},
-    "PR_workstations"   : { "name": "Workstations", "path": "OU=Public relationships,OU=Argus,DC=weyland,DC=local"},
-    "TI_workstations"   : { "name": "Workstations", "path": "OU=Transparency Initiatives,OU=Argus,DC=weyland,DC=local"},
-    "IT_workstations"   : { "name": "Workstations", "path": "OU=IT,OU=Argus,DC=weyland,DC=local"}
-}
-
-laps_readers: ["L_LAPS_READER"]

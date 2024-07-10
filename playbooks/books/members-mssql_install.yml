@@ -1,0 +1,74 @@
+---
+- name: MSSQL sec facts
+  hosts: mssql
+  max_fail_percentage: 0
+  tasks:
+    - name: Set service account login password
+      ansible.builtin.set_fact:
+        sql_svcaccount_name: "{{ mssql_svcaccount_local | default('') }}"
+        sql_svcaccount_password: ""
+    - name: Set become account for System
+      ansible.builtin.set_fact:
+        config_sql_svcaccount: "NT AUTHORITY\\SYSTEM"
+      when: mssql_svcaccount_method == 'local' and sql_svcaccount_name == 'System'
+    - name: Set become account for LocalService
+      ansible.builtin.set_fact:
+        config_sql_svcaccount: "NT AUTHORITY\\LOCAL SERVICE"
+      when: mssql_svcaccount_method == 'local' and sql_svcaccount_name == 'LocalService'
+
+    - name: Set become account for NetworkService
+      ansible.builtin.set_fact:
+        config_sql_svcaccount: "NT AUTHORITY\\NETWORK SERVICE"
+      when: mssql_svcaccount_method == 'local' and sql_svcaccount_name == 'NetworkService'
+
+    - name: Set service account login as domain service
+      ansible.builtin.set_fact:
+        sql_svcaccount_name: "{{ domain_name }}\\{{ mssql_svcaccount_key }}"
+        config_sql_svcaccount: "{{ domain_name }}\\{{ mssql_svcaccount_key }}"
+      when: mssql_svcaccount_method == 'domain'
+
+    - name: Set service account login as gmsa
+      ansible.builtin.set_fact:
+        sql_svcaccount_name: "{{ domain_name }}\\{{ mssql_svcaccount_key }}$"
+        config_sql_svcaccount: "{{ domain_name }}\\{{ mssql_svcaccount_key }}$"
+      when: mssql_svcaccount_method == 'gmsa'
+
+    - name: Set service account password for domain service
+      ansible.builtin.set_fact:
+        sql_svcaccount_password: "{{ hostvars[domain_dc_ansible_inventory_key].domain_users[mssql_svcaccount_key].password }}"
+      when: mssql_svcaccount_method == 'domain'
+
+    - name: print some vars
+      debug:
+        msg:
+          - "SQLSVCACCOUNT: {{ sql_svcaccount_name }}"
+          - "CONFIGSQLSVCACCOUNT: {{ config_sql_svcaccount }}"
+          - "SQLSVCPASSWORD: {{ sql_svcaccount_password }}"
+
+
+- name: "INSTALL MSSQL EXPRESS"
+  hosts: mssql
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain/mssql/mssql', tags: 'mssql'}
+  vars:
+    ISGMSA: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
+    sql_instance_name: "{{ mssql_instance_name }}"
+    sql_version: "{{ mssql_version }}"
+    SQLSVCACCOUNT: "{{ sql_svcaccount_name }}"
+    CONFIGSQLSVCACCOUNT: "{{ config_sql_svcaccount }}"
+    SQLSVCPASSWORD: "{{ sql_svcaccount_password }}"
+    SQLYSADMIN: "{{ sql_svcaccount_name }}"
+
+
+- name: "Install SQL Server reporting"
+  hosts: mssql_reporting
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain/mssql/mssql_reporting', tags: 'mssql_reporting'}
+
+
+- name: "INSTALL SQL SERVER MANAGEMENT STUDIO"
+  hosts: mssql_ssms
+  roles:
+    - { role: 'windows_domain/mssql/mssql_ssms', tags: 'mssql_ssms'}

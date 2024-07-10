@@ -1,0 +1,37 @@
+#mssql_instance_name: "{{hostname}}"
+mssql_sa_password: "zdP3_q9yFLVHRXv4Agwb6Q"
+#mssql_svcaccount_method: 'gmsa' # domain, gmsa, local
+#mssql_svcaccount_key: "ichi" 
+#mssql_svcaccount_method: 'local' # domain, gmsa, local
+#mssql_svcaccount_local: NetworkService #  "NetworkService, System, LocalService"'
+mssql_svcaccount_method: 'gmsa' # domain, gmsa, local
+mssql_svcaccount_key: "ichi" # default : 'NT AUTHORITY\\NETWORK SERVICE'
+
+#mssql_sysadmins: ["RESEARCH\\adm_arose", "HAAS\\jubeaz", "RESEARCH\\administrator", "RESEARCH\\FENRIS$", "RESEARCH\\ichi"]
+mssql_sysadmins: ["HAAS\\jubeaz", "RESEARCH\\rubeaz", "RESEARCH\\administrator", "RESEARCH\\FENRIS$", "RESEARCH\\ichi"]
+
+mssql_domain_accounts: ["HAAS\\jubeaz", "RESEARCH\\rubeaz", "RESEARCH\\administrator", "RESEARCH\\FENRIS$", "RESEARCH\\ichi"]
+
+mssql_local_accounts: {
+    "link_account": "nQAhqFRaBJ9XxgC6WYT_tM"
+}
+
+mssql_executeaslogin: {
+}
+
+mssql_executeasuser: {
+}
+mssql_linked_servers: {
+#    "bran" : {
+#        "data_src": "bran.haas.local",
+#        "users_mapping": [
+#            {"local_login": "RESEARCH\\adm_arose","remote_login": "HAAS\\rknight", "remote_password": "5jqkKJJjmqup_o_E"}
+#            ]
+#        }
+    "bran" : {
+        "data_src": "bran.haas.local",
+        "users_mapping": [
+            {"local_login": "sa","remote_login": "link_account", "remote_password": "rEKA2mcGJte5f_9z7PZQ6p"}
+            ]
+        }
+}

@@ -1,74 +1,77 @@
 ---
 - name: Ensure domains are reachable
   import_playbook: books/domains-reachable.yml
-  
+
 - name: Compute extended inventory
   import_playbook: books/compute-inventory.yml
 
-- name: Computer build before domain building
-  import_playbook: books/computers-build.yml
-
-- name: Build domains
-  import_playbook: books/domain-build.yml
-
-- name: Add Organizational Units
-  import_playbook: books/domain-ous.yml
-
-- name: Joint computers to the domain
-  import_playbook: books/members-join.yml
-
-- name: Build domains trusts
-  import_playbook: books/domain-trusts.yml
-
-- name: Build PKI
-  import_playbook: books/domain-adcs.yml
-
-- name: Setup domain LAPS
-  import_playbook: books/domain-setup-laps.yml
-
-- name: Add domain data
-  import_playbook: books/domain-data.yml
-
-#- name: Compute extended inventory
-#  import_playbook: books/compute-global-mappings.yml
-
-- name: Deploy LAPS and GMSA
-  import_playbook: books/members-laps-gmsa.yml
-
-- name: Add domain ACLS
-  import_playbook: books/domain-acl.yml
-
-- name: Add local data on computers
-  import_playbook: books/computers-local-groups-users-rights.yml
-
-- name: Compute security features
-  import_playbook: books/computers-security.yml
-
-- name: Configure IIS servers
-  import_playbook: books/members-iis.yml
-
-- name: Compute webdav
-  import_playbook: books/members-webdav.yml
-
-- name: Configure mssql servers
-  import_playbook: books/members-mssql.yml
-
-- name: Add user data
-  import_playbook: books/members-user_data.yml
-### TO DO DEFENDER + APPOCKER
+#- name: Computer build before domain building
+#  import_playbook: books/computers-build.yml
 #
+#- name: Build domains
+#  import_playbook: books/domain-build.yml
+#
+#- name: Add Organizational Units
+#  import_playbook: books/domain-ous.yml
+#
+#- name: Joint computers to the domain
+#  import_playbook: books/members-join.yml
+#
+#- name: Build domains trusts
+#  import_playbook: books/domain-trusts.yml
 
-# TO DO
-#- import_playbook: books/vulnerabilities.yml
+#- name: Setup domain LAPS
+#  import_playbook: books/domain-setup-laps.yml
+#
+#- name: Build PKI
+#  import_playbook: books/domain-adcs.yml
 
-#- import_playbook: books/reboot.yml
+#- name: Add domain data
+#  import_playbook: books/domain-data.yml
+#
+#- name: Add domain ACLS
+#  import_playbook: books/domain-acl.yml
+#
+##- name: Compute extended inventory
+##  import_playbook: books/compute-global-mappings.yml
+#
+#- name: Deploy LAPS and GMSA
+#  import_playbook: books/members-laps-gmsa.yml
+#
+#- name: Add local data on computers
+#  import_playbook: books/computers-local-groups-users-rights.yml
+#
+#- name: Compute security features
+#  import_playbook: books/computers-security.yml
+#
+#- name: Configure IIS servers
+#  import_playbook: books/members-iis.yml
+#
+#- name: Compute webdav
+#  import_playbook: books/members-webdav.yml
 
-#- name: remove vagrant domain account
-#  hosts: dc
-#  roles:
-#    - { role: 'windows_domain/remove_vagrant', tags: 'remove_vagrant'}
-#- name: remove vagrant local account
-#  hosts: domain
-#  roles:
-#    - { role: 'windows_settings/remove_vagrant', tags: 'remove_vagrant'}
+#- name: Install mssql servers
+#  import_playbook: books/members-mssql_install.yml
+- name: Config mssql
+  import_playbook: books/members-mssql_config.yml
 
+#- name: Add user data
+#  import_playbook: books/members-user_data.yml
+#### TO DO DEFENDER + APPOCKER
+##
+#
+## TO DO
+## - import_playbook: books/vulnerabilities.yml
+#
+## - import_playbook: books/reboot.yml
+#
+## - name: remove vagrant domain account
+##  hosts: dc
+##  roles:
+##    - { role: 'windows_domain/remove_vagrant', tags: 'remove_vagrant'}
+## - name: remove vagrant local account
+##  hosts: domain
+##  roles:
+##    - { role: 'windows_settings/remove_vagrant', tags: 'remove_vagrant'}
+#
+#

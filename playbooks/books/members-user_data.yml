@@ -2,10 +2,10 @@
 - name: "INSTALL USER DATA ON MEMBERS"
   hosts: domain_server, domain_workstation
   tasks:
-    - include_role: 
+    - ansible.builtin.include_role: 
         name: "windows_domain/install_softwares"
       when: softwares | default([]) | length > 0
-    - include_role:
+    - ansible.builtin.include_role:
         name: "windows_domain/clone_repos"
       vars:
         repositories: "{{ u.value }}"

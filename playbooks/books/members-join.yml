@@ -1,8 +1,8 @@
 ---
-#- name: "Adjust DNS Server"
-#  hosts: dc
-#  roles:
-#    - { role: 'windows_domain/dns_listening', tags: 'server'}
+- name: "Adjust DNS Server"
+  hosts: dc
+  roles:
+    - { role: 'windows_domain/dns_listening', tags: 'server'}
 
 - name: "JOIN SERVERS TO DOMAIN"
   hosts: domain_server

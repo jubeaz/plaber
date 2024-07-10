@@ -84,7 +84,7 @@
 #    - name: debug
 #      debug:
 #        var: user_identity_mapping_gc
-#      when: inventory_hostname == 'dc03'
+#      when: inventory_hostname == 'haas01'
 #    - name: debug
 #      debug:
 #        var: group_identity_mapping_gc

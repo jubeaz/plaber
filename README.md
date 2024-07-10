@@ -44,7 +44,7 @@ vagrant halt
 
 * disable all vms buildint NAT interfaces
 ```bash
-for b in $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage modifyvm $b  --cableconnected1 off; done
+vboxmanage list vms | grep nrunner | sed -r 's/.*\{(.*)\}/\1/' | xargs -L1 -I {} vboxmanage modifyvm {} --cableconnected1 off
 
 for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage modifyvm $b  --cableconnected1 off; done
 ```
@@ -61,6 +61,7 @@ for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage sta
 * build fw
 ```
 ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/build-fw.yml
+ansible-playbook -i ./inventories/netrunner_base/netrunner.yml ./playbooks/build-fw.yml
 ```
 
 * build lab
@@ -109,11 +110,11 @@ ok: [dc_weyland] => {
         "Replication Summary Start Time: 2024-04-23 06:07:59",
         "Beginning data collection for replication summary, this may take awhile:",
         "Source DSA          largest delta    fails/total %%   error",
-        " DC01                      09m:15s    0 /   4    0  ",
-        " DC02                      09m:55s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
+        " wld01                      09m:15s    0 /   4    0  ",
+        " rsc01                      09m:55s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
         "Destination DSA     largest delta    fails/total %%   error",
-        " DC01                      09m:55s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
-        " DC02                      09m:10s    0 /   4    0  ",
+        " wld01                      09m:55s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
+        " rsc01                      09m:10s    0 /   4    0  ",
     ]
 }
 ok: [dc_haas] => {
@@ -124,16 +125,16 @@ ok: [dc_haas] => {
         "Destination DSA     largest delta    fails/total %%   error",
     ]
 }
-ok: [dc_research_weyland] => {
+ok: [dc_research_haas] => {
     "sync_summary.stdout_lines": [
         "Replication Summary Start Time: 2024-04-23 06:07:54",
         "Beginning data collection for replication summary, this may take awhile:",
         "Source DSA          largest delta    fails/total %%   error",
-        " DC01                      09m:10s    0 /   4    0  ",
-        " DC02                      09m:50s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
+        " wld01                      09m:10s    0 /   4    0  ",
+        " rsc01                      09m:50s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
         "Destination DSA     largest delta    fails/total %%   error",
-        " DC01                      09m:55s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
-        " DC02                      09m:10s    0 /   4    0  ",
+        " wld01                      09m:55s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
+        " rsc01                      09m:10s    0 /   4    0  ",
     ]
 }
 ```

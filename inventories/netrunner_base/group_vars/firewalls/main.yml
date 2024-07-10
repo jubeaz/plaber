@@ -1,0 +1,2 @@
+force_dns_server: yes
+dns_server: "8.8.8.8"
