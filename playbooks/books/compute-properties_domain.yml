@@ -1,0 +1,32 @@
+---
+- name: "Compute DOMAIN info on each host"
+  hosts: domain
+  max_fail_percentage: 0
+  tasks:
+    - name: Compute domain dc on all hosts
+      ansible.builtin.set_fact:
+        domain_dc_ip: "{{ hostvars[domain_dc_ansible_inventory_key].ansible_host }}"
+        domain_dc_name: "{{ hostvars[domain_dc_ansible_inventory_key].hostname }}"
+
+    - name: Compute domain info on non DC
+      ansible.builtin.set_fact:
+        domain_name: "{{ hostvars[domain_dc_ansible_inventory_key].domain_name }}"
+        domain_password: "{{ hostvars[domain_dc_ansible_inventory_key].domain_password }}"
+        domain_netbios_name: "{{ hostvars[domain_dc_ansible_inventory_key].domain_netbios_name }}"
+        domain_gmsa: "{{ hostvars[domain_dc_ansible_inventory_key].domain_gmsa }}"
+        laps_path: "{{ hostvars[domain_dc_ansible_inventory_key].laps_path }}"
+        path: "{{ hostvars[domain_dc_ansible_inventory_key].domain_real_computers[hostname].path }}"
+      when: inventory_hostname not in groups['dc']
+
+#    - name: print host configuration
+#      debug:
+#        msg:
+#          - "domain_password: {{ domain_password }}"
+#          - "domain_name: {{ domain_name }}"
+#          - "domain_netbios_name: {{ domain_netbios_name }}"
+#          - "domain_dc_ip: {{ domain_dc_ip }}"
+#          - "domain_dc_name: {{ domain_dc_name }}"
+#          - "domain_gmsa: {{ domain_gmsa }}"
+#          - "laps_path: {{ laps_path }}"
+#          - "path: {{ path }}"
+#

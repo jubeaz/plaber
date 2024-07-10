@@ -3,5 +3,4 @@
   hosts: adcs
   max_fail_percentage: 0
   roles:
-    - { role: 'windows_domain/adcs/adcs', tags: 'adcs'}
     - { role: 'windows_domain/adcs/templates', tags: 'adcs_templates', when: cert_templates is defined and cert_templates|length > 0}

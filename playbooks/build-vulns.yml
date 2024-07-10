@@ -2,39 +2,47 @@
 - name: Ensure domains are reachable
   import_playbook: books/domains-reachable.yml
 
+- name: Compute extended inventory (local)
+  import_playbook: books/compute-properties_local.yml
+- name: Compute extended inventory (domain)
+  import_playbook: books/compute-properties_domain.yml
+#- name: Compute extended inventory (forest)
+#  import_playbook: books/compute-properties_forest.yml
+#- name: Compute extended inventory (trust)
+#  import_playbook: books/compute-properties_trust.yml
+
 - name: Compute webdav
   import_playbook: books/members-webdav.yml
 
-#- name: Compute extended inventory
-#  import_playbook: books/compute-inventory.yml
 
-- name: Add Organizational Units
-  import_playbook: books/domain-ous.yml
-
-- name: Add domain data
-  import_playbook: books/domain-data.yml
+#
+#- name: Add Organizational Units
+#  import_playbook: books/domain-ous.yml
+#
+#- name: Add domain data
+#  import_playbook: books/domain-data.yml
 
 - name: Add domain ACLS
   import_playbook: books/domain-acl.yml
 
-#- name: Setup domain LAPS
-#  import_playbook: books/domain-setup-laps.yml
+##- name: Setup domain LAPS
+##  import_playbook: books/domain-setup-laps.yml
+##
+##- name: Build PKI
+##  import_playbook: books/domain-adcs.yml
 #
-#- name: Build PKI
-#  import_playbook: books/domain-adcs.yml
-
-- name: Deploy LAPS and GMSA
-  import_playbook: books/members-laps-gmsa.yml
-
-- name: Add local data on computers
-  import_playbook: books/computers-local-groups-users-rights.yml
-
-- name: Compute security features
-  import_playbook: books/computers-security.yml
-
-
-- name: Configure mssql servers
-  import_playbook: books/members-mssql.yml
+#- name: Deploy LAPS and GMSA
+#  import_playbook: books/members-laps-gmsa.yml
+#
+#- name: Add local data on computers
+#  import_playbook: books/computers-local-groups-users-rights.yml
+#
+#- name: Compute security features
+#  import_playbook: books/computers-security.yml
+#
+#
+#- name: Configure mssql servers
+#  import_playbook: books/members-mssql.yml
 
 #- name: Add user data
 #  import_playbook: books/members-user_data.yml

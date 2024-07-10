@@ -2,8 +2,14 @@
 - name: Ensure domains are reachable
   import_playbook: books/domains-reachable.yml
 
-- name: Compute extended inventory
-  import_playbook: books/compute-inventory.yml
+- name: Compute extended inventory (local)
+  import_playbook: books/compute-properties_local.yml
+- name: Compute extended inventory (domain)
+  import_playbook: books/compute-properties_domain.yml
+- name: Compute extended inventory (forest)
+  import_playbook: books/compute-properties_forest.yml
+- name: Compute extended inventory (trust)
+  import_playbook: books/compute-properties_trust.yml
 
 - name: Computer build before domain building
   import_playbook: books/computers-build.yml
@@ -24,7 +30,10 @@
   import_playbook: books/domain-setup-laps.yml
 
 - name: Build PKI
-  import_playbook: books/domain-adcs.yml
+  import_playbook: books/domain-adcs_build.yml
+- name: Build PKI (Add templates)
+  import_playbook: books/domain-adcs_temlates.yml
+  
 - name: Add domain data
   import_playbook: books/domain-data.yml
 
@@ -56,21 +65,4 @@
 
 #- name: Add user data
 #  import_playbook: books/members-user_data.yml
-#### TO DO DEFENDER + APPOCKER
-##
-#
-## TO DO
-## - import_playbook: books/vulnerabilities.yml
-#
-## - import_playbook: books/reboot.yml
-#
-## - name: remove vagrant domain account
-##  hosts: dc
-##  roles:
-##    - { role: 'windows_domain/remove_vagrant', tags: 'remove_vagrant'}
-## - name: remove vagrant local account
-##  hosts: domain
-##  roles:
-##    - { role: 'windows_settings/remove_vagrant', tags: 'remove_vagrant'}
-#
-#
+

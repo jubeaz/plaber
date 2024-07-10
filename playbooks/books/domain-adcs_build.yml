@@ -1,0 +1,6 @@
+---
+- name: ADCS INSTALL
+  hosts: adcs
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain/adcs/adcs', tags: 'adcs'}
