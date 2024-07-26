@@ -41,9 +41,9 @@
     - name: Print some vars
       ansible.builtin.debug:
         msg:
-          - "SQLSVCACCOUNT: {{ sql_svcaccount_name }}"
-          - "CONFIGSQLSVCACCOUNT: {{ config_sql_svcaccount }}"
-          - "SQLSVCPASSWORD: {{ sql_svcaccount_password }}"
+          - "sql_svc_account: {{ sql_svcaccount_name }}"
+          - "config_sql_svc_account: {{ config_sql_svcaccount }}"
+          - "sql_svc_password: {{ sql_svcaccount_password }}"
 
 
 - name: "INSTALL MSSQL EXPRESS"
@@ -52,13 +52,13 @@
   roles:
     - { role: 'windows_domain_mssql_install', tags: 'mssql'}
   vars:
-    ISGMSA: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
+    isgmsa: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
     sql_instance_name: "{{ mssql_instance_name }}"
     sql_version: "{{ mssql_version }}"
-    SQLSVCACCOUNT: "{{ sql_svcaccount_name }}"
-    CONFIGSQLSVCACCOUNT: "{{ config_sql_svcaccount }}"
-    SQLSVCPASSWORD: "{{ sql_svcaccount_password }}"
-    SQLYSADMIN: "{{ sql_svcaccount_name }}"
+    sql_svc_account: "{{ sql_svcaccount_name }}"
+    config_sql_svc_account: "{{ config_sql_svcaccount }}"
+    sql_svc_password: "{{ sql_svcaccount_password }}"
+    sql_admin: "{{ sql_svcaccount_name }}"
     sa_password: "{{ mssql_sa_password }}"
 
 - name: "Install SQL Server reporting"

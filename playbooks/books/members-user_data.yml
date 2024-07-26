@@ -2,28 +2,33 @@
 - name: "INSTALL USER DATA ON MEMBERS"
   hosts: domain_server, domain_workstation
   tasks:
-    - ansible.builtin.include_role: 
+    - name: Install softwares
+      ansible.builtin.include_role:
         name: "windows_domain_install_softwares"
       when: softwares | default([]) | length > 0
-    - ansible.builtin.include_role:
+
+    - name: Clone repos
+      ansible.builtin.include_role:
         name: "windows_domain_clone_repos"
       vars:
         repositories: "{{ u.value }}"
         user: "{{ u.key }}"
         net_bios: "{{ domain_netbios_name }}"
         password: "{{ hostvars[domain_dc_ansible_inventory_key].domain_users_regular[u.key].password }}"
-      loop: "{{  user_repos|dict2items  }}"
+      loop: "{{ user_repos | dict2items }}"
       when: user_repos is defined
       loop_control:
         loop_var: u
-    - ansible.builtin.include_role:
+
+    - name: Donwload files
+      ansible.builtin.include_role:
         name: "windows_domain_download_files"
+      loop: "{{ user_downloads | dict2items }}"
+      loop_control:
+        loop_var: u
+      when: user_downloads is defined
       vars:
         downloads: "{{ u.value }}"
         user: "{{ u.key }}"
         net_bios: "{{ domain_netbios_name }}"
         password: "{{ hostvars[domain_dc_ansible_inventory_key].domain_users_regular[u.key].password }}"
-      loop: "{{  user_downloads|dict2items  }}"
-      loop_control:
-        loop_var: u
-      when: user_downloads is defined

@@ -31,9 +31,9 @@
     - { role: 'windows_domain_mssql_accounts_domain', tags: 'mssql'}
   vars:
     sql_version: "{{ mssql_version }}"
-    ISGMSA: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
-    SQLSVCACCOUNT: "{{ sql_svcaccount_name }}"
-    SQLSVCPASSWORD: "{{ sql_svcaccount_password }}"
+    isgmsa: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
+    sql_svc_account: "{{ sql_svcaccount_name }}"
+    sql_svc_password: "{{ sql_svcaccount_password }}"
     sa_password: "{{ mssql_sa_password }}"
     sql_domain_accounts: "{{ mssql_domain_accounts | default([]) }}"
 
@@ -45,9 +45,9 @@
     - { role: 'windows_domain_mssql_accounts_local', tags: 'mssql'}
   vars:
     sql_version: "{{ mssql_version }}"
-    ISGMSA: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
-    SQLSVCACCOUNT: "{{ sql_svcaccount_name }}"
-    SQLSVCPASSWORD: "{{ sql_svcaccount_password }}"
+    isgmsa: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
+    sql_svc_account: "{{ sql_svcaccount_name }}"
+    sql_svc_password: "{{ sql_svcaccount_password }}"
     sa_password: "{{ mssql_sa_password }}"
     sql_local_accounts: "{{ mssql_local_accounts | default({}) }}"
 
@@ -58,9 +58,9 @@
     - { role: 'windows_domain_mssql_admin', tags: 'mssql'}
   vars:
     sql_version: "{{ mssql_version }}"
-    ISGMSA: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
-    SQLSVCACCOUNT: "{{ sql_svcaccount_name }}"
-    SQLSVCPASSWORD: "{{ sql_svcaccount_password }}"
+    isgmsa: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
+    sql_svc_account: "{{ sql_svcaccount_name }}"
+    sql_svc_password: "{{ sql_svcaccount_password }}"
     sa_password: "{{ mssql_sa_password }}"
     sql_sysadmins: "{{ mssql_sysadmins | default([]) }}"
 
@@ -71,9 +71,9 @@
     - { role: 'windows_domain_mssql_impersonate', tags: 'mssql'}
   vars:
     sql_version: "{{ mssql_version }}"
-    ISGMSA: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
-    SQLSVCACCOUNT: "{{ sql_svcaccount_name }}"
-    SQLSVCPASSWORD: "{{ sql_svcaccount_password }}"
+    isgmsa: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
+    sql_svc_account: "{{ sql_svcaccount_name }}"
+    sql_svc_password: "{{ sql_svcaccount_password }}"
     sa_password: "{{ mssql_sa_password }}"
     executeasuser: "{{ mssql_executeasuser | default({}) }}"
     executeaslogin: "{{ mssql_executeaslogin | default({}) }}"
@@ -85,8 +85,8 @@
     - { role: 'windows_domain_mssql_link', tags: 'mssql, mssql_link'}
   vars:
     sql_version: "{{ mssql_version }}"
-    ISGMSA: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
-    SQLSVCACCOUNT: "{{ sql_svcaccount_name }}"
-    SQLSVCPASSWORD: "{{ sql_svcaccount_password }}"
+    isgmsa: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
+    sql_svc_account: "{{ sql_svcaccount_name }}"
+    sql_svc_password: "{{ sql_svcaccount_password }}"
     sa_password: "{{ mssql_sa_password }}"
     linked_servers: "{{ mssql_linked_servers | default({}) }}"
