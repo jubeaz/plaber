@@ -11,10 +11,10 @@
       ansible.builtin.include_role:
         name: "windows_domain_clone_repos"
       vars:
-        repositories: "{{ u.value }}"
-        user: "{{ u.key }}"
-        net_bios: "{{ domain_netbios_name }}"
-        password: "{{ hostvars[domain_dc_ansible_inventory_key].domain_users_regular[u.key].password }}"
+        windows_domain_clone_repos_repositories: "{{ u.value }}"
+        windows_domain_clone_repos_user: "{{ u.key }}"
+        windows_domain_clone_repos_net_bios: "{{ domain_netbios_name }}"
+        windows_domain_clone_repos_password: "{{ hostvars[domain_dc_ansible_inventory_key].domain_users_regular[u.key].password }}"
       loop: "{{ user_repos | dict2items }}"
       when: user_repos is defined
       loop_control:
@@ -28,7 +28,7 @@
         loop_var: u
       when: user_downloads is defined
       vars:
-        downloads: "{{ u.value }}"
-        user: "{{ u.key }}"
-        net_bios: "{{ domain_netbios_name }}"
-        password: "{{ hostvars[domain_dc_ansible_inventory_key].domain_users_regular[u.key].password }}"
+        windows_domain_download_files_downloads: "{{ u.value }}"
+        windows_domain_download_files_user: "{{ u.key }}"
+        windows_domain_download_files_net_bios: "{{ domain_netbios_name }}"
+        windows_domain_download_files_password: "{{ hostvars[domain_dc_ansible_inventory_key].domain_users_regular[u.key].password }}"
