@@ -29,4 +29,3 @@
 #          - "domain_gmsa: {{ domain_gmsa }}"
 #          - "laps_path: {{ laps_path }}"
 #          - "path: {{ path }}"
-#

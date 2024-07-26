@@ -3,4 +3,4 @@
   hosts: iis
   max_fail_percentage: 0
   roles:
-    - { role: 'windows_domain/iis', tags: 'iis'}
+    - {role: 'windows_domain_iis', tags: 'iis'}

@@ -1,5 +1,5 @@
 ---
-- name: MSSQL sec facts
+- name: MSSQL set facts
   hosts: mssql
   max_fail_percentage: 0
   tasks:
@@ -38,8 +38,8 @@
         sql_svcaccount_password: "{{ hostvars[domain_dc_ansible_inventory_key].domain_users[mssql_svcaccount_key].password }}"
       when: mssql_svcaccount_method == 'domain'
 
-    - name: print some vars
-      debug:
+    - name: Print some vars
+      ansible.builtin.debug:
         msg:
           - "SQLSVCACCOUNT: {{ sql_svcaccount_name }}"
           - "CONFIGSQLSVCACCOUNT: {{ config_sql_svcaccount }}"
@@ -50,7 +50,7 @@
   hosts: mssql
   max_fail_percentage: 0
   roles:
-    - { role: 'windows_domain/mssql/mssql', tags: 'mssql'}
+    - { role: 'windows_domain_mssql_install', tags: 'mssql'}
   vars:
     ISGMSA: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
     sql_instance_name: "{{ mssql_instance_name }}"
@@ -59,16 +59,16 @@
     CONFIGSQLSVCACCOUNT: "{{ config_sql_svcaccount }}"
     SQLSVCPASSWORD: "{{ sql_svcaccount_password }}"
     SQLYSADMIN: "{{ sql_svcaccount_name }}"
-
+    sa_password: "{{ mssql_sa_password }}"
 
 - name: "Install SQL Server reporting"
   hosts: mssql_reporting
   max_fail_percentage: 0
   roles:
-    - { role: 'windows_domain/mssql/mssql_reporting', tags: 'mssql_reporting'}
+    - { role: 'windows_domain_mssql_reporting', tags: 'mssql_reporting'}
 
 
 - name: "INSTALL SQL SERVER MANAGEMENT STUDIO"
   hosts: mssql_ssms
   roles:
-    - { role: 'windows_domain/mssql/mssql_ssms', tags: 'mssql_ssms'}
+    - { role: 'windows_domain_mssql_ssms', tags: 'mssql_ssms'}

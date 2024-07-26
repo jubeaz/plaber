@@ -3,7 +3,7 @@
   hosts: dc
   max_fail_percentage: 0
   roles:
-  - { role: 'windows_domain/acl', tags: 'acl'}
+    - { role: 'windows_domain_acl', tags: 'acl'}
   vars:
     ad_acls: "{{ acls | default({}) }}"
 
@@ -11,12 +11,15 @@
   hosts: adcs
   max_fail_percentage: 0
   roles:
-    - { role: 'windows_domain/adcs/acl_templates', tags: 'adcs_templates', when: acls_adcs_templates   | length >0, acls: "{{ acls_adcs_templates }}"}
-    - { role: 'windows_domain/adcs/acl_authority', tags: 'adcs_templates', when: acls_adcs_authority   | length >0, acls: "{{ acls_adcs_authority }}", CAName: "{{ ca_common_name }}"}
-
+    - { role: 'windows_domain_adcs_acl_templates', tags: 'adcs_templates', when: acls_adcs_templates   | length >0}
+    - { role: 'windows_domain_adcs_acl_authority', tags: 'adcs_templates', when: acls_adcs_authority   | length >0}
+  vars:
+    templates_acls: "{{ acls_adcs_templates }}"
+    authority_acls: "{{ acls_adcs_authority }}"
+    authority_ca_name: "{{ ca_common_name }}"
 
 - name: SET LAPS USERS AND GROUPS PERMISSION
   hosts: dc
   max_fail_percentage: 0
   roles:
-    - { role: 'windows_domain/laps/permissions', tags: 'laps-permissions', when: laps_path  | length > 0}
+    - { role: 'windows_domain_laps_permissions', tags: 'laps-permissions', when: laps_path  | length > 0}

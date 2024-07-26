@@ -1,25 +1,70 @@
 ---
-- name: DCS AD DATA CONFIGURATION
+- name: DCS AD DATA password policy
   hosts: dc
   max_fail_percentage: 0
   roles:
-    - { role: 'windows_domain/password_policy', tags: 'policy', policy: "{{ password_policy.default }}"}
-# CREATE OBJECTS
-    - { role: 'windows_domain/user_group_ou_computer/group',    tags: 'ad_domain_data', objects: "{{ domain_groups }}",     action: "create" }
-    - { role: 'windows_domain/user_group_ou_computer/user',     tags: 'ad_domain_data', objects: "{{ domain_users }}",      action: "create" }
-    - { role: 'windows_domain/user_group_ou_computer/computer', tags: 'ad_domain_data', objects: "{{ domain_computers }}",  action: "create" }
-    - { role: 'windows_domain/gmsa/gmsa',                       tags: 'ad_domain_data', objects: "{{ domain_gmsa }}",       action: "create" }
-    - { role: 'windows_domain/user_group_ou_computer/group',    tags: 'ad_domain_data', objects: "{{ domain_groups }}",     action: "add_members" }
-    - { role: 'windows_domain/user_group_ou_computer/group',    tags: 'ad_domain_data', objects: "{{ domain_builtin_groups }}",     action: "add_members" }
-# ADD kerberos ressource based constrained delegations
-    - { role: 'windows_domain/gmsa/gmsa',                       tags: 'ad_domain_data', objects: "{{ domain_gmsa }}",              action: "add_delegates"}
-    - { role: 'windows_domain/user_group_ou_computer/user',     tags: 'ad_domain_data', objects: "{{ domain_service_accounts }}",  action: "add_delegates" }
-    - { role: 'windows_domain/user_group_ou_computer/computer', tags: 'ad_domain_data', objects: "{{ domain_computers }}",         action: "add_delegates" }
-# ADD kerberos unconstained and constrained delegations
-    - { role: 'windows_domain/kerberos_delegation',             tags: 'ad_domain_data', objects: "{{ domain_service_accounts }}"}
-    - { role: 'windows_domain/kerberos_delegation',             tags: 'ad_domain_data', objects: "{{ domain_gmsa }}"}
-    - { role: 'windows_domain/kerberos_delegation',             tags: 'ad_domain_data', objects: "{{ domain_computers }}"}
-# AD Account Control
-    - { role: 'windows_domain/ad_account_control',              tags: 'ad_domain_data', objects: "{{ domain_gmsa }}"}
-    - { role: 'windows_domain/ad_account_control',              tags: 'ad_domain_data', objects: "{{ domain_users }}"}
-    - { role: 'windows_domain/ad_account_control',              tags: 'ad_domain_data', objects: "{{ domain_computers }}"}
+    - { role: 'windows_domain_password_policy', tags: 'policy'}
+  vars:
+    policy: "{{ password_policy.default }}"
+
+- name: DCS AD DATA Create objects
+  hosts: dc
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain_data_group', tags: 'ad_domain_data'}
+    - { role: 'windows_domain_data_user', tags: 'ad_domain_data'}
+    - { role: 'windows_domain_data_computer', tags: 'ad_domain_data'}
+    - { role: 'windows_domain_gmsa_ad', tags: 'ad_domain_data'}
+  vars:
+    ad_groups: "{{ domain_groups }}"
+    ad_users: "{{ domain_users }}"
+    ad_computers: "{{ domain_computers }}"
+    ad_gmsas: "{{ domain_gmsa }}"
+    domain_data_action: "create"
+
+- name: DCS AD DATA Add group members
+  hosts: dc
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain_data_group', tags: 'ad_domain_data'}
+  vars:
+    ad_groups: "{{ domain_groups }}"
+    domain_data_action: "add_members"
+
+- name: DCS AD DATA Add group members (builtin groups)
+  hosts: dc
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain_data_group', tags: 'ad_domain_data'}
+  vars:
+    ad_groups: "{{ domain_builtin_groups }}"
+    domain_data_action: "add_members"
+
+- name: DCS AD DATA Add delegates on objects
+  hosts: dc
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain_gmsa_ad', tags: 'ad_domain_data'}
+    - { role: 'windows_domain_data_user', tags: 'ad_domain_data'}
+    - { role: 'windows_domain_data_computer', tags: 'ad_domain_data'}
+  vars:
+    ad_users: "{{ domain_service_accounts }}"
+    ad_computers: "{{ domain_computers }}"
+    ad_gmsas: "{{ domain_gmsa }}"
+    domain_data_action: "add_delegates"
+
+- name: DCS AD DATA Add kerberos delegations
+  hosts: dc
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain_kerberos_delegation', tags: 'ad_domain_data', objects: "{{ domain_service_accounts }}"}
+    - { role: 'windows_domain_kerberos_delegation', tags: 'ad_domain_data', objects: "{{ domain_gmsa }}"}
+    - { role: 'windows_domain_kerberos_delegation', tags: 'ad_domain_data', objects: "{{ domain_computers }}"}
+
+- name: DCS AD DATA Set UAC on accounts
+  hosts: dc
+  max_fail_percentage: 0
+  roles:    
+    - { role: 'windows_domain_ad_account_control', tags: 'ad_domain_data', objects: "{{ domain_gmsa }}"}
+    - { role: 'windows_domain_ad_account_control', tags: 'ad_domain_data', objects: "{{ domain_users }}"}
+    - { role: 'windows_domain_ad_account_control', tags: 'ad_domain_data', objects: "{{ domain_computers }}"}

@@ -3,10 +3,10 @@
   hosts: domain_server, domain_workstation
   tasks:
     - ansible.builtin.include_role: 
-        name: "windows_domain/install_softwares"
+        name: "windows_domain_install_softwares"
       when: softwares | default([]) | length > 0
     - ansible.builtin.include_role:
-        name: "windows_domain/clone_repos"
+        name: "windows_domain_clone_repos"
       vars:
         repositories: "{{ u.value }}"
         user: "{{ u.key }}"
@@ -17,7 +17,7 @@
       loop_control:
         loop_var: u
     - ansible.builtin.include_role:
-        name: "windows_domain/download_files"
+        name: "windows_domain_download_files"
       vars:
         downloads: "{{ u.value }}"
         user: "{{ u.key }}"

@@ -4,5 +4,6 @@
   max_fail_percentage: 0
   # serial: 1 # add one trust at a time to avoid issues
   roles:
-    - { role: 'windows_domain/laps/dc', tags: 'laps-dc', when: laps_path  | length > 0, replication_wait_in_minutes: 60}
-
+    - { role: 'windows_domain_laps_dc', tags: 'laps-dc', when: laps_path  | length > 0}
+  vars:
+    replication_wait_in_minutes: 60

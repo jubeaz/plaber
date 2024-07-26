@@ -4,7 +4,7 @@
   max_fail_percentage: 0
   tags: 'build_domains_parents_domains'
   roles:
-    - { role: 'windows_domain/domain_root', tags: 'dc_main_domains', when: "dc_level == 0"}
+    - { role: 'windows_domain_domain_root', tags: 'dc_main_domains', when: "dc_level == 0"}
 
 
 - name: CHILD DC AD CONFIGURATION
@@ -13,9 +13,9 @@
   max_fail_percentage: 0
   tags: 'build_domains_child_domains'
   roles:
-    - { role: 'windows_domain/domain_child', tags: 'child_domain', when: "dc_level == 1"}
+    - { role: 'windows_domain_domain_child', tags: 'child_domain', when: "dc_level == 1"}
     # child forward parent zone
-    - { role: 'windows_domain/dns_conditional_forwarder', tags: 'dns_conditional_forwarder', when: "dc_level == 1" }
+    - { role: 'windows_domain_dns_conditional_forwarder', tags: 'dns_conditional_forwarder', when: "dc_level == 1" }
   vars:
     master_server: "{{ domain_parent_dc_ip }}"
     zone_name: "{{ domain_parent_domain_name }}"
@@ -26,7 +26,7 @@
   hosts: dc
   max_fail_percentage: 0
   roles:
-    - { role: 'windows_domain/child_dns', tags: 'child_dns'}
+    - { role: 'windows_domain_child_dns', tags: 'child_dns'}
 
 
 # NECESSARY ONLY WITH DC HAVING 2 NIC
@@ -35,4 +35,4 @@
   hosts: dc
   max_fail_percentage: 0
   roles:
-    - { role: 'windows_domain/dns_listening', tags: 'server'}
+    - { role: 'windows_domain_dns_listening', tags: 'server'}

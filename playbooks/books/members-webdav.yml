@@ -3,4 +3,4 @@
   hosts: domain_server, domain_workstation
   max_fail_percentage: 0
   roles:
-    - { role: 'windows_domain/webdav', tags: 'webdav', when:  enable_webdav}
+    - { role: 'windows_domain_webdav', tags: 'webdav', when: enable_webdav}

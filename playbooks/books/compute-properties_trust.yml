@@ -45,18 +45,18 @@
 #      when: transitive_trusts_domains is defined
 
 
-#- name: "COMPUTE SCCM ON DC"
-#  hosts: dc
-#  max_fail_percentage: 0
-#  gather_facts: no
-#  tasks:
-#    - name:
-#      no_log: true
-#      ansible.builtin.set_fact:
-#        transitive_trusts_domains: "{{ transitive_trusts_domains | default([]) + [[ item.key, item.value.domain_name ]]  }}"
-#      with_dict: "{{  hostvars  }}"
-#      when: item.value.domain_name is defined and
-#        item.value.domain_name != domain_name
-#        and item.value.domain_name != domain_trust_remote_domain_name
-#        and '.'.join(item.value.domain_name.split('.')[1:]) != domain_name
-#        and item.value.domain_name != '.'.join(domain_name.split('.')[1:])
+# - name: "COMPUTE SCCM ON DC"
+#   hosts: dc
+#   max_fail_percentage: 0
+#   gather_facts: no
+#   tasks:
+#     - name:
+#       no_log: true
+#       ansible.builtin.set_fact:
+#         transitive_trusts_domains: "{{ transitive_trusts_domains | default([]) + [[ item.key, item.value.domain_name ]]  }}"
+#       with_dict: "{{  hostvars  }}"
+#       when: item.value.domain_name is defined and
+#         item.value.domain_name != domain_name
+#         and item.value.domain_name != domain_trust_remote_domain_name
+#         and '.'.join(item.value.domain_name.split('.')[1:]) != domain_name
+#         and item.value.domain_name != '.'.join(domain_name.split('.')[1:])

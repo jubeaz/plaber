@@ -1,5 +1,5 @@
 ---
-- name: MSSQL sec facts
+- name: MSSQL set facts
   hosts: mssql
   max_fail_percentage: 0
   tasks:
@@ -28,7 +28,7 @@
   hosts: mssql
   max_fail_percentage: 0
   roles:
-    - { role: 'windows_domain/mssql/mssql_accounts_domain', tags: 'mssql'}
+    - { role: 'windows_domain_mssql_accounts_domain', tags: 'mssql'}
   vars:
     sql_version: "{{ mssql_version }}"
     ISGMSA: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
@@ -42,7 +42,7 @@
   hosts: mssql
   max_fail_percentage: 0
   roles:
-    - { role: 'windows_domain/mssql/mssql_accounts_local', tags: 'mssql'}
+    - { role: 'windows_domain_mssql_accounts_local', tags: 'mssql'}
   vars:
     sql_version: "{{ mssql_version }}"
     ISGMSA: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
@@ -55,7 +55,7 @@
   hosts: mssql
   max_fail_percentage: 0
   roles:
-    - { role: 'windows_domain/mssql/mssql_admin', tags: 'mssql'}
+    - { role: 'windows_domain_mssql_admin', tags: 'mssql'}
   vars:
     sql_version: "{{ mssql_version }}"
     ISGMSA: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
@@ -68,7 +68,7 @@
   hosts: mssql
   max_fail_percentage: 0
   roles:
-    - { role: 'windows_domain/mssql/mssql_impersonate', tags: 'mssql'}
+    - { role: 'windows_domain_mssql_impersonate', tags: 'mssql'}
   vars:
     sql_version: "{{ mssql_version }}"
     ISGMSA: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
@@ -82,7 +82,7 @@
   hosts: mssql
   max_fail_percentage: 0
   roles:
-    - { role: 'windows_domain/mssql/mssql_link', tags: 'mssql, mssql_link'}
+    - { role: 'windows_domain_mssql_link', tags: 'mssql, mssql_link'}
   vars:
     sql_version: "{{ mssql_version }}"
     ISGMSA: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"

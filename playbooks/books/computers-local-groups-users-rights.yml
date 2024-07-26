@@ -1,9 +1,18 @@
 ---
-- name: "ADJUST RIGHTS CONFIGURATION"
+- name: "Add local data"
   hosts: domain
   max_fail_percentage: 0
   roles:
-    - { role: "windows_settings/groups", tags: 'adjust_rights', action: "create"}
-    - { role: "windows_settings/users", tags: 'adjust_rights'}
-    - { role: "windows_settings/groups", tags: 'adjust_rights', action: "add_members"}
-    - { role: "windows_settings/user_rights", tags: 'adjust_rights'}
+    - { role: "windows_settings_groups", tags: 'adjust_rights'}
+    - { role: "windows_settings_users", tags: 'adjust_rights'}
+    - { role: "windows_settings_user_rights", tags: 'adjust_rights'}
+  vars:
+    group_action: "create"
+
+- name: "Add local groups members"
+  hosts: domain
+  max_fail_percentage: 0
+  roles:
+    - { role: "windows_settings_groups", tags: 'adjust_rights'}
+  vars:
+    group_action: "add_members"

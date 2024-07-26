@@ -2,17 +2,19 @@
 - name: "Adjust DNS Server"
   hosts: dc
   roles:
-    - { role: 'windows_domain/dns_listening', tags: 'server'}
+    - { role: 'windows_domain_dns_listening', tags: 'server'}
 
 - name: "JOIN SERVERS TO DOMAIN"
   hosts: domain_server
   max_fail_percentage: 0
   roles:
-    - { role: 'windows_domain/member_server', tags: 'server'}
+    - { role: 'windows_domain_member_server', tags: 'server'}
 
 - name: "JOIN WORKSTATIONS TO DOMAIN"
   hosts: domain_workstation
   max_fail_percentage: 0
   roles:
-    - { role: 'windows_domain/member_workstation', tags: 'workstation'}
-    - { role: 'windows_domain/install_capabilities', tags: 'install_features', capabilities: "{{ extra_features }}"}
+    - { role: 'windows_domain_member_workstation', tags: 'workstation'}
+    - { role: 'windows_domain_install_capabilities', tags: 'install_features'}
+  vars:
+    capabilities: "{{ extra_features }}"
