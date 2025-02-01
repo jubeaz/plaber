@@ -31,7 +31,7 @@
     - name: Compute child domain names on parent DC
       no_log: true
       ansible.builtin.set_fact:
-        child_domains: "{{ child_domains | default([]) + [[ item.key, item.value.hostname, item.value.domain_name ]]  }}"
+        child_domains: "{{ child_domains | default([]) + [[ item.key, item.value.hostname, item.value.domain_name ]] }}"
       with_dict: "{{ hostvars }}"
       when: item.value.domain_parent_domain_name is defined and domain_name == item.value.domain_parent_domain_name
 

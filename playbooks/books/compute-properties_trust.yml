@@ -23,8 +23,8 @@
     - name: Compute transitive trusted domains
       no_log: true
       ansible.builtin.set_fact:
-        transitive_trusts_domains: "{{ transitive_trusts_domains | default([]) + [[ item.key, item.value.domain_name ]]  }}"
-      with_dict: "{{  hostvars  }}"
+        transitive_trusts_domains: "{{ transitive_trusts_domains | default([]) + [[ item.key, item.value.domain_name ]] }}"
+      with_dict: "{{ hostvars }}"
       when: item.value.domain_name is defined and
         item.value.domain_name != domain_name
         and item.value.domain_name != domain_trust_remote_domain_name

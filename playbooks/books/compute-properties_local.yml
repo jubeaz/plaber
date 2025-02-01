@@ -11,7 +11,7 @@
 
     - name: Register is_server_os
       ansible.builtin.set_fact:
-        is_server_os: "{{  product_name.stdout_lines[0] is search('Windows Server')  }}"
+        is_server_os: "{{  product_name.stdout_lines[0] is search('Windows Server') }}"
 
     - name: Check InstallationType
       ansible.windows.win_shell: |

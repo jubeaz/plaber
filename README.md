@@ -1,10 +1,41 @@
 # plaber 
 
+
+
 derived from [GOAD](https://github.com/Orange-Cyberdefense/GOAD/tree/main)
 
 
+https://github.com/jborean93/exchange-test-environment
+
 notes:
 * vagrant is only used for initial provisionning since default nat interface is disconnected after provisionning
+
+
+## vagrant pbs
+[Unable to activate vagrant_cloud-3.1.1, because rexml-3.3.2 conflicts with rexml (~> 3.2.5)](https://github.com/hashicorp/vagrant/issues/13502)
+```
+sudo pacman -U /var/cache/pacman/pkg/ruby-rexml-3.2.6-2-any.pkg.tar.zst
+```
+[Recent version of Virtualbox 7.1.0 is not supported by vagrant 2.4.1](https://github.com/hashicorp/vagrant/issues/13501)
+
+Edit `/usr/bin/VBox`
+```
+    VirtualBoxVM|virtualboxvm)
+        exec "$INSTALL_DIR/VirtualBoxVM" "$@"
+        ;;
+    VBoxManage|vboxmanage)
+    ########################
+        if [[ $@ == "--version" ]]; then
+           echo "7.0.0r164728"
+        else
+           exec "$INSTALL_DIR/VBoxManage" "$@"
+        fi
+        ;;
+    ########################
+    VBoxSDL|vboxsdl)
+        exec "$INSTALL_DIR/VBoxSDL" "$@"
+        ;;
+```
 
 
 # Run lab
@@ -29,7 +60,7 @@ ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml 
 ```bash
 for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage controlvm $b acpipowerbutton; done
 ```
-# BUILD
+# BUILD THE LAB
 ## vagrant
 * build all  vms
 ```bash
@@ -41,12 +72,15 @@ vagrant up --debug --timestamp
 vagrant halt
 ```
 
-
 * disable all vms buildint NAT interfaces
 ```bash
 vboxmanage list vms | grep nrunner | sed -r 's/.*\{(.*)\}/\1/' | xargs -L1 -I {} vboxmanage modifyvm {} --cableconnected1 off
 
 for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage modifyvm $b  --cableconnected1 off; done
+```
+
+```bash
+for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage showvminfo $b |grep 'Cable connected: off' ; done
 ```
 
 * restart all vms
@@ -56,22 +90,26 @@ for b in $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep n
 for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage startvm $b --type headless; done
 ```
 
+```bash
+vboxmanage list runningvms
+```
+
 ## ansible
 
 * build fw
 ```
-ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/build-fw.yml
+ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/0-build-fw.yml
 ansible-playbook -i ./inventories/netrunner_base/netrunner.yml ./playbooks/build-fw.yml
 ```
 
 * build lab
 ```
-ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/build-lab.yml
+ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/1-build-lab.yml
 ```
 
 * enable 
 ```bash
-ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/enable-lab.yml
+ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/2-enable-lab.yml
 ```
 
 # To fix on vagrant
