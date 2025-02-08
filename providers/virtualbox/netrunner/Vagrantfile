@@ -117,8 +117,8 @@ Vagrant.configure("2") do |config|
       bname: "nrunner_rsc_ws01", 
       ip: "172.16.3.20", 
   	  net: net_defs[:research], 
-      box: "gusztavvargadr/windows-10", 
-      box_version: "2202.0.2409 ", 
+      box: "gusztavvargadr/windows-11", 
+      #box_version: "2202.0.2409 ", 
       os: "windows", 
       ram: 4*1024,
       cpu: 2
