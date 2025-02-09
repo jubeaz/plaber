@@ -8,8 +8,8 @@ local_users: {
 
 local_groups: {
     "Administrators" : [".\\LA_jubeaz", "weyland.local\\L_LOCAL_ADMINS", "weyland.local\\L_LOCAL_ADMINS_ARCHER"],
-    "Remote Management Users": ["weyland.local\\lowpriv"],
-    "Remote Desktop Users" : ["weyland.local\\lowpriv"],
+    "Remote Management Users": [".\\LA_jubeaz", "weyland.local\\L_LOCAL_ADMINS", "weyland.local\\L_LOCAL_ADMINS_ARCHER", "weyland.local\\lowpriv"],
+    "Remote Desktop Users" : [".\\LA_jubeaz", "weyland.local\\L_LOCAL_ADMINS", "weyland.local\\L_LOCAL_ADMINS_ARCHER", "weyland.local\\lowpriv"],
 }
 
 

@@ -8,7 +8,8 @@ enable_webdav: false
 # 5: ask the administrator to confirm to run non Windows binaries with high privileges     
 #uac_status_level: 5
 enable_run_as_ppl: false
-windows_defender: true
+#windows_defender: true
+windows_defender: false
 
 connection_profiles: {
 #  #"domain":  {"interface": "{{domain_adapter}}", "NetworkCategory": "Public", "IPv4Connectivity": "", "IPv6Connectivity": ""}

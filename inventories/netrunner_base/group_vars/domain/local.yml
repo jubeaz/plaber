@@ -18,9 +18,27 @@ local_groups: {
 #scripts: ["sidhistory.ps1"]
 #vulns: ["disable_firewall"]
 
-# server: https://learn.microsoft.com/en-us/windows-server/administration/server-core/server-core-roles-and-services
 # worksation: Get-WindowsCapability -Name RSAT* -Online |
-extra_features: []
+extra_features: [
+#    "Rsat.CertificateServices.Tools~~~~0.0.1.0",
+#    "Rsat.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.0",
+#    "Rsat.Dns.Tools~~~~0.0.1.0",
+#    "Rsat.FileServices.Tools~~~~0.0.1.0",
+#    "Rsat.GroupPolicy.Management.Tools~~~~0.0.1.0",
+#    "Rsat.RemoteAccess.Management.Tools~~~~0.0.1.0",
+#    "Rsat.RemoteDesktop.Services.Tools~~~~0.0.1.0",
+#    "Rsat.ServerManager.Tools~~~~0.0.1.0",
+#    "Rsat.DHCP.Tools~~~~0.0.1.0"
+]
+
+# server: https://learn.microsoft.com/en-us/windows-server/administration/server-core/server-core-roles-and-services
+extra_capabilities: [
+    "RSAT-AD-Tools",
+    "RSAT-DHCP",
+    "RSAT-DNS-Server",
+    "GPMC"
+
+]
 #softwares: [  "git", "visualstudio2022community", "notepadplusplus"]
 #
 #user_repos: {

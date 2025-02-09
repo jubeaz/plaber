@@ -6,6 +6,6 @@ local_users: {
 
 local_groups: {
     "Administrators" : [".\\LA_jubeaz", "research.haas.local\\L_LOCAL_ADMINS", "research.haas.local\\L_LOCAL_ADMINS_FENRIS"],
-    "Remote Management Users": ["research.haas.local\\lowpriv"],
-    "Remote Desktop Users" : ["research.haas.local\\lowpriv"],
+    "Remote Management Users": [".\\LA_jubeaz","research.haas.local\\L_LOCAL_ADMINS", "research.haas.local\\L_LOCAL_ADMINS_FENRIS", "research.haas.local\\lowpriv"],
+    "Remote Desktop Users" : [".\\LA_jubeaz","research.haas.local\\L_LOCAL_ADMINS", "research.haas.local\\L_LOCAL_ADMINS_FENRIS", "research.haas.local\\lowpriv"],
 }

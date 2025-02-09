@@ -9,7 +9,9 @@
   max_fail_percentage: 0
   roles:
     - { role: 'windows_domain_member_server', tags: 'server'}
-
+    - { role: 'windows_domain_install_features', tags: 'install_features'}
+  vars:
+    features: "{{ extra_features }}"
 - name: "JOIN WORKSTATIONS TO DOMAIN"
   hosts: domain_workstation
   max_fail_percentage: 0
@@ -17,4 +19,4 @@
     - { role: 'windows_domain_member_workstation', tags: 'workstation'}
     - { role: 'windows_domain_install_capabilities', tags: 'install_features'}
   vars:
-    capabilities: "{{ extra_features }}"
+    capabilities: "{{ extra_capabilities }}"

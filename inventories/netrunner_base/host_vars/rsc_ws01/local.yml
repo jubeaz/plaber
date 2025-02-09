@@ -6,8 +6,8 @@ local_users: {
 
 local_groups: {
     "Administrators" : [".\\LA_jubeaz", "research.haas.local\\L_LOCAL_ADMINS", "research.haas.local\\L_LOCAL_ADMINS_ARCHITECT"],
-    "Remote Management Users": ["haas.local\\lowpriv"],
-    "Remote Desktop Users" : ["haas.local\\lowpriv"],
+    "Remote Management Users": [".\\LA_jubeaz","research.haas.local\\L_LOCAL_ADMINS", "research.haas.local\\L_LOCAL_ADMINS_ARCHITECT", "research.haas.local\\lowpriv"],
+    "Remote Desktop Users" : [".\\LA_jubeaz","research.haas.local\\L_LOCAL_ADMINS", "research.haas.local\\L_LOCAL_ADMINS_ARCHITECT", "research.haas.local\\lowpriv"]
 }
 
 
@@ -27,12 +27,13 @@ extra_features: [
 
 
 #features: ["NET-Framework-Core"]
-softwares: [  "git", "visualstudio2022community", "notepadplusplus", "python"]
+softwares: [  "git", "visualstudio2022community", "notepadplusplus", "python", "libreoffice"]
 
 user_repos: {
     rubeaz: [
         ["Mimikatz", "https://github.com/gentilkiwi/mimikatz.git"],
-        ["Rubeus", "https://github.com/GhostPack/Rubeus"]
+        ["Rubeus", "https://github.com/GhostPack/Rubeus"],
+        [HardeningKitty, https://github.com/scipag/HardeningKitty.git]
     ]
 }
 user_downloads: {

@@ -8,6 +8,7 @@
         $ProductName = Get-ItemProperty -Path "HKLM:/Software/Microsoft/Windows NT/CurrentVersion" | Select-Object -ExpandProperty "ProductName"
         Return $ProductName
       register: product_name
+      changed_when: false
 
     - name: Register is_server_os
       ansible.builtin.set_fact:
@@ -18,6 +19,7 @@
         $InstallationType = Get-ItemProperty -Path "HKLM:/Software/Microsoft/Windows NT/CurrentVersion" | Select-Object -ExpandProperty "InstallationType"
         Return $InstallationType -eq "Server Core"
       register: is_server_core
+      changed_when: false
 
     - name: Register is_core_install
       ansible.builtin.set_fact:

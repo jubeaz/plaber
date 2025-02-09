@@ -11,33 +11,6 @@ notes:
 * vagrant is only used for initial provisionning since default nat interface is disconnected after provisionning
 
 
-## vagrant pbs
-[Unable to activate vagrant_cloud-3.1.1, because rexml-3.3.2 conflicts with rexml (~> 3.2.5)](https://github.com/hashicorp/vagrant/issues/13502)
-```
-sudo pacman -U /var/cache/pacman/pkg/ruby-rexml-3.2.6-2-any.pkg.tar.zst
-```
-[Recent version of Virtualbox 7.1.0 is not supported by vagrant 2.4.1](https://github.com/hashicorp/vagrant/issues/13501)
-
-Edit `/usr/bin/VBox`
-```
-    VirtualBoxVM|virtualboxvm)
-        exec "$INSTALL_DIR/VirtualBoxVM" "$@"
-        ;;
-    VBoxManage|vboxmanage)
-    ########################
-        if [[ $@ == "--version" ]]; then
-           echo "7.0.0r164728"
-        else
-           exec "$INSTALL_DIR/VBoxManage" "$@"
-        fi
-        ;;
-    ########################
-    VBoxSDL|vboxsdl)
-        exec "$INSTALL_DIR/VBoxSDL" "$@"
-        ;;
-```
-
-
 # Run lab
 
 * start all vms
@@ -59,9 +32,38 @@ ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml 
 * stop all vms
 ```bash
 for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage controlvm $b acpipowerbutton; done
+
+for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage controlvm $b poweroff; done
 ```
 # BUILD THE LAB
 ## vagrant
+
+### Box consideration 
+links:
+* [Configure Credential Guard](https://learn.microsoft.com/en-us/windows/security/identity-protection/credential-guard/configure?tabs=reg)
+* [Configure added LSA protection](https://learn.microsoft.com/en-us/windows-server/security/credentials-protection-and-management/configuring-additional-lsa-protection)
+* [Virtualization-based Security not enabled; How to enable VBS in Windows 11](https://www.thewindowsclub.com/virtualization-based-security-not-enabled-windows-11)
+
+To enable windows VBS:
+* regarding virtualization:
+    * ensure ` VBoxManage modifyvm <VirtualMachineName> --nested-hw-virt on`
+    * ERROR: virtualbox does not implement SLAT/EPT :(
+* regarding secure boot (to test):
+    * `vboxmanage modifyvm $vm_name --firmware efi64`
+    * `VBoxManage modifynvram $vm_name inituefivarstore`
+    * `vboxmanage modifynvram $vm_name enrollmssignatures`
+    * `vboxmanage modifynvram $vm_name enrollorclpk`
+* regarding memory integrity:
+    * Intel PRO/1000 network drivers are not compliant
+    * switch to [virtio](https://pve.proxmox.com/wiki/Windows_VirtIO_Drivers)
+        *   download the latest [stable of windows driver](https://pve.proxmox.com/wiki/Windows_VirtIO_Drivers).
+        * launch `virtio-win-gt-x64`
+        * stop the vm
+        * switch network card on virtualbox
+        * emove `E1G6032E.sys` or offending drivers on windows filesystem
+
+
+### provision VMs
 * build all  vms
 ```bash
 vagrant up --debug --timestamp
@@ -99,7 +101,7 @@ vboxmanage list runningvms
 * build fw
 ```
 ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/0-build-fw.yml
-ansible-playbook -i ./inventories/netrunner_base/netrunner.yml ./playbooks/build-fw.yml
+ansible-playbook -i ./inventories/netrunner_base/netrunner.yml ./playbooks/0-build-fw.yml
 ```
 
 * build lab
@@ -109,10 +111,45 @@ ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml 
 
 * enable 
 ```bash
-ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/2-enable-lab.yml
+ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/enable-lab.yml
 ```
 
 # To fix on vagrant
+
+## vagrant pbs
+Unable to download the box to solve
+```
+vagrant init gusztavvargadr/windows-server --box-version 2102.0.2409
+vagrant up
+vagrant init gusztavvargadr/windows-10 --box-version 2202.0.2409
+vagrant up
+```
+
+
+[Unable to activate vagrant_cloud-3.1.1, because rexml-3.3.2 conflicts with rexml (~> 3.2.5)](https://github.com/hashicorp/vagrant/issues/13502)
+```
+sudo pacman -U /var/cache/pacman/pkg/ruby-rexml-3.2.6-2-any.pkg.tar.zst
+```
+[Recent version of Virtualbox 7.1.0 is not supported by vagrant 2.4.1](https://github.com/hashicorp/vagrant/issues/13501)
+
+Edit `/usr/bin/VBox`
+```
+    VirtualBoxVM|virtualboxvm)
+        exec "$INSTALL_DIR/VirtualBoxVM" "$@"
+        ;;
+    VBoxManage|vboxmanage)
+    ########################
+        if [[ $@ == "--version" ]]; then
+           echo "7.0.0r164728"
+        else
+           exec "$INSTALL_DIR/VBoxManage" "$@"
+        fi
+        ;;
+    ########################
+    VBoxSDL|vboxsdl)
+        exec "$INSTALL_DIR/VBoxSDL" "$@"
+        ;;
+```
 
 # To fix on ansible
 
@@ -203,3 +240,6 @@ ok: [dc_research_haas] => {
     * add sidhistory to some accounts
 * mecm 
     * mssql GMSA mode (tester en ajoutant `"HAAS\BRAN$"` dans le groupe `L_GMSA_ICHI`)
+
+
+

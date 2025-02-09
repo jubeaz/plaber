@@ -8,7 +8,7 @@
         * dc_haas (haas01 / 172.16.2.1): 
             * adds
         * srv01 (bran.haas.local / 172.16.2.10):
-            * mssql
+            * mssql (haas.local\drafter)
             * mssql_reporting
             * users:
                 * LA_jubeaz / Zaebuj12345+-
@@ -25,7 +25,7 @@
         * srv01 (fenris.research.haas.local / 72.16.3.10):
             * sccm
             * iis
-            * mssql
+            * mssql (research.haas.local\ichi$)
             * mssql_reporting
             * users:
                 * LA_jubeaz / Zaebuj12345+-
@@ -44,7 +44,7 @@
         * dc_wld (wld01 / 172.16.1.1): 
             * adds
         * srv01 (archer.weyland.local / 172.16.1.10)
-            * mssql
+            * mssql (NT AUTHORITY\NETWORK SERVICE)
             * users:
                 * LA_jubeaz / Zaebuj12345+-
     * gmsa:
@@ -52,6 +52,7 @@
     * users:
         * lowpriv (/ jubeaz)
         * wubeaz (/ jubeaz)
+
 # netrunner_base
 
 
