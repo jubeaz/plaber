@@ -56,7 +56,7 @@ To enable windows VBS:
 * regarding memory integrity:
     * Intel PRO/1000 network drivers are not compliant
     * switch to [virtio](https://pve.proxmox.com/wiki/Windows_VirtIO_Drivers)
-        *   download the latest [stable of windows driver](https://pve.proxmox.com/wiki/Windows_VirtIO_Drivers).
+        *   download the latest [stable of windows driver](https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso).
         * launch `virtio-win-gt-x64`
         * stop the vm
         * switch network card on virtualbox
