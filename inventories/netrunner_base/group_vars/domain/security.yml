@@ -24,7 +24,15 @@ firewall_profiles: {
 # inbound: Block, Allow, NotConfigured
 # outbound: Block, Allow, NotConfigured
 # key: ["Domain", "Private", "Public"], 
+}
 
+HardeningKitty: {
+#  "Name": {
+#    FileFindingList: "https://github.com/scipag/HardeningKitty/raw/refs/heads/master/lists/finding_list_cis_microsoft_windows_server_2022_22h2_3.0.0_machine.csv",
+#    FileCriteria: "cis_microsoft_windows_server_2022_22h2_3.0.0_machine",
+#    Filter: '{ $_.DC -eq "Y" -and $_.DEFAULT -eq "APPLY"}',
+#    FileOut: "findings_DC",
+#  },
 }
 
 firewall_rules: {

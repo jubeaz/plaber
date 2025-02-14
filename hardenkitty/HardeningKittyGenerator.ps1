@@ -7,14 +7,14 @@ Function Compare-FindingList{
     )
     foreach ($Criteria in $CriteriaList){
         $tmp = $FindingList | Where-Object -FilterScript {$_.ID -eq $Criteria.ID}
-        If ($tmp.Length -ne 1) {
-            return $false
+        If ($tmp -eq $null -or ($tmp -is [array] -and $tmp.Length -gt 1)) {
+          Throw  "Problem with findings $($Criteria.ID) either null or duplicate"
         }       
     }
     foreach ($Finding in $FindingList){
         $tmp = $CriteriaList | Where-Object -FilterScript {$_.ID -eq $Finding.ID}
-        If ($tmp.Length -ne 1) {
-            return $false
+        If ($tmp -eq $null -or ($tmp -is [array] -and $tmp.Length -gt 1)) {
+          Throw  "Problem with critera $($Finding.ID) either null or duplicate"
         }       
     }
     return $true
@@ -31,9 +31,6 @@ Function New-MergedFindingsList{
     $Merged = @()
     foreach ($Criteria in $CriteriaList){
         $tmp = $FindingList | Where-Object -FilterScript {$_.ID -eq $Criteria.ID}
-        If ($tmp.Length -ne 1) {
-            Throw "$($Criteria.ID) not found in FindingList"
-        }
         foreach ($property in $tmp.PSObject.Properties) {
             if ($Criteria.PSObject.Properties[$property.Name] -eq $null) {
                 #write-host "Adding property $($property.Name) with value $($property.Value)"
@@ -66,21 +63,18 @@ Function Get-FilteredFindingList {
     $CriteriaList = Import-Csv -Path $FileCriteria -Delimiter ","
     $CompareResult = Compare-FindingList -FindingList $FindingList -CriteriaList $CriteriaList
     if ($CompareResult -eq $false){
-        Throw  "Missing findings"
+        Throw  "List are not equals"
     } 
     $ResultList = New-MergedFindingsList -FindingList $FindingList -CriteriaList $CriteriaList
     If ($Filter) {
         $ResultList = $ResultList | Where-Object -FilterScript $Filter
-        If ($ResultList.Length -eq 0) {
-            Throw  "Your filter did not return any results, please adjust the filter so that HardeningKitty has something to work with."
-        }
+        If ($ResultList -eq $null -or $ResultList.Length -eq 0) {
+          Throw  "Search filter return nothing"
+        } 
     }
     $CriteriaList = @()
     foreach ($Result in $ResultList){
         $tmp = $FindingList | Where-Object -FilterScript {$_.ID -eq $Result.ID}
-        If ($tmp.Length -ne 1) {
-            Throw "$($Criteria.ID) not found in FindingList"
-        }
         $CriteriaList += $tmp
     }
     return $CriteriaList
@@ -98,17 +92,7 @@ Function New-FilteredFindingList {
         [Parameter(Mandatory=$true)]
         [String]$FileOut
     )
-    $fl = Get-FilteredFindings -Filter $Filter -FileFindingList $FileFindingList -FileCriteria $FileCriteria
+    $fl = Get-FilteredFindingList -Filter $Filter -FileFindingList $FileFindingList -FileCriteria $FileCriteria
     $fl | Export-CSV $FileOut -NoTypeInformation
 }
-#$Filter = { $_.DC -eq "Y" -and $_.DEFAULT -eq "APPLY" } 
-#$Filter = { $_.MBR -eq "Y" -and $_.DEFAULT -eq "APPLY" } 
 
-#$FileFindingList = './finding_list_cis_microsoft_windows_server_2022_22h2_3.0.0_machine/finding_list_cis_microsoft_windows_server_2022_22h2_3.0.0_machine.csv'
-$FileFindingList = 'https://github.com/scipag/HardeningKitty/raw/refs/heads/master/lists/finding_list_cis_microsoft_windows_server_2022_22h2_3.0.0_machine.csv'
-$FileCriteria = './cis_microsoft_windows_server_2022_22h2_3.0.0_machine/critera.csv'
-$Filter = { $_.DEFAULT -ne "APPLY" } 
-$Filter = { $_.MBR -eq "Y" -and $_.DEFAULT -eq "APPLY" -and $_.Category -eq "User Rights Assignment"}
-$Filter = { $_.STD_ALONE -eq "Y" -and $_.DEFAULT -eq "APPLY" -and $_.ID -ne "2.2.22" -and $_.ID -ne "2.2.27"}
-$FileOut= './cis_microsoft_windows_server_2022_22h2_3.0.0_machine/findings_STD_ALONE.csv'
-New-FilteredFindingList -Filter $Filter -FileFindingList $FileFindingList -FileCriteria $FileCriteria -FileOut $FileOut
