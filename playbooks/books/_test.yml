@@ -1,0 +1,7 @@
+- name: "Harden DCs"
+  hosts: dc_wld
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_settings_hardeningkitty', tags: 'server'}
+  vars:
+    hardeningkitty_action: "play"

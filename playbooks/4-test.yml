@@ -1,0 +1,7 @@
+---
+- name: Ensure domains are reachable
+  import_playbook: books/domains-reachable.yml
+
+
+- name: test
+  import_playbook: books/_test.yml
