@@ -511,14 +511,17 @@ Function Set-FixedIP{
         [Parameter(Mandatory=$false)]
         [string]$Gateway
     )
+    Write-HostVerbose "Set-FixedIP -IFName $IFName -IP $IP -Mask $Mask -Gateway $Gateway"
 	if ($IFName -ne $false){
         if ( $false -eq $IP -or $false -eq $Mask ){
             Throw "Invalid Set-FixedIP call missing parameters"
         }
         if ($gw -ne $false){
+		    Write-HostVerbose "netsh.exe int ipv4 set address $IFName static $IP mask=$Mask gateway=$Gateway" 
 		    netsh.exe int ipv4 set address $IFName static $IP mask=$Mask gateway=$Gateway 
 	    } else {
-		netsh.exe int ipv4 set address "Ethernet 2" static $IP mask=$Mask
+		Write-HostVerbose "netsh.exe int ipv4 set address $IFName static $IP mask=$Mask"
+		netsh.exe int ipv4 set address $IFName static $IP mask=$Mask
 	    }
 	}
 }
