@@ -13,18 +13,30 @@
 
 
 gpo_local: {
-  "local.EnableOneSettingsAuditing": {
+  "local.DisableNTLM": {
     gpo_ous: {},
     gpo_desc: "global.EnableOneSettingsAuditing",
     gpo_registry: {
-      "EnableOneSettingsAuditing"  : { 
-        "path" : "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection", 
+      "RestrictReceivingNTLMTraffic"  : { 
+        "path" : "HKLM\\System\\CurrentControlSet\\Control\\Lsa\\MSV1_0", 
         'type': "dword", 
-        'value': 1,
+        'value': 2,
+        'state': "present"
+      },
+      "RestrictSendingNTLMTraffic"  : { 
+        "path" : "HKLM\\System\\CurrentControlSet\\Control\\Lsa\\MSV1_0", 
+        'type': "dword", 
+        'value': 2,
+        'state': "present"
+      },   
+      "RestrictNTLMInDomain"  : { 
+        "path" : "HKLM\\System\\CurrentControlSet\\Services\\Netlogon\\Parameters", 
+        'type': "dword", 
+        'value': 7,
         'state': "present"
       }    
     },
-    gpo_domain: false,
+    gpo_domain: true,
     gpo_domain_enforced: true,
     gpo_domain_enabled: true,
     gpo_domain_state: "present"

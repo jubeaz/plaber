@@ -1,0 +1,22 @@
+- name: "Harden DCs"
+  hosts: dc_wld
+  max_fail_percentage: 0
+  roles:
+    #- { role: 'windows_settings_hardeningkitty', tags: 'server'}
+    #- { role: 'windows_domain_gpo', tags: 'server'}
+  tasks:
+    - name: GPO
+      ansible.builtin.include_role:
+        name: "windows_domain_gpo"
+      vars:
+        gpo_ous: "{{ g.value.gpo_ous }}"
+        gpo_name: "{{ g.key }}"
+        gpo_desc: "{{ g.value.gpo_desc }}"
+        gpo_registry: "{{ g.value.gpo_registry }}"
+        gpo_domain: "{{ g.value.gpo_domain }}"
+        gpo_domain_enforced: "{{ g.value.gpo_domain_enforced }}"
+        gpo_domain_enabled: "{{ g.value.gpo_domain_enabled }}"
+        gpo_domain_state: "{{ g.value.gpo_domain_state }}"
+      loop: "{{ gpo | dict2items }}"
+      loop_control:
+        loop_var: g

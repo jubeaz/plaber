@@ -29,9 +29,9 @@ gpo_global: {
         'state': "present"
       }      
     },
-    gpo_domain: true,
-    gpo_domain_enforced: true,
-    gpo_domain_enabled: true,
+    gpo_domain: false,
+    gpo_domain_enforced: false,
+    gpo_domain_enabled: false,
     gpo_domain_state: "present"
   }
 }
