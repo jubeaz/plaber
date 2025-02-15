@@ -39,7 +39,7 @@ extra_capabilities: [
     "GPMC"
 
 ]
-#softwares: [  "git", "visualstudio2022community", "notepadplusplus"]
+softwares: ["notepadplusplus"]
 #
 #user_repos: {
 #    jubeaz: [

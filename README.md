@@ -114,6 +114,24 @@ ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml 
 ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/enable-lab.yml
 ```
 
+# SNAPSHOT
+
+## snapshot - take
+```bash
+for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); vboxmanage snapshot $b take <snapshot_name> --description="<description>" --live 
+```
+
+## snapshot - restore
+```bash
+for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); vvboxmanage snapshot $b restore  <snapshot_name> 
+```
+
+## snapshot - restore current (last) 
+```bash
+for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); vvboxmanage snapshot $b restorecurrent
+```
+
+
 # To fix on vagrant
 
 ## vagrant pbs

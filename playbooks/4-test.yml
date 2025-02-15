@@ -2,6 +2,10 @@
 - name: Ensure domains are reachable
   import_playbook: books/domains-reachable.yml
 
+- name: Compute extended inventory (local)
+  import_playbook: books/compute-properties_local.yml
+- name: Compute extended inventory (domain)
+  import_playbook: books/compute-properties_domain.yml
 
-- name: test
-  import_playbook: books/_test.yml
+- name: Build domains
+  import_playbook: books/domain-build.yml

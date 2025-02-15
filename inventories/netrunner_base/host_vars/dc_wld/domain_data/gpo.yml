@@ -1,0 +1,35 @@
+
+#-supports_check_mode $true
+
+# "_ansible_check_mode" -type "bool" -default $false
+# "_ansible_diff" -type "bool" -default $false
+# "gpo" -type "str" -failifempty $true
+# "name" -type "str" -failifempty $true
+# "path" -type "str" -failifempty $true
+# "state" -type "str" -default "present" -validateset "absent", "disabled", "present"
+# "type" -type "str" -default "string" -ValidateSet "string", "expandstring", "binary", "dword", "multistring", "qword"
+# "value"
+
+
+
+gpo_local: {
+  "local.EnableOneSettingsAuditing": {
+    gpo_ous: {},
+    gpo_desc: "global.EnableOneSettingsAuditing",
+    gpo_registry: {
+      "EnableOneSettingsAuditing"  : { 
+        "path" : "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection", 
+        'type': "dword", 
+        'value': 1,
+        'state': "present"
+      }    
+    },
+    gpo_domain: false,
+    gpo_domain_enforced: true,
+    gpo_domain_enabled: true,
+    gpo_domain_state: "present"
+  }
+}
+
+
+gpo:  "{{ gpo_global | combine(gpo_local) }}"

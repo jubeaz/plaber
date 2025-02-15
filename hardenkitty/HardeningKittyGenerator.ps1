@@ -66,12 +66,15 @@ Function Get-FilteredFindingList {
         Throw  "List are not equals"
     } 
     $ResultList = New-MergedFindingsList -FindingList $FindingList -CriteriaList $CriteriaList
+    $SizeIn = $ResultList.Length
     If ($Filter) {
         $ResultList = $ResultList | Where-Object -FilterScript $Filter
         If ($ResultList -eq $null -or $ResultList.Length -eq 0) {
           Throw  "Search filter return nothing"
         } 
     }
+    $FilteredCount = $SizeIn - $ResultList.Length
+    Write-Host "Number of findings filtered out: $($SizeIn - $ResultList.Length)"
     $CriteriaList = @()
     foreach ($Result in $ResultList){
         $tmp = $FindingList | Where-Object -FilterScript {$_.ID -eq $Result.ID}

@@ -4,4 +4,4 @@
   roles:
     - { role: 'windows_settings_hardeningkitty', tags: 'server'}
   vars:
-    hardeningkitty_action: "play"
+    hardeningkitty_action: "generate"

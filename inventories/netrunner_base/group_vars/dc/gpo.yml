@@ -1,0 +1,38 @@
+
+#-supports_check_mode $true
+
+# "_ansible_check_mode" -type "bool" -default $false
+# "_ansible_diff" -type "bool" -default $false
+# "gpo" -type "str" -failifempty $true
+# "name" -type "str" -failifempty $true
+# "path" -type "str" -failifempty $true
+# "state" -type "str" -default "present" -validateset "absent", "disabled", "present"
+# "type" -type "str" -default "string" -ValidateSet "string", "expandstring", "binary", "dword", "multistring", "qword"
+# "value"
+
+
+gpo_global: {
+  "global.refresh_gpo_policy": {
+    gpo_ous: {},
+    gpo_desc: "global.refresh_gpo_policy",
+    gpo_registry: {
+      "GroupPolicyRefreshTime"  : { 
+        "path" : "HKLM\\Software\\Policies\\Microsoft\\Windows\\System", 
+        'type': "dword", 
+        'value': 5,
+        'state': "present"
+      },
+      "GroupPolicyRefreshTimeOffset"  : { 
+        "path" : "HKLM\\Software\\Policies\\Microsoft\\Windows\\System", 
+        'type': "dword", 
+        'value': 1,
+        'state': "present"
+      }      
+    },
+    gpo_domain: true,
+    gpo_domain_enforced: true,
+    gpo_domain_enabled: true,
+    gpo_domain_state: "present"
+  }
+}
+

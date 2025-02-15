@@ -1,60 +1,3 @@
-# Generators
-## CIS server 2022 machine
-### WORKGROUP Server
-* 2.2.27 a transformer pour un standalone
-    * Recommanded BUILTIN\Guests;NT AUTHORITY\Local account
-    * to apply BUILTIN\Guests
-    * `2.2.27,"User Rights Assignment","Deny log on through Remote Desktop Services (Member)",accesschk,SeDenyRemoteInteractiveLogonRight,,,,,,,"BUILTIN\Guests",=,Medium`
-* 2.2.22 a transformer pour un standalone 
-    * Recommanded BUILTIN\Guests;NT AUTHORITY\Local account and member of Administrators group
-    * to apply BUILTIN\Guests
-    * `2.2.22,"User Rights Assignment","Deny access to this computer from the network (Member)",accesschk,SeDenyNetworkLogonRight,,,,,,BUILTIN\Guests,BUILTIN\Guests,=,Medium`
-
-```powershell
-$FileFindingList = 'https://github.com/scipag/HardeningKitty/raw/refs/heads/master/lists/finding_list_cis_microsoft_windows_server_2022_22h2_3.0.0_machine.csv'
-$FileCriteria = './cis_microsoft_windows_server_2022_22h2_3.0.0_machine/critera.csv'
-
-$Filter = { $_.WRKGRP -eq "Y" -and $_.DEFAULT -eq "APPLY" -and $_.ID -ne "2.2.22" -and $_.ID -ne "2.2.27"}
-$FileOut= './cis_microsoft_windows_server_2022_22h2_3.0.0_machine/findings_WRKGRP.csv'
-New-FilteredFindingList -Filter $Filter -FileFindingList $FileFindingList -FileCriteria $FileCriteria -FileOut $FileOut
-
-Invoke-HardeningKitty -Mode Audit -Report  -FileFindingList $FileOut
-Invoke-HardeningKitty -Mode HailMary -SkipRestorePoint -FileFindingList $FileOut
-```
-
-### DC Server
-```powershell
-$FileFindingList = 'https://github.com/scipag/HardeningKitty/raw/refs/heads/master/lists/finding_list_cis_microsoft_windows_server_2022_22h2_3.0.0_machine.csv'
-$FileCriteria = './cis_microsoft_windows_server_2022_22h2_3.0.0_machine/critera.csv'
-
-$Filter = { $_.DC -eq "Y" -and $_.DEFAULT -eq "APPLY"}
-$FileOut= './cis_microsoft_windows_server_2022_22h2_3.0.0_machine/findings_DC.csv'
-
-#$Filter = { $_.DC -eq "Y" -and $_.DEFAULT -ne "APPLY"}
-#$FileOut= './cis_microsoft_windows_server_2022_22h2_3.0.0_machine/findings_DC_OUT.csv'
-New-FilteredFindingList -Filter $Filter -FileFindingList $FileFindingList -FileCriteria $FileCriteria -FileOut $FileOut
-
-Invoke-HardeningKitty -Mode Audit -Report  -FileFindingList $FileOut
-Invoke-HardeningKitty -Mode HailMary -SkipRestorePoint -FileFindingList $FileOut
-```
-
-### Member Server
-
-```powershell
-$FileFindingList = 'https://github.com/scipag/HardeningKitty/raw/refs/heads/master/lists/finding_list_cis_microsoft_windows_server_2022_22h2_3.0.0_machine.csv'
-$FileCriteria = './cis_microsoft_windows_server_2022_22h2_3.0.0_machine/critera.csv'
-
-$Filter = { $_.MBR -eq "Y" -and $_.DEFAULT -eq "APPLY"}
-$FileOut= './cis_microsoft_windows_server_2022_22h2_3.0.0_machine/findings_MBR.csv'
-
-#$Filter = { $_.MBR -eq "Y" -and $_.DEFAULT -ne "APPLY"}
-#$FileOut= './cis_microsoft_windows_server_2022_22h2_3.0.0_machine/findings_MBR_OUT.csv'
-New-FilteredFindingList -Filter $Filter -FileFindingList $FileFindingList -FileCriteria $FileCriteria -FileOut $FileOut
-
-Invoke-HardeningKitty -Mode Audit -Report  -FileFindingList $FileOut
-Invoke-HardeningKitty -Mode HailMary -SkipRestorePoint -FileFindingList $FileOut
-```
-
 
 # To study:
 * 18.6.21.2: impact on server with IP public and domain IP
@@ -68,7 +11,13 @@ Invoke-HardeningKitty -Mode HailMary -SkipRestorePoint -FileFindingList $FileOut
 
 # disable NTLM
 
-le pb que j'ai rencontré vient peut être du fait que les machines n'acceptent en netré que du kerberos alors que cis defini uniquement sendingtraffic
+```
+$GPOName = 'Default Domain Policy'
+$g =Get-GPO $GPOName
+Get-GPRegistryValue $GPOName -Key "HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Netlogon\Parameters\" -ValueName RestrictNTLMInDomain
+Set-GPRegistryValue -Name $GPOName -Key "HKLM\Software\Policies\Microsoft\Windows\LANMan" -ValueName "AuthenticationLevel" -Type DWord -Value 5
+
+```
 
 ## Notes
 * Network security: Restrict NTLM: Incoming NTLM traffic:
