@@ -14,7 +14,7 @@
       ansible.builtin.set_fact:
         domain_parent_domain_password: "{{ hostvars[parent_domain_dc_ansible_inventory_key].domain_password }}"
         domain_parent_dc_name: "{{ hostvars[parent_domain_dc_ansible_inventory_key].hostname }}"
-        domain_parent_dc_ip: "{{ hostvars[parent_domain_dc_ansible_inventory_key].ansible_host }}"
+        domain_parent_dc_ip: "{{ hostvars[parent_domain_dc_ansible_inventory_key].domain_ip }}"
         domain_parent_domain_name: "{{ hostvars[parent_domain_dc_ansible_inventory_key].domain_name }}"
         cacheable: true
       when: dc_level != 0

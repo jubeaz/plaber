@@ -96,7 +96,60 @@ for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage sta
 vboxmanage list runningvms
 ```
 
+
+### SNAPSHOT
+
+* take:
+```bash
+for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage snapshot $b take <snapshot_name> --description="<description>" --live ;done
+```
+
+* restore:
+```bash
+for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vvboxmanage snapshot $b restore  <snapshot_name> ;done
+```
+
+* restore current (last): 
+```bash
+for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vvboxmanage snapshot $b restorecurrent;done
+```
+
+
+
 ## ansible
+
+* Intall requirements:
+```bash
+pipx install --include-deps ansible
+pipx inject ansible "pywinrm[kerberos]>=0.4.0"
+```
+
+```bash
+source ~/.local/pipx/venvs/ansible/bin/activate
+export PYTHONPATH=~/.local/pipx/venvs/ansible/lib/python3.13/site-packages/
+```
+
+#### setup
+
+* `/etc/hosts`:
+```bash
+##############################
+### Netrunner 
+##############################
+192.168.2.100   lab_fw
+172.16.1.1      wld01.weyland.local dc.weyland.local weyland.local
+172.16.1.10     archer.weyland.local archer
+
+172.16.2.1      haas01.haas.local dc.haas.local haas.local
+172.16.2.10     bran.haas.local bran 
+
+172.16.3.1      rsc01.research.haas.local dc.research.haas.local research.haas.local
+172.16.3.10     fenris.research.haas.local fenris 
+172.16.3.20     architect.research.haas.local architect
+```
+
+
+### build 
 
 * build fw
 ```
@@ -109,27 +162,43 @@ ansible-playbook -i ./inventories/netrunner_base/netrunner.yml ./playbooks/0-bui
 ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/1-build-lab.yml
 ```
 
-* enable 
+### Kerberos 
+
+This is specialy important if CIS 2.2.22 is applied
+
+
+#### setup
+
+* `/etc/krb5.conf`:
 ```bash
-ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/enable-lab.yml
+[realms]
+        HAAS.LOCAL = {
+                kdc = haas01.haas.local
+                kadmin_server = haas01.haas.local
+        }
+        RESEARCH.HAAS.LOCAL = {
+                kdc = rsc01.research.haas.local
+                kadmin_server = rsc01.research.haas.local
+        }
+        WEYLAND.LOCAL = {
+                kdc = wld01.weyland.local
+                kadmin_server = wld01.weyland.local
+        }
+[domain_realm]
+        haas.local = HAAS.LOCAL
+        .haas.local = HAAS.LOCAL
+        research.haas.local = RESEARCH.HAAS.LOCAL
+        .research.haad.local = RESEARCH.HAAS.LOCAL
+        weyland.local = WEYLAND.LOCAL
+        .weyland.local = WEYLAND.LOCAL
 ```
 
-# SNAPSHOT
-
-## snapshot - take
-```bash
-for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); vboxmanage snapshot $b take <snapshot_name> --description="<description>" --live 
+Include kerberos book where requiered (after domain build)
+```ansible
+- name: Compute kerberos Auth
+  import_playbook: books/compute-kerberos-auth.yml
 ```
 
-## snapshot - restore
-```bash
-for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); vvboxmanage snapshot $b restore  <snapshot_name> 
-```
-
-## snapshot - restore current (last) 
-```bash
-for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); vvboxmanage snapshot $b restorecurrent
-```
 
 
 # To fix on vagrant

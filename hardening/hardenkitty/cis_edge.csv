@@ -1,0 +1,143 @@
+"LEVEL","ID","Category","Name","Method","MethodArgument","RegistryPath","RegistryItem","ClassName","Namespace","Property","DefaultValue","RecommendedValue","Operator","Severity"
+"L1","1.2.1","Cast","Google Cast (Disabled)","Registry",,"HKLM:\Software\Policies\Microsoft\Edge","EnableMediaRouter",,,,1,0,"=","Low"
+"L2","1.3.1","Content Settings","Read access via the File System API on these sites (Disabled)",,,,"FileSystemReadAskForUrls",,,,,,"=","Low"
+"L1","1.3.2","Content Settings","Control use of insecure content exceptions",,,,"DefaultinsecurecontentSetting",,,,,2,"=","Low"
+"L2","1.3.3","Content Settings","Do not allow any site to run JavaScript JIT",,,,"DefaultJavaScriptJitSetting",,,,,2,"=","Low"
+"L2","1.3.4","Content Settings","Don't allow any site to request read access to files and directories via the File System API",,,,"DefaultFileSystemReadGuardSetting",,,,3,2,"=","Low"
+"L1","1.3.5","Content Settings","Don't allow any site to request write access to iles and directories",,,,"DefaultFileSystemWriteGuardSetting",,,,3,2,"=","Low"
+"L2","1.3.6","Content Settings","Do not allow any site to request access to Bluetooth devices via the Web Bluetooth API",,,,"DefaultWebBluetoothGuardSetting",,,,,2,"=","Low"
+"L2","1.3.7","Content Settings","Do not allow any site to request access to HID devices via the WebHID API",,,,"DefaultWebHidGuardSetting",,,,,2,"=","Low"
+"L1","1.3.8","Content Settings","Don´t allow any website to perform automatic downloads",,,,"DefaultAutomaticDownloadsSetting",,,,,2,"=","Low"
+"L1","1.3.9","Content Settings","Don't allow any site to track users' physical location'",,,,"DefaultGeolocationSetting",,,,,2,"=","Low"
+"L2","1.3.10","Content Settings","Block third-party storage partitioning from being enabled",,,,"DefaultThirdPartyStoragePartitioningSet",,,,,2,"=","Low"
+"L1","1.5.1","Edge Website Typo Protection settings","Configure Edge Website Typo Protection (Enabled)",,,,"TyposquattingCheckerEnabled",,,,,1,"=","Low"
+"L1","1.7.1","Experimentation","Prevent users from overriding feature flags (Enabled)",,,,"FeatureFlagoverridesControl",,,,,0,"=","Low"
+"L1","1.8.1","Extensions","Blocks external extensions from being installed (Enabled)","Registry",,"HKLM:\Software\Policies\Microsoft\Edge","BlockExternalExtensions",,,,0,1,"=","Low"
+"L2","1.8.2","Extensions","Configure extension management settings (Enabled: *)",,,,"ExtensionSettings",,,,,"*","=","Low"
+"L1","1.9.1","Games settings","Enable Gamer Mode (Disabled)",,,,"GamerModeEnabled",,,,1,0,"=","Low"
+"L1","1.10.1","HTTP authentication","Allow Basic authentication for HTTP (Disabled)",,,,"BasicAuthOverHttpEnabled",,,,1,0,"=","Low"
+"L1","1.10.2","HTTP authentication","Allow cross-origin HTTP Authentication prompts (Disabled)",,,,"AllowCrossOriginAuthPrompt",,,,0,0,"=","Low"
+"L2","1.10.3","HTTP authentication","Supported authentication schemes (Enabled: ntlm, negotiate)",,,,"AuthSchemes",,,,0,"ntlm,negotiate","=","Low"
+"L1","1.11.1","Identity and sign-in","linked account feature (Disabled)",,,,"LinkedAccountEnabled",,,,1,0,"=","Low"
+"L1","1.11.2","Identity and sign-in","Guided Switch (Disabled)",,,,"GuidedSwitchEnabled",,,,1,0,"=","Low"
+"L1","1.17.1","Password manager and protection","saving passwords to the password manager (Disabled)","Registry",,,"PasswordManagerEnabled",,,,1,0,"=","Low"
+"L1","1.18.1","Performance","startup boost (Disabled)",,,,"StartupBoostEnabled",,,,,0,"=","Low"
+"L1","1.21.1","Private Network Request Settings","pecifies whether to allow websites to make requests to more-private network endpoints (Disabled)",,,,"InsecurePrivateNetworkRequestsAllowed",,,,,0,"=","Low"
+"L1","1.25.1","SmartScreen settings","Configure Microsoft Defender SmartScreen (Enabled)",,,,"SmartScreenEnabled",,,,1,1,"=","Low"
+"L1","1.25.2","SmartScreen settings","Configure Microsoft Defender SmartScreen to block potentially unwanted apps (Enabled)",,,,"SmartScreenPuaEnabled",,,,,1,"=","Low"
+"L1","1.25.3","SmartScreen settings","Enable Microsoft Defender SmartScreen DNS requests (Disabled)",,,,"SmartScreenDnsRequestsEnabled",,,,1,0,"=","Low"
+"L1","1.25.4","SmartScreen settings","Force Microsoft Defender SmartScreen checks on downloads from trusted sources (Enabled)",,,,"SmartScreenForTrustedDownloadsEnabled",,,,1,1,"=","Low"
+"L1","1.25.5","SmartScreen settings","Prevent bypassing Microsoft Defender SmartScreen prompts for sites (Enabled)",,,,"PreventSmartScreenPromptOverride",,,,0,1,"=","Low"
+"L1","1.25.6","SmartScreen settings","Prevent bypassing of Microsoft Defender SmartScreen warnings about downloads (Enabled)",,,,"PreventSmartScreenPromptOverrideForFiles",,,,0,1,"=","Low"
+"L1","3.1.1","Microsoft Edge Update","Update policy override default (Enabled)",,,,"UpdateDefault",,,,,1,"=","Low"
+"L1","3.3.1","Microsoft Edge Update","Auto-update check period override",,,,"AutoUpdateCheckPeriodMinutes",,,,1400,0,"=","Low"
+"L1","1.26.1","Startup, home page and new tab page","Disable Bing chat entry-points on Microsoft Edge Enterprise new tab page",,,,"NewTabPageBingChatEnabled",,,,1,0,"=","Low"
+"L1",1.27,"Startup, home page and new tab page","Block ads on sites with intrusive ads",,,,"AdsSettingForIntrusiveAdsSites",,,,,2,"=","Low"
+"L1",1.28,"Startup, home page and new tab page","Block malicious downloads",,,,"DownloadRestrictions",,,,,4,"=","Low"
+"L2",1.29,"Startup, home page and new tab page","Allow features to download assets from the Asset Delivery Service (Disabled)",,,,"EdgeAssetDeliveryServiceEnabled",,,,1,0,"=","Low"
+"L2","“1.30”","Startup, home page and new tab page","Allow file selection dialogs (Disabled)",,,,"AllowFileSelectionDialogs",,,,1,0,"=","Low"
+"L1",1.31,"Startup, home page and new tab page","Allow Google Cast to connect to Cast devices on all IP addresses (Disabled)",,,,"MediaRouterCastAllowAllIPs",,,,0,0,"=","Low"
+"L1",1.32,"Startup, home page and new tab page","llow import of data from other browsers on each Microsoft Edge launch",,,,"ImportOnEachLaunch",,,,,0,"=","Low"
+"L1",1.33,"Startup, home page and new tab page","Allow importing of autofill form data (Disabled)",,,,"ImportAutofillFormData",,,,1,0,"=","Low"
+"L1",1.34,"Startup, home page and new tab page","Allow importing of browser settings (Disabled)",,,,"ImportBrowserSettings",,,,1,0,"=","Low"
+"L1",1.35,"Startup, home page and new tab page","Allow importing of home page settings (Disabled)",,,,"ImportHomepage",,,,1,0,"=","Low"
+"L1",1.36,"Startup, home page and new tab page","Allow importing of payment info (Disabled)",,,,"ImportPaymentInfo",,,,,0,"=","Low"
+"L1",1.37,"Startup, home page and new tab page","Allow importing of saved passwords",,,,"ImportSavedPasswords",,,,1,0,"=","Low"
+"L1",1.38,"Startup, home page and new tab page","Allow importing of search engine settings",,,,"ImportSearchEngine",,,,,0,"=","Low"
+"L1",1.39,"Startup, home page and new tab page","Allow managed extensions to use the Enterprise Hardware Platform API (Disabled)",,,,"EnterpriseHardwarePlatformAPIEnabled",,,,0,0,"=","Low"
+"L2","“1.40”","Startup, home page and new tab page","Allow or block audio capture (Disabled)",,,,"AudioCaptureAllowed",,,,1,0,"=","Low"
+"L2",1.41,"Startup, home page and new tab page","Allow or block video capture (Disabled)",,,,"VideoCaptureAllowed",,,,1,0,"=","Low"
+"L2",1.42,"Startup, home page and new tab page","Allow or deny screen capture (Disabled)",,,,"ScreenCaptureAllowed",,,,1,0,"=","Low"
+"L1",1.43,"Startup, home page and new tab page","Allow personalization of ads",,,,"PersonalizationReportingEnabled",,,,1,0,"=","Low"
+"L1",1.44,"Startup, home page and new tab page","Allow queries to a Browser Network Time service (Enabled)",,,,"BrowserNetworkTimeQueriesEnabled",,,,1,1,"=","Low"
+"L1",1.45,"Startup, home page and new tab page","Allow remote debugging (Disabled)",,,,"RemoteDebuggingAllowed",,,,1,0,"=","Low"
+"L1",1.46,"Startup, home page and new tab page","Allow the audio sandbox to run (Enabled)",,,,"AudioSandboxEnabled",,,,,1,"=","Low"
+"L2",1.47,"Startup, home page and new tab page","Allow unconfigured sites to be reloaded in Internet Explorer mode (Disabled)",,,,"InternetExplorerIntegrationReloadInIEModeAllowed",,,,,0,"=","Low"
+"L1",1.48,"Startup, home page and new tab page","Allow user feedback (Disabled)",,,,"UserFeedbackAllowed",,,,1,0,"=","Low"
+"L2",1.49,"Startup, home page and new tab page","Allow users to open files using the ClickOnce protocol (Disabled)",,,,"ClickOnceEnabled",,,,0,0,"=","Low"
+"L2","“1.50”","Startup, home page and new tab page","Allow users to open files using the DirectInvoke protocol",,,,"DirectInvokeEnabled",,,,1,0,"=","Low"
+"L2",1.51,"Startup, home page and new tab page","Allow users to proceed from the HTTPS warning page (Disabled)",,,,"SSLErrorOverrideAllowed",,,,1,0,"=","Low"
+"L1",1.52,"Startup, home page and new tab page","Allow websites to query for available payment methods (Disabled)",,,,"PaymentMethodQueryEnabled",,,,1,0,"=","Low"
+"L2",1.53,"Startup, home page and new tab page","AutoLaunch Protocols Component Enabled",,,,"AutoLaunchProtocolsComponentEnabled",,,,1,0,"=","Low"
+"L1",1.54,"Startup, home page and new tab page","Automatically import another browser's data and settings at first run",,,,"AutoImportAtFirstRun",,,,,4,"=","Low"
+"L1",1.55,"Startup, home page and new tab page","utomatically open downloaded MHT or MHTML files from the web in Internet Explorer mode (Disabled)",,,,"InternetExplorerIntegrationZoneIdentifierMhtFileAllowed",,,,0,0,"=","Low"
+"L2",1.56,"Startup, home page and new tab page","Block third party cookies",,,,"BlockThirdPartyCookies",,,,1,1,"=","Low"
+"L1",1.57,"Startup, home page and new tab page","Block tracking of users' web-browsing activity",,,,"TrackingPrevention",,,,,2,">=","Low"
+"L2",1.58,"Startup, home page and new tab page","Browser sign-in settings",,,,"BrowserSignin",,,,,0,"=","Low"
+"L1",1.59,"Startup, home page and new tab page","Clear browsing data when Microsoft Edge closes (Disabled)",,,,"ClearBrowsingDataOnExit",,,,0,0,"=","Low"
+"L1","“1.60”","Startup, home page and new tab page","Clear cached images and files when Microsoft (Disabled)",,,,"ClearCachedImagesAndFilesOnExit",,,,,0,"=","Low"
+"L1",1.61,"Startup, home page and new tab page","Clear history for IE and IE mode every time you exit (Disabled)",,,,"InternetExplorerModeclearDataOnExitEnab",,,,0,0,"=","Low"
+"L1",1.62,"Startup, home page and new tab page","Compose is enabled for writing on the web",,,,"ComposeInlineEnabled",,,,1,0,"=","Low"
+"L1",1.63,"Startup, home page and new tab page","Configure browser process code integrity guard",,,,"browserCodeIntegritySetting",,,,0,2,"=","Low"
+"L1",1.64,"Startup, home page and new tab page","Configure InPrivate mode availability",,,,"InPrivateModeAvailability",,,,,1,"=","Low"
+"L1",1.65,"Startup, home page and new tab page","Configure Online Text To Speech (Disabled)",,,,"ConfigureOnlineTextToSpeech",,,,1,0,"=","Low"
+"L1",1.66,"Startup, home page and new tab page","Configure Related Matches in Find on Page (Disabled)",,,,"RelatedMatchesCloudServiceEnabled",,,,1,0,"=","Low"
+"L1",1.67,"Startup, home page and new tab page","Configure Speech Recognition (Disabled)",,,,"SpeechRecognitionEnabled",,,,1,0,"=","Low"
+"L1",1.68,"Startup, home page and new tab page","Configure the list of names that will bypass the HSTS policy check (Disabled)",,,,"HSTSPolicyBypassList",,,,1,"absent","=","Low"
+"L1",1.69,"Startup, home page and new tab page","Configure the list of types that are excluded from synchronization (Enabled)",,,,,,,,1,0,"=","Low"
+"L1",1.7,"Startup, home page and new tab page","Configure the Share experience",,,,"ConfigureShare",,,,1,1,"=","Low"
+"L1",1.71,"Startup, home page and new tab page","Configure whether form data and HTTP headers will be sent when entering or exiting Internet Explorer mode",,,,"InternetExplorerIntegrationComplexNavDataTypes",,,,,0,"=","Low"
+"L1",1.72,"Startup, home page and new tab page","Continue running background apps after Microsoft Edge closes",,,,"BackgroundModeEnabled",,,,0,0,"=","Low"
+"L1",1.73,"Startup, home page and new tab page","Control communication with the Experimentation and Configuration Service",,,,"ExperimentationAndConfigurationServiceControl",,,,1,0,"=","Low"
+"L2",1.74,"Startup, home page and new tab page","Control use of the Headless Mode (Disabled)",,,,"HeadlessModeEnabled",,,,1,0,"=","Low"
+"L1",1.75,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.76,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.77,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.78,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.79,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.8,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.81,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.82,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.83,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.84,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.85,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.86,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.87,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.88,"Startup, home page and new tab page",,,"(Disabled)",,,,,,1,0,,
+"L1",1.89,"Startup, home page and new tab page",,,"(Enabled)",,,,,,1,0,,
+"L1",1.9,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.91,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.92,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.93,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.94,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.95,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.96,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.97,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.98,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.99,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.1,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.101,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.102,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.103,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.104,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.105,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.106,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.107,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.108,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.109,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.11,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.111,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.112,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.113,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.114,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.115,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.116,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.117,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.118,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.119,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.12,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.121,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.122,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.123,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.124,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.125,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.126,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.127,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.128,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.129,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.13,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.131,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.132,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.133,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.134,"Startup, home page and new tab page",,,,,,,,,1,0,,
+"L1",1.135,"Startup, home page and new tab page",,,,,,,,,1,0,,

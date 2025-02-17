@@ -1,0 +1,27 @@
+---
+- name: "Compute DOMAIN info on each host"
+  hosts: domain
+  max_fail_percentage: 0
+  tasks:
+    - name: Compute ansible_user for kerberos
+      ansible.builtin.set_fact:
+        ansible_user: "Administrator@{{ hostvars[domain_dc_ansible_inventory_key].domain_name | upper }}"
+        ansible_password: "{{ hostvars[domain_dc_ansible_inventory_key].domain_password }}"
+        ansible_winrm_transport: kerberos
+        # ansible_winrm_scheme: http
+
+#    - name: Print host configuration
+#      ansible.builtin.debug:
+#        msg:
+#          - "ansible_winrm_transport: {{ ansible_winrm_transport }}"
+#          - "ansible_user: {{ ansible_user }}"
+#          - "ansible_password: {{ ansible_password }}"
+#          - "ansible_connection: {{ ansible_connection }}"
+#          - "ansible_winrm_server_cert_validation: {{ ansible_winrm_server_cert_validation }}"
+#          - "ansible_winrm_operation_timeout_sec: {{ ansible_winrm_operation_timeout_sec }}"
+#          - "ansible_winrm_read_timeout_sec: {{ ansible_winrm_read_timeout_sec }}"
+#          - "ansible_port: {{ ansible_port }}"
+#          # - "ansible_winrm_scheme: {{ ansible_winrm_scheme }}"
+#          # - "ansible_winrm_kinit_cmd: {{ ansible_winrm_kinit_cmd }}"
+#          # - "kerberos_mode: {{ kerberos_mode }}"
+#          # - "ansible_winrm_kinit_args: {{ ansible_winrm_kinit_args }}"

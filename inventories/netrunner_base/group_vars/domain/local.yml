@@ -39,7 +39,8 @@ extra_capabilities: [
     "GPMC"
 
 ]
-softwares: ["notepadplusplus"]
+## https://community.chocolatey.org/packages
+softwares: ["notepadplusplus", "7zip"]
 #
 #user_repos: {
 #    jubeaz: [

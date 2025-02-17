@@ -10,6 +10,7 @@
 # "type" -type "str" -default "string" -ValidateSet "string", "expandstring", "binary", "dword", "multistring", "qword"
 # "value"
 
+# https://admx.help/?Category=security-compliance-toolkit
 
 gpo_global: {
   "global.refresh_gpo_policy": {

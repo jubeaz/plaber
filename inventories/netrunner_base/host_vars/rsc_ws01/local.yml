@@ -27,7 +27,8 @@ extra_features: [
 
 
 #features: ["NET-Framework-Core"]
-softwares: [  "git", "visualstudio2022community", "notepadplusplus", "python", "libreoffice"]
+## https://community.chocolatey.org/packages
+softwares: [  "git", "visualstudio2022community", "notepadplusplus", "python", "libreoffice","7zip"]
 
 user_repos: {
     rubeaz: [

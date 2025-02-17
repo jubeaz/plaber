@@ -1,11 +1,24 @@
 ---
 - name: Ensure domains are reachable
   import_playbook: books/domains-reachable.yml
-
+- name: Compute kerberos Auth
+  import_playbook: books/compute-kerberos-auth.yml
 - name: Compute extended inventory (local)
   import_playbook: books/compute-properties_local.yml
 - name: Compute extended inventory (domain)
   import_playbook: books/compute-properties_domain.yml
+- name: Compute extended inventory (forest)
+  import_playbook: books/compute-properties_forest.yml
+- name: Compute extended inventory (trust)
+  import_playbook: books/compute-properties_trust.yml
 
 - name: Build domains
-  import_playbook: books/_test_gpo.yml
+  import_playbook: books/_test_kerberos.yml
+
+#- name: Compute extended inventory (local)
+#  import_playbook: books/compute-properties_local.yml
+#- name: Compute extended inventory (domain)
+#  import_playbook: books/compute-properties_domain.yml
+#
+#- name: Build domains
+#  import_playbook: books/_test_gpo.yml

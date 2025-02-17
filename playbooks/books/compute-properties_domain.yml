@@ -5,7 +5,7 @@
   tasks:
     - name: Compute domain dc on all hosts
       ansible.builtin.set_fact:
-        domain_dc_ip: "{{ hostvars[domain_dc_ansible_inventory_key].ansible_host }}"
+        domain_dc_ip: "{{ hostvars[domain_dc_ansible_inventory_key].domain_ip }}"
         domain_dc_name: "{{ hostvars[domain_dc_ansible_inventory_key].hostname }}"
         domain_ldap_name: "DC={{ hostvars[domain_dc_ansible_inventory_key].domain_name.split('.') | join(',DC=') }}"
 
@@ -19,8 +19,8 @@
         path: "{{ hostvars[domain_dc_ansible_inventory_key].domain_real_computers[hostname].path }}"
       when: inventory_hostname not in groups['dc']
 
-    - name: print host configuration
-      debug:
+    - name: Print host configuration
+      ansible.builtin.debug:
         msg:
           - "domain_password: {{ domain_password }}"
           - "domain_name: {{ domain_name }}"
@@ -31,4 +31,3 @@
           - "laps_path: {{ laps_path }}"
 #          - "path: {{ path }}"
           - "domain_ldap_name: {{ domain_ldap_name }}"
-            

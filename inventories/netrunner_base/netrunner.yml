@@ -13,6 +13,19 @@ all:
 #        rsc_lin01: {} 
     domain:
       children:
+        haas_domain:
+          hosts:
+            dc_haas: {}  
+            haas_srv01: {}
+        rsc_domain:
+          hosts:
+            dc_rsc: {}
+            rsc_srv01: {}
+            rsc_ws01: {}
+        wld_domain:
+          hosts:
+            dc_wld: {} 
+            wld_srv01: {} 
         dc:
           hosts:
             dc_wld: {dc_level: 0}    
@@ -59,12 +72,19 @@ all:
           hosts:
             rsc_ws01: {}
   hosts:
-    dc_wld:               {ansible_host: 172.16.1.1}
-    wld_srv01:            {ansible_host: 172.16.1.10}
-    dc_haas:              {ansible_host: 172.16.2.1}
-    haas_srv01:           {ansible_host: 172.16.2.10}
-    dc_rsc:               {ansible_host: 172.16.3.1}
-    rsc_srv01:            {ansible_host: 172.16.3.10}
-#    rsc_lin01:            {ansible_host: 172.16.0.11,  public_ip: 192.168.2.101, domain_prefix: 24, domain_gateway: 10.0.2.254, two_adapters: true,}
-    rsc_ws01:             {ansible_host: 172.16.3.20}
+#    dc_wld:               {ansible_host: 172.16.1.1}
+    dc_wld:               {ansible_host: wld01.weyland.local, domain_ip: 172.16.1.1}
+#    wld_srv01:            {ansible_host: 172.16.1.10}
+    wld_srv01:            {ansible_host: archer.weyland.local, domain_ip: 172.16.1.10}
+#    dc_haas:              {ansible_host: 172.16.2.1}
+    dc_haas:              {ansible_host: haas01.haas.local, domain_ip: 172.16.2.1}
+#    haas_srv01:           {ansible_host: 172.16.2.10}
+    haas_srv01:           {ansible_host: bran.haas.local, domain_ip: 172.16.2.10}
+#    dc_rsc:               {ansible_host: 172.16.3.1}
+    dc_rsc:               {ansible_host: rsc01.research.haas.local, domain_ip: 172.16.3.1}
+#    rsc_srv01:            {ansible_host: 172.16.3.10}
+    rsc_srv01:            {ansible_host: fenris.research.haas.local, domain_ip: 172.16.3.10}
+#    rsc_ws01:             {ansible_host: 172.16.3.20}
+    rsc_ws01:             {ansible_host: architect.research.haas.local, domain_ip: 172.16.3.20}
+##    rsc_lin01:            {ansible_host: pub.research.haas.local, domain_ip: 172.16.3.11,  public_ip: 192.168.2.101, domain_prefix: 24, domain_gateway: 172.16.3.254, two_adapters: true,}
     fw:                   {ansible_host: 192.168.2.100}

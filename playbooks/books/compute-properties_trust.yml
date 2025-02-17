@@ -6,13 +6,13 @@
     - name: Compute trusted domain infos on DC
       ansible.builtin.set_fact:
         domain_trust_remote_dc_name: "{{ hostvars[trust_domain_dc_ansible_inventory_key].hostname }}"
-        domain_trust_remote_dc_ip: "{{ hostvars[trust_domain_dc_ansible_inventory_key].ansible_host }}"
+        domain_trust_remote_dc_ip: "{{ hostvars[trust_domain_dc_ansible_inventory_key].domain_ip }}"
         domain_trust_remote_domain_name: "{{ hostvars[trust_domain_dc_ansible_inventory_key].domain_name }}"
         domain_trust_remote_domain_password: "{{ hostvars[trust_domain_dc_ansible_inventory_key].domain_password }}"
         cacheable: true
 
 #    - name: print trused domain info
-#      debug:
+#       ansible.builtin.debug:
 #        msg:
 #          - "domain_trust_remote_dc_name: {{ domain_trust_remote_dc_name }}"
 #          - "domain_trust_remote_dc_ip: {{ domain_trust_remote_dc_ip }}"
@@ -21,12 +21,13 @@
 #          - "domain_name: {{ domain_name }}"
 
     - name: Compute transitive trusted domains
-      no_log: true
+      # no_log: true
       ansible.builtin.set_fact:
-        transitive_trusts_domains: "{{ transitive_trusts_domains | default([]) + [[ item.key, item.value.domain_name ]] }}"
+        transitive_trusts_domains: "{{ transitive_trusts_domains | default([]) + [[ item.value.domain_ip, item.value.domain_name ]] }}"
       with_dict: "{{ hostvars }}"
-      when: item.value.domain_name is defined and
-        item.value.domain_name != domain_name
+      when: item.value.domain_name is defined 
+        and item.value.dc_level is defined
+        and item.value.domain_name != domain_name
         and item.value.domain_name != domain_trust_remote_domain_name
         and '.'.join(item.value.domain_name.split('.')[1:]) != domain_name
         and item.value.domain_name != '.'.join(domain_name.split('.')[1:])
@@ -36,11 +37,11 @@
         # child domain
         # parent domain
 
-#    - name: print transitive_trusts_domains
-#      debug:
+#    - name: Print transitive_trusts_domains
+#       ansible.builtin.debug:
 #        msg:
 #          - "{{ item[1] }}"
-#          - "{{ hostvars[item[0]].ansible_host }}"
+#          - "{{ item[0] }}"
 #      loop: "{{ transitive_trusts_domains }}"
 #      when: transitive_trusts_domains is defined
 

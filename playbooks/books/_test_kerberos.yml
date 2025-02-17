@@ -1,0 +1,12 @@
+- name: ROOT DC AD CONFIGURATION
+  hosts: domain
+  max_fail_percentage: 0
+  tags: 'test'
+  tasks:
+    - name: GPO
+      ansible.windows.win_command: klist
+      register: klist_out
+    - name: Display klist
+      ansible.builtin.debug:
+        msg:
+          - "klist_out: {{ klist_out }}"
