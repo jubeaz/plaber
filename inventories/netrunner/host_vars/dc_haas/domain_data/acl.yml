@@ -1,5 +1,0 @@
-acls: {
-  # 
-  "GenericAll_ichi_lowpriv" : {"for": "drafter", "to": "haas.local\\lowpriv", "right": "GenericAll", "inheritance": "None"}
-  }
-

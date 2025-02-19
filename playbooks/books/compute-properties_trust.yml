@@ -32,11 +32,6 @@
         and '.'.join(item.value.domain_name.split('.')[1:]) != domain_name
         and item.value.domain_name != '.'.join(domain_name.split('.')[1:])
 
-        # same domain
-        # trusted domain
-        # child domain
-        # parent domain
-
 #    - name: Print transitive_trusts_domains
 #       ansible.builtin.debug:
 #        msg:

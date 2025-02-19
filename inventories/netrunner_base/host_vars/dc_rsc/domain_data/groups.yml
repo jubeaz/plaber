@@ -1,47 +1,28 @@
 domain_groups : {
-    "U_SCCM_ADMINS" : {
-        "scope": "universal", # universal, global or domainlocal default domainlocal
-        "managed_by" : "Domain Admins",
-        "path" : "OU=Groups,OU=IT,OU=Asa,DC=research,DC=haas,DC=local",
-        "members" : [
-            "G_SCCM_ADMINS",
-        ]
-    },
-    "G_SCCM_ADMINS" : {
-        "scope": "global", # universal, global or domainlocal default domainlocal
-        "managed_by" : "Domain Admins",
-        "path" : "OU=Groups,OU=IT,OU=Asa,DC=research,DC=haas,DC=local",
-        "members" : [
-            "research.haas.local\\rubeaz"
-        ]
-    },
-    "L_SCCM_MANAGED" : {
-        "scope": "domainlocal", # universal, global or domainlocal default domainlocal
-        "managed_by" : "Domain Admins",
-        "path" : "OU=Groups,OU=IT,OU=Asa,DC=research,DC=haas,DC=local",
-        "members" : [ 
-            "fenris$",
-            "architect$",
-#            "bran$",
-            "rsc01$"
-        ],
-        "foreign_users": [],
-        "foreign_gmsas": [],
-        "foreign_computers": [],
-        "foreign_groups": []
-    },
     "G_LAPS_READER" : {
         "scope": "global", # universal, global or domainlocal default domainlocal
         "managed_by" : "Domain Admins",
         "path" : "OU=Groups,OU=IT,OU=Asa,DC=research,DC=haas,DC=local",
         "members" : []
     },
+    "U_LAPS_READER" : {
+        "scope": "universal", # universal, global or domainlocal default domainlocal
+        "managed_by" : "Domain Admins",
+        "path" : "OU=Groups,OU=IT,OU=Asa,DC=research,DC=haas,DC=local",
+        "members" : [
+            "RESEARCH\\G_LAPS_READER"
+        ],
+        "foreign_users": [],
+        "foreign_gmsas": [],
+        "foreign_computers": [],
+        "foreign_groups": ["HAAS\\G_LAPS_READER"]
+    },
     "L_LAPS_READER" : {
         "scope": "domainlocal", # universal, global or domainlocal default domainlocal
         "managed_by" : "Domain Admins",
         "path" : "OU=Groups,OU=IT,OU=Asa,DC=research,DC=haas,DC=local",
         "members" : [
-            "G_LAPS_READER"
+            "RESEARCH\\U_LAPS_READER"
         ],
         "foreign_users": [],
         "foreign_gmsas": [],
@@ -73,8 +54,6 @@ domain_groups : {
         "managed_by" : "Domain Admins",
         "path" : "CN=Users,DC=research,DC=haas,DC=local",
         "members" : [
-            # sccm push account
-            howler
         ],
         "foreign_users": [],
         "foreign_gmsas": [],
@@ -96,12 +75,86 @@ domain_groups : {
         "scope": "domainlocal", # universal, global or domainlocal default domainlocal
         "managed_by" : "Domain Admins",
         "path" : "CN=Users,DC=research,DC=haas,DC=local",
-        "members" : ["RESEARCH\\FENRIS$"],
+        "members" : [],
         "foreign_users": [],
         "foreign_gmsas": [],
         "foreign_computers": [],
         "foreign_groups": []
     },
+    "G_SYSADMIN_FENRIS" : {
+        "scope": "global", # universal, global or domainlocal default domainlocal
+        "managed_by" : "Domain Admins",
+        "path" : "CN=Users,DC=research,DC=haas,DC=local",
+        "members" : [
+            "RESEARCH\\rubeaz",
+            "RESEARCH\\administrator", 
+            "RESEARCH\\ichi$",
+        ],
+        "foreign_users": [],
+        "foreign_gmsas": [],
+        "foreign_computers": [],
+        "foreign_groups": []
+    },
+    "U_SYSADMIN_FENRIS" : {
+        "scope": "universal", # universal, global or domainlocal default domainlocal
+        "managed_by" : "Domain Admins",
+        "path" : "CN=Users,DC=research,DC=haas,DC=local",
+        "members" : [
+            "RESEARCH\\G_SYSADMIN_FENRIS"
+        ],
+        "foreign_users": [],
+        "foreign_gmsas": [],
+        "foreign_computers": [],
+        "foreign_groups": ["HAAS\\G_SYSADMIN_FENRIS"]
+    },
+    "G_SQL_ACCOUNTS_FENRIS" : {
+        "scope": "global", # universal, global or domainlocal default domainlocal
+        "managed_by" : "Domain Admins",
+        "path" : "CN=Users,DC=research,DC=haas,DC=local",
+        "members" : [
+            "RESEARCH\\G_SYSADMIN_FENRIS"
+        ],
+        "foreign_users": [],
+        "foreign_gmsas": [],
+        "foreign_computers": [],
+        "foreign_groups": []
+    },
+    "U_SQL_ACCOUNTS_FENRIS" : {
+        "scope": "universal", # universal, global or domainlocal default domainlocal
+        "managed_by" : "Domain Admins",
+        "path" : "CN=Users,DC=research,DC=haas,DC=local",
+        "members" : [
+            "RESEARCH\\G_SQL_ACCOUNTS_FENRIS"
+        ],
+        "foreign_users": [],
+        "foreign_gmsas": [],
+        "foreign_computers": [],
+        "foreign_groups": ["HAAS\\G_SQL_ACCOUNTS_FENRIS"]
+    },
+#    "G_SCCM_ADMINS" : {
+#        "scope": "global", # universal, global or domainlocal default domainlocal
+#        "managed_by" : "Domain Admins",
+#        "path" : "OU=Groups,OU=IT,OU=Asa,DC=research,DC=haas,DC=local",
+#        "members" : [
+#            "RESEARCH\\rubeaz"
+#        ]
+#    },
+#    "G_SCCM_MANAGED" : {
+#        "scope": "global", # universal, global or domainlocal default domainlocal
+#        "managed_by" : "Domain Admins",
+#        "path" : "OU=Groups,OU=IT,OU=Asa,DC=research,DC=haas,DC=local",
+#        "members" : [ 
+#            "fenris$",
+#            "architect$",
+#            "rsc01$"
+#        ],
+#        "foreign_users": [],
+#        "foreign_gmsas": [],
+#        "foreign_computers": [],
+#        "foreign_groups": []
+#    },
 }
     
 
+domain_builtin_groups: {
+}

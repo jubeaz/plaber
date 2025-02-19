@@ -2,10 +2,10 @@
 # -A POSTROUTING -s 172.16.0.0/16 -o eth1 -j MASQUERADE
 # # END NAT RULES
 
-#- debug:
-#    msg: "-A POSTROUTING -s {{ info[domain].ipv4.network }}/{{ info[domain].ipv4.prefix }} -o {{ interface }} -j MASQUERADE"
+# - debug:
+#     msg: "-A POSTROUTING -s {{ info[domain].ipv4.network }}/{{ info[domain].ipv4.prefix }} -o {{ interface }} -j MASQUERADE"
 
-- name: "check NAT is enabled on {{ interface }} for {{ info[domain].ipv4.network }}/{{ info[domain].ipv4.prefix }}"
+- name: "Check NAT is enabled on {{ interface }} for {{ info[domain].ipv4.network }}/{{ info[domain].ipv4.prefix }}"
   ansible.builtin.lineinfile:
     name: /etc/ufw/before.rules
     regexp: '^-A POSTROUTING -s {{ info[domain].ipv4.network }}/{{ info[domain].ipv4.prefix }} -o {{ interface }} -j MASQUERADE'
@@ -20,6 +20,7 @@
     insertbefore: '^# END NAT RULES'
     line: '# Forward traffic through {{ interface }} with NAT from {{ info[domain].ipv4.network }}/{{ info[domain].ipv4.prefix }}'
   when: is_nat_rule_enabled.found == 0
+
 - name: "Insert NAT rule"
   ansible.builtin.lineinfile:
     path: /etc/ufw/before.rules

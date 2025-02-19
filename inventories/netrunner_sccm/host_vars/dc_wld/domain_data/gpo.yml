@@ -1,0 +1,59 @@
+
+#-supports_check_mode $true
+
+# "_ansible_check_mode" -type "bool" -default $false
+# "_ansible_diff" -type "bool" -default $false
+# "gpo" -type "str" -failifempty $true
+# "name" -type "str" -failifempty $true
+# "path" -type "str" -failifempty $true
+# "state" -type "str" -default "present" -validateset "absent", "disabled", "present"
+# "type" -type "str" -default "string" -ValidateSet "string", "expandstring", "binary", "dword", "multistring", "qword"
+# "value"
+
+# https://admx.help/?Category=security-compliance-toolkit
+
+gpo_local: {
+  "local.DisableNTLM": {
+    gpo_ous: {},
+    gpo_desc: "local.DisableNTLM",
+    gpo_registry: {
+      "RestrictReceivingNTLMTraffic"  : { 
+        "path" : "HKLM\\System\\CurrentControlSet\\Control\\Lsa\\MSV1_0", 
+        'type': "dword", 
+        'value': 2,
+        'state': "present"
+      },
+      "AuditReceivingNTLMTraffic"  : { 
+        "path" : "HKLM\\System\\CurrentControlSet\\Control\\Lsa\\MSV1_0", 
+        'type': "dword", 
+        'value': 2,
+        'state': "present"
+      },   
+      "RestrictSendingNTLMTraffic"  : { 
+        "path" : "HKLM\\System\\CurrentControlSet\\Control\\Lsa\\MSV1_0", 
+        'type': "dword", 
+        'value': 2,
+        'state': "present"
+      },   
+      "RestrictNTLMInDomain"  : { 
+        "path" : "HKLM\\System\\CurrentControlSet\\Services\\Netlogon\\Parameters", 
+        'type': "dword", 
+        'value': 7,
+        'state': "present"
+      },   
+      "AuditNTLMInDomain"  : { 
+        "path" : "HKLM\\System\\CurrentControlSet\\Services\\Netlogon\\Parameters", 
+        'type': "dword", 
+        'value': 7,
+        'state': "present"
+      }    
+    },
+    gpo_domain: true,
+    gpo_domain_enforced: true,
+    gpo_domain_enabled: true,
+    gpo_domain_state: "present"
+  }
+}
+
+
+gpo:  "{{ gpo_global | combine(gpo_local) }}"

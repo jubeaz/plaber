@@ -141,7 +141,8 @@ export PYTHONPATH=~/.local/pipx/venvs/ansible/lib/python3.13/site-packages/
 172.16.1.10     archer.weyland.local archer
 
 172.16.2.1      haas01.haas.local dc.haas.local haas.local
-172.16.2.10     bran.haas.local bran 
+172.16.2.10     eli.haas.local eli 
+172.16.2.11     bran.haas.local bran 
 
 172.16.3.1      rsc01.research.haas.local dc.research.haas.local research.haas.local
 172.16.3.10     fenris.research.haas.local fenris 
@@ -202,6 +203,7 @@ Include kerberos book where requiered (after domain build)
 
 
 # To fix on vagrant
+https://forums.virtualbox.org/viewtopic.php?t=112438
 
 ## vagrant pbs
 Unable to download the box to solve
@@ -259,47 +261,6 @@ C:\setup\cd.retail.LN\SMSSETUP\BIN\I386\consolesetup.exe /q "TargetDir=%ProgramF
 
 https://www.prajwaldesai.com/install-sql-server-2022-for-sccm-configmgr/
 
-
-### laps (TO TEST)
-
-### problem
-
-https://learn.microsoft.com/en-us/troubleshoot/windows-server/active-directory/replication-error-8524
-
-```
-ok: [dc_weyland] => {
-    "sync_summary.stdout_lines": [
-        "Replication Summary Start Time: 2024-04-23 06:07:59",
-        "Beginning data collection for replication summary, this may take awhile:",
-        "Source DSA          largest delta    fails/total %%   error",
-        " wld01                      09m:15s    0 /   4    0  ",
-        " rsc01                      09m:55s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
-        "Destination DSA     largest delta    fails/total %%   error",
-        " wld01                      09m:55s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
-        " rsc01                      09m:10s    0 /   4    0  ",
-    ]
-}
-ok: [dc_haas] => {
-    "sync_summary.stdout_lines": [
-        "Replication Summary Start Time: 2024-04-23 06:07:54",
-        "Beginning data collection for replication summary, this may take awhile:",
-        "Source DSA          largest delta    fails/total %%   error",
-        "Destination DSA     largest delta    fails/total %%   error",
-    ]
-}
-ok: [dc_research_haas] => {
-    "sync_summary.stdout_lines": [
-        "Replication Summary Start Time: 2024-04-23 06:07:54",
-        "Beginning data collection for replication summary, this may take awhile:",
-        "Source DSA          largest delta    fails/total %%   error",
-        " wld01                      09m:10s    0 /   4    0  ",
-        " rsc01                      09m:50s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
-        "Destination DSA     largest delta    fails/total %%   error",
-        " wld01                      09m:55s    1 /   4   25  (8524) The DSA operation is unable to proceed because of a DNS lookup failure.",
-        " rsc01                      09m:10s    0 /   4    0  ",
-    ]
-}
-```
 
 
 # TODO

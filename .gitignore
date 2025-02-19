@@ -2,4 +2,5 @@ tags
 .vagrant/
 downloaded_roles/
 .cache/
+.ansible/
 

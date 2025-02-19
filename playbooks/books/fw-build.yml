@@ -29,7 +29,7 @@
         path: "/etc/systemd/network/eth1.network"
         regexp: '^DNS='
         insertafter: '^Gateway='
-        line: 'DNS={{dns_server}}'
+        line: 'DNS={{ dns_server }}'
       when: disable_nat
 
     - name: Reboot
@@ -70,9 +70,9 @@
 #        interface: "{{item}}"
 #      with_items: "{{domains_interfaces}}"
 
-    - name: Allow local network to internal networks
+    - name: Allow local network to domain networks
       community.general.ufw:
-        comment: "[LtoI] ip forward from {{ public_interface }} to {{ info[interface].ipv4.network }}/{{ info[interface].ipv4.prefix }} on {{ interface }}"
+        comment: "[L2D] ip forward from {{ public_interface }} to {{ info[interface].ipv4.network }}/{{ info[interface].ipv4.prefix }} on {{ interface }}"
         interface_in: "{{ public_interface }}"
         interface_out: "{{ interface }}"
         proto: tcp
@@ -85,9 +85,9 @@
         interface: "{{ item }}"
       with_items: "{{ domains_interfaces }}"
 
-    - name: Allow local network to internal networks (UDP)
+    - name: Allow local network to domain networks (UDP)
       community.general.ufw:
-        comment: "[LtoI] ip fwd from {{ public_interface }} to {{ info[interface].ipv4.network }}/{{ info[interface].ipv4.prefix }} on {{ interface }} (UDP)"
+        comment: "[L2D] ip fwd from {{ public_interface }} to {{ info[interface].ipv4.network }}/{{ info[interface].ipv4.prefix }} on {{ interface }} (UDP)"
         interface_in: "{{ public_interface }}"
         interface_out: "{{ interface }}"
         proto: udp
@@ -102,9 +102,9 @@
 #    - debug:
 #        var: internet_interface
 #
-    - name: Allow internals to internet
+    - name: Allow Domain to internet
       community.general.ufw:
-        comment: "[ItoL] ip forward from {{ interface }} to {{ internet_interface }}"
+        comment: "[D2L] ip forward from {{ interface }} to {{ internet_interface }}"
         interface_in: "{{ interface }}"
         interface_out: "{{ internet_interface }}"
         proto: tcp
@@ -119,7 +119,7 @@
 
     - name: Allow internals to internet (UDP)
       community.general.ufw:
-        comment: "[ItoInternet] ip forward from {{ interface }} to {{ internet_interface }} (UDP)"
+        comment: "[D2L] ip forward from {{ interface }} to {{ internet_interface }} (UDP)"
         interface_in: "{{ interface }}"
         interface_out: "{{ internet_interface }}"
         proto: udp
