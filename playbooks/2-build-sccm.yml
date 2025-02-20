@@ -12,5 +12,6 @@
 #- name: Compute extended inventory (trust)
 #  import_playbook: books/compute-properties_trust.yml
 
+
 - name: Deploy SCCM
   import_playbook: books/members-sccm.yml

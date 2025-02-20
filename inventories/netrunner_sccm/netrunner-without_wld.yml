@@ -25,19 +25,19 @@ all:
             rsc_ws01: {}
         wld_domain:
           hosts:
-            dc_wld: {} 
-            wld_srv01: {} 
+#            dc_wld: {} 
+#            wld_srv01: {} 
         dc:
           hosts:
-            dc_wld: {dc_level: 0}    
+#            dc_wld: {dc_level: 0}    
             dc_haas: {dc_level: 0} 
             dc_rsc: {dc_level: 1}
         dc_slave:
           hosts:
         trust:
           hosts:
-            dc_wld: {}    
-            dc_haas: {}
+#            dc_wld: {}    
+#            dc_haas: {}
         domain_server:
           children:
               sccm:
@@ -53,7 +53,7 @@ all:
                 hosts:
                   haas_srv01: {}     
                   rsc_srv01: {}     
-                  wld_srv01: {} 
+#                  wld_srv01: {} 
               mssql_reporting:
                 hosts:
                   haas_srv01: {}      
@@ -63,7 +63,7 @@ all:
             rsc_ws01: {}             
         mssql_ssms:
           hosts: 
-            rsc_ws01: {}                 
+            rsc_ws01: {}
             haas_srv02: {}                      
         webdav:
           hosts:          
@@ -73,8 +73,8 @@ all:
           hosts:
             rsc_ws01: {}
   hosts:
-    dc_wld:               {ansible_host: wld01.weyland.local, domain_ip: 172.16.1.1}
-    wld_srv01:            {ansible_host: archer.weyland.local, domain_ip: 172.16.1.10}
+#    dc_wld:               {ansible_host: wld01.weyland.local, domain_ip: 172.16.1.1}
+#    wld_srv01:            {ansible_host: archer.weyland.local, domain_ip: 172.16.1.10}
     dc_haas:              {ansible_host: haas01.haas.local, domain_ip: 172.16.2.1}
     haas_srv01:           {ansible_host: eli.haas.local, domain_ip: 172.16.2.10}
     haas_srv02:           {ansible_host: bran.haas.local, domain_ip: 172.16.2.11}
