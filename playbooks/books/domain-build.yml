@@ -27,23 +27,3 @@
   max_fail_percentage: 0
   roles:
     - { role: 'windows_domain_child_dns', tags: 'child_dns'}
-
-
-- name: GPOs Management
-  hosts: dc
-  tasks:
-    - name: GPO
-      ansible.builtin.include_role:
-        name: "windows_domain_gpo"
-      vars:
-        windows_domain_gpo_ous: "{{ g.value.gpo_ous }}"
-        windows_domain_gpo_name: "{{ g.key }}"
-        windows_domain_gpo_desc: "{{ g.value.gpo_desc }}"
-        windows_domain_gpo_registry: "{{ g.value.gpo_registry }}"
-        windows_domain_gpo_domain: "{{ g.value.gpo_domain }}"
-        windows_domain_gpo_domain_enforced: "{{ g.value.gpo_domain_enforced }}"
-        windows_domain_gpo_domain_enabled: "{{ g.value.gpo_domain_enabled }}"
-        windows_domain_gpo_domain_state: "{{ g.value.gpo_domain_state }}"
-      loop: "{{ gpo | dict2items }}"
-      loop_control:
-        loop_var: g
