@@ -55,7 +55,7 @@ domain_groups : {
         "path" : "CN=Users,DC=research,DC=haas,DC=local",
         "members" : [
         ],
-        "foreign_users": [],
+        "foreign_users": ["HAAS\\howler"],
         "foreign_gmsas": [],
         "foreign_computers": [],
         "foreign_groups": []

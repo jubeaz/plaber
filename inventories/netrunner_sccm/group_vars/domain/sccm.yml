@@ -1,0 +1,5 @@
+# https://www.microsoft.com/fr-fr/evalcenter/download-microsoft-endpoint-configuration-manager
+sccm_installation_media_url: "https://go.microsoft.com/fwlink/p/?LinkID=2195628&clcid=0x40c&culture=fr-fr&country=fr"
+sccm_installation_media_name: "MCM_Configmgr_2403.exe"
+sccm_installation_cpp_redist: vcredist140
+sccm_installation_sqlserver_odbcdriver: sqlserver-odbcdriver-18

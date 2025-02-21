@@ -18,6 +18,7 @@ domain_groups : {
         "managed_by" : "Domain Admins",
         "path" : "CN=Users,DC=haas,DC=local",
         "members" : [
+            "HAAS\\howler"
         ],
         "foreign_users": [],
         "foreign_gmsas": [],
@@ -29,7 +30,18 @@ domain_groups : {
         "managed_by" : "Domain Admins",
         "path" : "CN=Users,DC=haas,DC=local",
         "members" : [
-            "haas.local\\bran$"  # SCCM REQUIREMENTS ADIN OF MSSQL SERVER
+            "haas.local\\bran$",  # SCCM REQUIREMENTS ADIN OF MSSQL SERVER
+        ],
+        "foreign_users": [],
+        "foreign_gmsas": [],
+        "foreign_computers": [],
+        "foreign_groups": []
+    },
+    "L_LOCAL_ADMINS_BRAN" : {
+        "scope": "domainlocal", # universal, global or domainlocal default domainlocal
+        "managed_by" : "Domain Admins",
+        "path" : "CN=Users,DC=haas,DC=local",
+        "members" : [
         ],
         "foreign_users": [],
         "foreign_gmsas": [],
@@ -50,17 +62,6 @@ domain_groups : {
         "members" : [
             "G_CERT_MGR"
         ]
-    },
-    "L_LOCAL_ADMINS_BRAN" : {
-        "scope": "domainlocal", # universal, global or domainlocal default domainlocal
-        "managed_by" : "Domain Admins",
-        "path" : "CN=Users,DC=haas,DC=local",
-        "members" : [
-        ],
-        "foreign_users": [],
-        "foreign_gmsas": [],
-        "foreign_computers": [],
-        "foreign_groups": []
     },
     "G_SYSADMIN_ELI" : {
         "scope": "global", # universal, global or domainlocal default domainlocal

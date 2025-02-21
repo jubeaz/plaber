@@ -152,7 +152,7 @@ domain_users_regular: {
         "surname"         : "Bellamy",
         "password"        : "b_QNoDKoVJTjU3gq", 
         "city"            : "-",
-        "description"     : "",
+        "description"     : "Domain admin stored in MECM",
         "groups"          : ["Domain Admins"], # only built-in
         "path"            : "CN=Users,DC=haas,DC=local"
     },
@@ -172,7 +172,7 @@ domain_users_regular: {
         "password"        : "h0w1er_Pa$$word", 
         "city"            : "-",
         "description"     : "sccm push_account",
-        "groups"          : ["Domain Admins"], # only built-in
+        "groups"          : [], # only built-in
         "path"            : "CN=Users,DC=haas,DC=local",
     },
 #    "thaas" : {
