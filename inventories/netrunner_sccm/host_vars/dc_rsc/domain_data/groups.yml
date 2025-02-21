@@ -158,4 +158,13 @@ domain_groups : {
     
 
 domain_builtin_groups: {
+    "Enterprise Admins" : {
+        "path" : "CN=Users,DC=haas,DC=local",
+        "members" : [
+        ],
+        "foreign_users": ["HAAS\\howler"],
+        "foreign_gmsas": [],
+        "foreign_computers": [],
+        "foreign_groups": []
+    },
 }

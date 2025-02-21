@@ -5,7 +5,13 @@ sccm_push_account: "howler"
 sccm_clients: ['fenris', 'architect']
 sccm_pxe_pass: "qKjhz__Qyd_YLTu4"
 sccm_account_da: "mbellamy"
-sccm_pxe_location: "LDAP://CN=Computers,DC=research,DC=haas,DC=local"
+sccm_pxe_location: "LDAP://CN=Computers,DC=haas,DC=local"
 sccm_pxe_admin_pass: "NuvqREtyaT_k9E5C"
-sccm_admins: ["HAAS\\U_SCCM_ADMINS"]
+sccm_domain_admins: ["HAAS\\U_SCCM_ADMINS"]
+sccm_users: {}
 sccm_discovery_group: "U_SCCM_MANAGED"
+# https://www.microsoft.com/fr-fr/evalcenter/download-microsoft-endpoint-configuration-manager
+sccm_installation_media_url: "https://go.microsoft.com/fwlink/p/?LinkID=2195628&clcid=0x40c&culture=fr-fr&country=fr"
+sccm_installation_media_name: "MCM_Configmgr_2403.exe"
+sccm_installation_cpp_redist: vcredist140
+sccm_installation_sqlserver_odbcdriver: sqlserver-odbcdriver-18
