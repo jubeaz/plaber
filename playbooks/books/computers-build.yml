@@ -5,7 +5,7 @@
   tags: 'build_computers_setup_1'
   roles:
     - { role: 'windows_settings_base_setup', tags: 'base_setup'}
-    - { role: 'windows_settings_keyboard', tags: 'windows_keyboard'}
+#    - { role: 'windows_settings_keyboard', tags: 'windows_keyboard'}
     - { role: 'windows_settings_update_planning', tags: 'update_planning', when: windows_update | default(true) == true}
     - { role: 'windows_settings_updates', tags: 'updates', when: windows_update | default(true) == true}
     - { role: 'windows_settings_admin_password', tags: 'admin_password'}

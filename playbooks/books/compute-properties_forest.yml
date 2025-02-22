@@ -19,14 +19,14 @@
         cacheable: true
       when: dc_level != 0
 
-#    - name: print parent domain info
-#      debug:
-#        msg:
-#          - "domain_parent_domain_name: {{ domain_parent_domain_name }}"
-#          - "domain_parent_domain_password: {{ domain_parent_domain_password }}"
-#          - "domain_parent_dc_name: {{ domain_parent_dc_name }}"
-#          - "domain_parent_dc_ip: {{ domain_parent_dc_ip }}"
-#      when: dc_level != 0
+    - name: print parent domain info
+      debug:
+        msg:
+          - "domain_parent_domain_name: {{ domain_parent_domain_name }}"
+          - "domain_parent_domain_password: {{ domain_parent_domain_password }}"
+          - "domain_parent_dc_name: {{ domain_parent_dc_name }}"
+          - "domain_parent_dc_ip: {{ domain_parent_dc_ip }}"
+      when: dc_level != 0
 
     - name: Compute child domain names on parent DC
       no_log: true
@@ -35,10 +35,10 @@
       with_dict: "{{ hostvars }}"
       when: item.value.domain_parent_domain_name is defined and domain_name == item.value.domain_parent_domain_name
 
-#    - name: print child_domains
-#      debug:
-#        msg:
-#          - "{{ item[1]}}.{{ item[2] }}"
-#          - "{{ hostvars[item[0]].ansible_host }}"
-#      loop: "{{ child_domains }}"
-#      when: child_domains is defined
+    - name: print child_domains
+      debug:
+        msg:
+          - "{{ item[1]}}.{{ item[2] }}"
+          - "{{ hostvars[item[0]].ansible_host }}"
+      loop: "{{ child_domains }}"
+      when: child_domains is defined

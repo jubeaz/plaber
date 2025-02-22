@@ -202,7 +202,10 @@ Include kerberos book where requiered (after domain build)
 
 
 
-# To fix on vagrant
+# To fix on 
+```
+echo 3 | sudo tee /proc/sys/vm/drop_caches
+```
 https://forums.virtualbox.org/viewtopic.php?t=112438
 
 ## vagrant pbs
@@ -249,13 +252,36 @@ need to reset DNS user role `windows_domain/member_dns`
 
 ## sccm
 
-### Insufficient Access Rights Issue
+### Publication on forest domains
 
-The sccm server account has not ACL on objects contained under `CN=System Management,CN=System,DC=haas,DC=local`
+`Grant GenericAll on the System Management Container to "{{ sccm_server }}"`
+in `windows_domain_sccm_install_extend_adschema/tasks/main.yml`
 
-forcer en redemarrant le service SMS executive
+```powershell
+        #$SCCMServer= "haas\bran"
+        $parts = $SCCMServer.Split('\')
+        $s = (Get-ADDomain $parts[0]).DNSRoot
+        $sccmIdentity = Get-ADComputer -Identity $parts[1] -Server $s
+        $inheritanceType = [System.DirectoryServices.ActiveDirectorySecurityInheritance] "All"
+        $ace = New-Object System.DirectoryServices.ActiveDirectoryAccessRule $sccmIdentity.SID, "GenericAll", "Allow", $inheritanceType
 
-ou `Invoke-CMForestDiscovery -ForestName "nom foret"`
+        $domains = Get-ADForest | Select-Object -ExpandProperty Domains   
+        foreach ($domain in $domains) {   
+            $d = (Get-ADDomain -Identity $domain) 
+            New-PSDrive -Name AD2 -PSProvider ActiveDirectory -Server $d.DNSRoot -root "//RootDSE/"     
+            $systemMgmtDN = "CN=System Management,CN=System," + $d.DistinguishedName  
+            write-host $systemMgmtDN  
+            $acl = Get-ACL -Path "AD2:\$systemMgmtDN" 
+            $acl.AddAccessRule($ace) 
+            try{ 
+                Set-ACL -Path "AD2:\$systemMgmtDN" -AclObject $acl  
+            }    
+            catch {
+              
+            }
+            Remove-PSDrive -Name AD2
+        }
+```
 
 ### Boundaries sur les domaines de la foret
 
