@@ -3,14 +3,25 @@
 - name: Ensure domains are reachable
   import_playbook: books/domains-reachable.yml
 
+# ##################################
+# Start Extended inventory computing
+# ##################################
 - name: Compute extended inventory (local)
   import_playbook: books/compute-properties_local.yml
 - name: Compute extended inventory (domain)
   import_playbook: books/compute-properties_domain.yml
+
 - name: Compute extended inventory (forest)
   import_playbook: books/compute-properties_forest.yml
-#- name: Compute extended inventory (trust)
-#  import_playbook: books/compute-properties_trust.yml
+  when: groups["child_dc"] | length > 0
+
+- name: Compute extended inventory (trust)
+  import_playbook: books/compute-properties_trust.yml
+  when: groups["trust"] | length > 0
+# ################################
+# End Extended inventory computing
+# ################################
+
 
 
 - name: Deploy SCCM

@@ -147,6 +147,9 @@ domain_users_regular: {
 #        "path"            : "CN=Users,DC=haas,DC=local"
 #    },
 #
+# #########################################
+# MECM
+# #########################################
     "mbellamy" : {
         "firstname"       : "Mason",
         "surname"         : "Bellamy",

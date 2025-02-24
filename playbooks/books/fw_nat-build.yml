@@ -1,41 +1,61 @@
 ---
 - name: BASE BUILD FIREWALL
-  hosts: fw
+  hosts: fw_nat
   become: true
   become_user: root
   max_fail_percentage: 0
-  roles:
-    - { role: mlocate }
-    - { role: pacman, when: "ansible_distribution == 'Archlinux'" }
-    - { role: reflector, when: "ansible_distribution == 'Archlinux'" }
-    - { role: update-pkgs }
-    - { role: time-sync }
-    - { role: gen-locale}
-    - { role: opensshd}
 
   tasks:
-    - name: Disable NAT interface
-      ansible.builtin.blockinfile:
-        path: /etc/systemd/network/80-dhcp.network
-        append_newline: true
-        prepend_newline: true
-        block: |
-          [Link]
-          Unmanaged=yes
-      when: disable_nat
+#    - name: Run a shell command on the remote host
+#      ansible.builtin.shell: whoami
+#      register: shell_output
+#
+#    - name: Display the shell command output
+#      ansible.builtin.debug:
+#        msg: "{{ shell_output.stdout }}"
+#
+#    - name: Display hostvars in a readable format
+#      ansible.builtin.debug:
+#        var: hostvars[inventory_hostname]
+#    - name: Display ip
+#      ansible.builtin.debug:
+#        var: hostvars[inventory_hostname]['ansible_eth0']['ipv4']['address']
+    - name: Install basic roles
+      ansible.builtin.include_role:
+        name: '{{ r }}'
+      loop:
+        - 'mlocate'
+        - 'pacman'
+        - 'reflector'
+        - 'update-pkgs'
+        - 'time-sync'
+        - 'gen-locale'
+        - 'opensshd'
+      loop_control:
+        loop_var: r
 
-    - name: Ensure that DNS is set on public_interface
-      ansible.builtin.lineinfile:
-        path: "/etc/systemd/network/eth1.network"
-        regexp: '^DNS='
-        insertafter: '^Gateway='
-        line: 'DNS={{ dns_server }}'
-      when: disable_nat
-
-    - name: Reboot
-      ansible.builtin.reboot:
-      when: disable_nat
-
+#    - name: Disable NAT interface
+#      ansible.builtin.blockinfile:
+#        path: /etc/systemd/network/80-dhcp.network
+#        append_newline: true
+#        prepend_newline: true
+#        block: |
+#          [Link]
+#          Unmanaged=yes
+#      when: disable_nat
+#
+#    - name: Ensure that DNS is set on public_interface
+#      ansible.builtin.lineinfile:
+#        path: "/etc/systemd/network/eth1.network"
+#        regexp: '^DNS='
+#        insertafter: '^Gateway='
+#        line: 'DNS={{ dns_server }}'
+#      when: disable_nat
+#
+#    - name: Reboot
+#      ansible.builtin.reboot:
+#      when: disable_nat
+#
     - name: Install packages
       community.general.pacman:
         name: "{{ item }}"
@@ -47,56 +67,44 @@
       ansible.builtin.include_role:
         name: "ufw"
       vars:
-        ufw_in_ssh_ip: "[{{ ufw_in_ssh_allow }}]"
+        ufw_in_ssh_ip: "{{ ufw_in_ssh_allow }}"
         ufw_forward: true
         ufw_nat: true
 
 #    - name: Debug
-#      debug:
-#        msg: "{{interface}} route to {{info[interface].ipv4.network}}/{{info[interface].ipv4.prefix}}"
+#      ansible.builtin.debug:
+#        msg: "{{ interface }} route to {{ info[interface].ipv4.network }}/{{ info[interface].ipv4.prefix }}"
 ##        msg: "{{interface}} info {{info[interface]}}"
 #      vars:
-#        info: "{{hostvars[inventory_hostname].ansible_facts}}"
-#        interface: "{{item}}"
-#      with_items: "{{domains_interfaces}}"
+#        info: "{{ hostvars[inventory_hostname].ansible_facts }}"
+#        interface: "{{ item }}"
+#      with_items: "{{ domains_interfaces }}"
 
-## ufw route allow in on eth1 out on eth2 to 172.16.0.0/24 port 80 proto tcp
-#    - name: Debug
-#      debug:
-#        msg: "ufw route allow in on {{public_interface}} out on {{interface}} to  {{info[interface].ipv4.network}}/{{info[interface].ipv4.prefix}}"
-##        msg: "{{interface}} info {{info[interface]}}"
-#      vars:
-#        info: "{{hostvars[inventory_hostname].ansible_facts}}"
-#        interface: "{{item}}"
-#      with_items: "{{domains_interfaces}}"
-
-    - name: Allow public interface (ufw_in_ssh_allow) to domain networks (TCP)
+    - name: Allow public network to domain networks
       community.general.ufw:
         comment: "[L2D] ip forward from {{ public_interface }} to {{ info[interface].ipv4.network }}/{{ info[interface].ipv4.prefix }} on {{ interface }}"
         interface_in: "{{ public_interface }}"
-        from_ip: "{{ ufw_in_ssh_allow }}"
         interface_out: "{{ interface }}"
-        to_ip: "{{ info[interface].ipv4.network }}/{{ info[interface].ipv4.prefix }}"
         proto: tcp
         route: true
         rule: allow
         state: enabled
+        to_ip: "{{ info[interface].ipv4.network }}/{{ info[interface].ipv4.prefix }}"
       vars:
         info: "{{ hostvars[inventory_hostname].ansible_facts }}"
         interface: "{{ item }}"
       with_items: "{{ domains_interfaces }}"
 
-    - name: Allow public interface (ufw_in_ssh_allow) to domain networks (UDP)
+    - name: Allow local network to domain networks (UDP)
       community.general.ufw:
         comment: "[L2D] ip fwd from {{ public_interface }} to {{ info[interface].ipv4.network }}/{{ info[interface].ipv4.prefix }} on {{ interface }} (UDP)"
         interface_in: "{{ public_interface }}"
-        from_ip: "{{ ufw_in_ssh_allow }}"
         interface_out: "{{ interface }}"
-        to_ip: "{{ info[interface].ipv4.network }}/{{ info[interface].ipv4.prefix }}"
         proto: udp
         route: true
         rule: allow
         state: enabled
+        to_ip: "{{ info[interface].ipv4.network }}/{{ info[interface].ipv4.prefix }}"
       vars:
         info: "{{ hostvars[inventory_hostname].ansible_facts }}"
         interface: "{{ item }}"
@@ -131,7 +139,7 @@
         info: "{{ hostvars[inventory_hostname].ansible_facts }}"
         interface: "{{ item }}"
       with_items: "{{ domains_interfaces }}"
-#
+
     - name: Insert NAT rules for domains interface to internet
       ansible.builtin.include_tasks: tasks/fw-add-nat.yml
       vars:
@@ -139,6 +147,6 @@
         interface: "{{ internet_interface }}"
         domain: "{{ item }}"
       with_items: "{{ domains_interfaces }}"
-#
+
     - name: Reboot
       ansible.builtin.reboot:

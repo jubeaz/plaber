@@ -1,81 +1,78 @@
-# - name: "SCCM prerequisites"
-#   hosts: dc
-#   max_fail_percentage: 0
-#   tasks:
-#     - name: Install DHCP
-#       ansible.builtin.include_role:
-#         name: "windows_domain_dhcp"
-#       vars:
-#         windows_domain_dhcp_domain_name: "{{ domain_name }}"
-#         windows_domain_dhcp_dc_name: "{{ domain_dc_name }}"
-#         windows_domain_dhcp_domain_password: "{{ domain_password }}"
-#         windows_domain_dhcp_dns_ip: "{{ domain_ip }}"
-#         ip_root: "{{  '.'.join(domain_ip.split('.')[:3]) }}"
-#         windows_domain_dhcp_ip_from: "{{ ip_root }}.{{ dhcp[0] }}"
-#         windows_domain_dhcp_ip_to: "{{ ip_root }}.{{ dhcp[1] }}"
-#         windows_domain_dhcp_ip_mask: "{{ dhcp[2] }}"
-#         windows_domain_dhcp_lease_duration: "{{ dhcp[3] }}"
-#       when: dhcp is defined
-#     - name: Extend AD schema for SCCM
-#       ansible.builtin.include_role:
-#         name: "windows_domain_sccm_install_extend_adschema"
-#       vars:
-#         sccm_server_cn: "{{ sccm_server }}"
-#       when: sccm_server | length > 0
-# 
-# - name: "SCCM install"
-#   hosts: sccm
-#   max_fail_percentage: 0
-#   roles:
-#     - { role: 'windows_domain_sccm_install_iis', tags: 'sccm_iis'}
-#     - { role: 'windows_domain_sccm_install_adk', tags: 'sccm_adk'}
-#     - { role: 'windows_domain_sccm_install_wsus', tags: 'sccm_wsus'}
-#     - { role: 'windows_domain_sccm_install_mecm', tags: 'sccm_mecm', install_type: "server"}
-# 
-#- name: "SCCM config"
-#  hosts: sccm
-#  max_fail_percentage: 0
-#  roles:
-#    - { role: 'windows_domain_sccm_cfg_discovery', tags: 'sccm_discovery'}
-#    - { role: 'windows_domain_sccm_cfg_boundary', tags: 'sccm_boundary'}
-#    - { role: 'windows_domain_sccm_cfg_accounts', tags: 'sccm_accounts'}
-#    - { role: 'windows_domain_sccm_cfg_users', tags: 'sccm_accounts'}
-#    - { role: 'windows_domain_sccm_cfg_client_push', tags: 'sccm_client_push'}
-#    - { role: 'windows_domain_sccm_cfg_naa', tags: 'sccm_naa'}
-#    - { role: 'windows_domain_sccm_cfg_client_install', tags: 'sccm_client_install'}
-#  vars:
-#    sccm_accounts: {
-#      push_account: {
-#        name: "{{sccm_push_account}}",
-#        password: "{{hostvars[domain_dc_ansible_inventory_key].domain_users_regular[sccm_push_account].password}}"
-#      },
-#      naa_user: {
-#        name: "{{sccm_network_access_account}}",
-#        password: "{{hostvars[domain_dc_ansible_inventory_key].domain_users_regular[sccm_network_access_account].password}}"
-#      },
-#      account_da: {
-#        name: "{{sccm_account_da}}",
-#        password: "{{hostvars[domain_dc_ansible_inventory_key].domain_users_regular[sccm_account_da].password}}"
-#      }
-#    }
-#
-#- name: "SCCM console install"
-#  hosts: sccm_console
-#  max_fail_percentage: 0
-#  roles:
-#    - { role: 'windows_domain_sccm_install_mecm', tags: 'sccm_mecm', install_type: "console"}
-#
+- name: "SCCM prerequisites"
+  hosts: dc
+  max_fail_percentage: 0
+  tasks:
+    - name: Install DHCP
+      ansible.builtin.include_role:
+        name: "windows_domain_dhcp"
+      vars:
+        windows_domain_dhcp_domain_name: "{{ domain_name }}"
+        windows_domain_dhcp_dc_name: "{{ domain_dc_name }}"
+        windows_domain_dhcp_domain_password: "{{ domain_password }}"
+        windows_domain_dhcp_dns_ip: "{{ domain_ip }}"
+        ip_root: "{{  '.'.join(domain_ip.split('.')[:3]) }}"
+        windows_domain_dhcp_ip_from: "{{ ip_root }}.{{ dhcp[0] }}"
+        windows_domain_dhcp_ip_to: "{{ ip_root }}.{{ dhcp[1] }}"
+        windows_domain_dhcp_ip_mask: "{{ dhcp[2] }}"
+        windows_domain_dhcp_lease_duration: "{{ dhcp[3] }}"
+      when: dhcp is defined
+    - name: Extend AD schema for SCCM
+      ansible.builtin.include_role:
+        name: "windows_domain_sccm_install_extend_adschema"
+      vars:
+        sccm_server_cn: "{{ sccm_server }}"
+      when: sccm_server | length > 0
+
+- name: "SCCM install"
+  hosts: sccm
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain_sccm_install_iis', tags: 'sccm_iis'}
+    - { role: 'windows_domain_sccm_install_adk', tags: 'sccm_adk'}
+    - { role: 'windows_domain_sccm_install_wsus', tags: 'sccm_wsus'}
+    - { role: 'windows_domain_sccm_install_mecm', tags: 'sccm_mecm', install_type: "server"}
+
+ name: "SCCM config"
+ hosts: sccm
+ max_fail_percentage: 0
+ roles:
+   - { role: 'windows_domain_sccm_cfg_discovery', tags: 'sccm_discovery'}
+   - { role: 'windows_domain_sccm_cfg_boundary', tags: 'sccm_boundary'}
+   - { role: 'windows_domain_sccm_cfg_accounts', tags: 'sccm_accounts'}
+   - { role: 'windows_domain_sccm_cfg_users', tags: 'sccm_accounts'}
+   - { role: 'windows_domain_sccm_cfg_client_push', tags: 'sccm_client_push'}
+   - { role: 'windows_domain_sccm_cfg_naa', tags: 'sccm_naa'}
+   - { role: 'windows_domain_sccm_cfg_client_install', tags: 'sccm_client_install'}
+ vars:
+   sccm_accounts: {
+     push_account: {
+       name: "{{sccm_push_account}}",
+       password: "{{hostvars[domain_dc_ansible_inventory_key].domain_users_regular[sccm_push_account].password}}"
+     },
+     naa_user: {
+       name: "{{sccm_network_access_account}}",
+       password: "{{hostvars[domain_dc_ansible_inventory_key].domain_users_regular[sccm_network_access_account].password}}"
+     },
+     account_da: {
+       name: "{{sccm_account_da}}",
+       password: "{{hostvars[domain_dc_ansible_inventory_key].domain_users_regular[sccm_account_da].password}}"
+     }
+   }
+ name: "SCCM console install"
+ hosts: sccm_console
+ max_fail_percentage: 0
+ roles:
+   - { role: 'windows_domain_sccm_install_mecm', tags: 'sccm_mecm', install_type: "console"}
 - name: "SCCM PXE setup"
   hosts: sccm
   roles:
-    - { role: 'windows_domain_sccm_cfg_pxe', tags: 'sccm_pxe'}
-#    - { role: 'windows_domain_sccm_pxe', tags: 'sccm_pxe' }
+    - { role: 'windows_domain_sccm_pxe', tags: 'sccm_pxe' }
   vars:
     naa_user: "{{domain_name}}\\{{sccm_network_access_account}}"
     naa_pass: "{{hostvars[domain_dc_ansible_inventory_key].domain_users_regular[sccm_network_access_account].password}}"
-#
-#- name: "SCCM config"
-#  hosts: sccm
-#  max_fail_percentage: 0
-#  roles:
-#    - { role: 'windows_domain/sccm/config/client_install', tags: 'sccm_client_install'}
+
+- name: "SCCM config"
+  hosts: sccm
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain/sccm/config/client_install', tags: 'sccm_client_install'}

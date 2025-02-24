@@ -1,12 +1,18 @@
 ---
-ansible_user: vagrant
-ansible_password: vagrant
-ansible_connection: winrm
+#ansible_user: vagrant
+#ansible_password: vagrant
+#ansible_connection: winrm
 ansible_winrm_server_cert_validation: ignore
 ansible_winrm_operation_timeout_sec: 400
 ansible_winrm_read_timeout_sec: 500
 #ansible_winrm_transport: CredSSP
 ansible_port:  5985
+ansible_user: vagrant
+ansible_password: vagrant
+ansible_connection: psrp
+ansible_psrp_protocol: http
+#ansible_psrp_proxy: socks5h://localhost:1234
+
 
 nat_adapter: Ethernet
 domain_adapter: Ethernet 2

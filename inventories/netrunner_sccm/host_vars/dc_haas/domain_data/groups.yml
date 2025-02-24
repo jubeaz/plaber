@@ -30,7 +30,7 @@ domain_groups : {
         "managed_by" : "Domain Admins",
         "path" : "CN=Users,DC=haas,DC=local",
         "members" : [
-            "haas.local\\bran$",  # SCCM REQUIREMENTS ADIN OF MSSQL SERVER
+            "HAAS\\bran$",  # SCCM REQUIREMENTS ADIN OF MSSQL SERVER
         ],
         "foreign_users": [],
         "foreign_gmsas": [],

@@ -1,7 +1,9 @@
 domains_interfaces: ["eth2", "eth3", "eth4"]
 bridged_interface: "eth1"
 nat_interface: "eth0"
-internet_interface: "{{bridged_interface if disable_nat == true else nat_interface}}"
+#disable_nat: false
+#ufw_in_ssh_allow_list: ["10.0.0.0/8"] 
+internet_interface: "{{ bridged_interface if disable_nat == true else nat_interface }}"
 public_interface: "{{ bridged_interface if disable_nat == true else nat_interface }}"
 
 domains: {

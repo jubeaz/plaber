@@ -1,10 +1,14 @@
 ---
-- name: ENSURE DOMAINS ARE REACHABLE
+- name: Add Ansible Controller routes to networks (NAT DISABLED)
   hosts: firewalls
   become: true
   max_fail_percentage: 0
   become_user: root
   tasks:
+#    - name: Display hostvars in a readable format
+#      ansible.builtin.debug:
+#        var: hostvars[inventory_hostname]
+
     - name: Add routes to domains
       ansible.builtin.include_tasks: tasks/ensure-reachable.yml
       vars:
@@ -12,3 +16,23 @@
         interface: "{{ item }}"
         via: "{{ ansible_host }}"
       with_items: "{{ domains_interfaces }}"
+      when: hostvars['fw'].disable_nat
+
+#    - name: Add proxy to psrp connexion
+#      ansible.builtin.set_fact:
+#        ansible_psrp_proxy: socks5h://localhost:1234
+#      with_items: "{{ groups['domain'] }}"  
+#      when: not hostvars['fw'].disable_nat
+
+
+- name: Add proxy to psrp connexion (NAT ENABLED)
+  hosts: domain
+  max_fail_percentage: 0
+  gather_facts: no
+  tasks:
+    - name: Add proxy to psrp connexion
+      ansible.builtin.set_fact:
+        ansible_psrp_proxy: socks5h://localhost:1234
+      with_items: "{{ groups['domain'] }}"  
+      when: not hostvars['fw'].disable_nat
+

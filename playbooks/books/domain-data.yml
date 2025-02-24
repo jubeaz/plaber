@@ -30,6 +30,7 @@
   vars:
     ad_groups: "{{ domain_groups }}"
     domain_data_action: "add_members"
+    domain_data_add_foreign: "{{ ('trust' in groups and groups['trust'] | length > 0) or ('child_dc' in groups and groups['child_dc'] | length > 0) }}"
 
 - name: DCS AD DATA Add group members (builtin groups)
   hosts: dc

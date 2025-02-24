@@ -19,8 +19,8 @@
         cacheable: true
       when: dc_level != 0
 
-    - name: print parent domain info
-      debug:
+    - name: Print parent domain info
+      ansible.builtin.debug:
         msg:
           - "domain_parent_domain_name: {{ domain_parent_domain_name }}"
           - "domain_parent_domain_password: {{ domain_parent_domain_password }}"
@@ -35,10 +35,10 @@
       with_dict: "{{ hostvars }}"
       when: item.value.domain_parent_domain_name is defined and domain_name == item.value.domain_parent_domain_name
 
-    - name: print child_domains
-      debug:
-        msg:
-          - "{{ item[1]}}.{{ item[2] }}"
-          - "{{ hostvars[item[0]].ansible_host }}"
-      loop: "{{ child_domains }}"
-      when: child_domains is defined
+#    - name: Print child_domains
+#      ansible.builtin.debug:
+#        msg:
+#          - "{{ item[1] }}.{{ item[2] }}"
+#          - "{{ hostvars[item[0]].ansible_host }}"
+#      loop: "{{ child_domains }}"
+#      when: child_domains is defined

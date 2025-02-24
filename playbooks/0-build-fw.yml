@@ -1,5 +1,7 @@
 ---
 - name: Build firewall
   import_playbook: books/fw-build.yml
-- name: Ensure domains are reachable
-  import_playbook: books/domains-reachable.yml
+#- name: Ensure domains are reachable
+#  import_playbook: books/domains-reachable.yml
+#  when: hostvars['fw'].disable_nat
+
