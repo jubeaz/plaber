@@ -1,7 +1,5 @@
 # plaber 
 
-
-
 derived from [GOAD](https://github.com/Orange-Cyberdefense/GOAD/tree/main)
 
 
@@ -10,33 +8,32 @@ https://github.com/jborean93/exchange-test-environment
 notes:
 * vagrant is only used for initial provisionning since default nat interface is disconnected after provisionning
 
+# Overview
 
-# Run lab
+* Domains computers:
+    * are provisionned with 2 interfaces:
+        * (builin) `NAT network` interface for which the cable should be disconnected
+        * `Internal network ` interface which will be the only one remaining. All domain computer of a domain belong to the same internal network.
+    * can be access and can only access the internet thtogh the firewall.
+    * they can have a public interface to reflect publically exposed hosts.
 
-* start all vms
+* The firewall:
+    * is provisionned with:
+        * 2 basic interfaces:
+            * `NAT network` interface
+            * `bridge network` interface
+        * one interface by domain network
+    * Only one of the two basic interface must be chosen according to `deployment_type` Vagrant variable.
+    * The ansible firewall host `fw` should reflect this choice.
 
-```bash
-for b in $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage startvm $b --type headless; done
+# Requierements
 
-for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage startvm $b --type headless; done
-```
+https://www.bloggingforlogging.com/2018/10/14/windows-host-through-ssh-bastion-on-ansible/
 
-* enable fw
-```bash
-ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/enable-lab.yml
-```
+As domain computer are privisionned on a `Internal network` they are not directly accessible. The firewall will be in charge to route the traffic of ansible controller. Therefore, `ansible_psrp` (`sudo pacman -S python-pypsrp`) module is used to connect to windows targets with ansible and 
 
-* enjoy
-
-# Stop lab
-* stop all vms
-```bash
-for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage controlvm $b acpipowerbutton; done
-
-for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage controlvm $b poweroff; done
-```
-# BUILD THE LAB
-## vagrant
+# Buil the Lab
+## Provision (Vagrant)
 
 ### Box consideration 
 links:
@@ -62,8 +59,19 @@ To enable windows VBS:
         * switch network card on virtualbox
         * emove `E1G6032E.sys` or offending drivers on windows filesystem
 
+### Chose firewall deployment mode
 
-### provision VMs
+Edit `Vagrantfile`:
+```bash
+
+  boxes = [
+    { 
+      # deployment_type: "nat", # "routed" will exploit bridge interface anything else else will rely on NAT
+      deployment_type: "routed", # "routed" will exploit bridge interface anything else else will rely on NAT
+      bname: "nrunner_fw", 
+```
+
+### Provision VMs
 * build all  vms
 ```bash
 vagrant up --debug --timestamp
@@ -74,20 +82,19 @@ vagrant up --debug --timestamp
 vagrant halt
 ```
 
-* disable all vms buildint NAT interfaces
+* disable all vms buildint NAT interfaces in domain computers
 ```bash
-vboxmanage list vms | grep nrunner | sed -r 's/.*\{(.*)\}/\1/' | xargs -L1 -I {} vboxmanage modifyvm {} --cableconnected1 off
-
-for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage modifyvm $b  --cableconnected1 off; done
+for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2 | grep -v fw); do do vboxmanage modifyvm $b  --cableconnected1 off; done
+# for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage modifyvm $b  --cableconnected1 off; done
 ```
 
 ```bash
-for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage showvminfo $b |grep 'Cable connected: off' ; done
+for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2 | grep -v fw); do vboxmanage showvminfo $b |grep 'Cable connected: off' ; done
 ```
 
 * restart all vms
 ```bash
-for b in $(cat ./providers/virtualbox/<lab_name|netrunner>/Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage startvm $b --type headless; done
+for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2 | grep -v fw); do vboxmanage startvm $b --type headless; done
 
 for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage startvm $b --type headless; done
 ```
@@ -96,8 +103,70 @@ for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage sta
 vboxmanage list runningvms
 ```
 
+## Build firewall (ansible)
 
-### SNAPSHOT
+Edit the inventory file to reflect the firewall deployment model set in Vagrant:
+* `NATed`firewall:
+    * `ansible_port` will have to be set with the proper ansible_port (portfowarding) `vboxmanage showvminfo nrunner_fw --machinereadable | grep "Forwarding"`
+    * `ansible_host` will always be `127.0.0.1`
+    * `disable_nat` set to `false` (obvious)
+    * `ufw_in_ssh_allow`: set to ansible controller IP
+    * `psrp_port`: set according to the SOCKS ssh proxy established to access domain hosts (`sshpass -p vagrant ssh -C -D 1234 -p 2222 vagrant@127.0.0.1`)
+* `Bridged` firewall:
+    * `ansible_port` set to `22` (obvious)
+    * `ansible_host` whatever`
+    * `disable_nat` set to `true` (obvious)
+    * `ufw_in_ssh_allow`: set to ansible controller IP
+    * `psrp_port`: no need to be defined
+
+Then build the firewall:
+```bash
+/usr/bin/ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/0-build-fw.yml
+/usr/bin/ansible-playbook -i ./inventories/netrunner_base/netrunner.yml ./playbooks/0-build-fw.yml
+```
+
+## Build the domains (ansible)
+with `Nated` firewall a proxy must be set in orde to access the firewall:
+```bash
+sshpass -p vagrant ssh -C -D 1234 -p 2222 vagrant@127.0.0.1
+``` 
+
+build the lab (common)
+```bash
+/usr/bin/ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/1-build-lab.yml
+```
+Then build the lab (specific):
+```bash
+/usr/bin/ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/1-build-sccm.yml
+```
+
+
+# Run lab
+
+* Start all vms
+
+```bash
+for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage startvm $b --type headless; done
+```
+
+* for `bridged` deployment to perfom actions (winrm, rdp) on domains computers (from ansible controller) 
+```bash
+/usr/bin/aansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/enable-lab.yml
+```
+
+* enjoy
+
+# Stop the Lab
+* stop all vms
+```bash
+for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage controlvm $b acpipowerbutton; done
+
+for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage controlvm $b poweroff; done
+```
+
+
+
+# Snapshot the Lab
 
 * take:
 ```bash
@@ -116,20 +185,9 @@ for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vvboxmanage sn
 
 
 
-## ansible
+## Misc
 
-* Intall requirements:
-```bash
-pipx install --include-deps ansible
-pipx inject ansible "pywinrm[kerberos]>=0.4.0"
-```
-
-```bash
-source ~/.local/pipx/venvs/ansible/bin/activate
-export PYTHONPATH=~/.local/pipx/venvs/ansible/lib/python3.13/site-packages/
-```
-
-#### setup
+## `/etc/hosts`
 
 * `/etc/hosts`:
 ```bash
@@ -143,6 +201,7 @@ export PYTHONPATH=~/.local/pipx/venvs/ansible/lib/python3.13/site-packages/
 172.16.2.1      haas01.haas.local dc.haas.local haas.local
 172.16.2.10     eli.haas.local eli 
 172.16.2.11     bran.haas.local bran 
+172.16.2.20     hypoxia.haas.local hypoxia 
 
 172.16.3.1      rsc01.research.haas.local dc.research.haas.local research.haas.local
 172.16.3.10     fenris.research.haas.local fenris 
@@ -150,25 +209,25 @@ export PYTHONPATH=~/.local/pipx/venvs/ansible/lib/python3.13/site-packages/
 ```
 
 
-### build 
 
-* build fw
-```
-ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/0-build-fw.yml
-ansible-playbook -i ./inventories/netrunner_base/netrunner.yml ./playbooks/0-build-fw.yml
-```
+## Ansible Kerberos (useless because of local auth with ansible) 
 
-* build lab
-```
-ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/1-build-lab.yml
+
+* Intall requirements:
+```bash
+pipx install --include-deps ansible
+pipx inject ansible "pywinrm[kerberos]>=0.4.0"
 ```
 
-### Kerberos 
+```bash
+source ~/.local/pipx/venvs/ansible/bin/activate
+export PYTHONPATH=~/.local/pipx/venvs/ansible/lib/python3.13/site-packages/
+```
 
 This is specialy important if CIS 2.2.22 is applied
 
 
-#### setup
+## setup
 
 * `/etc/krb5.conf`:
 ```bash
@@ -200,16 +259,17 @@ Include kerberos book where requiered (after domain build)
   import_playbook: books/compute-kerberos-auth.yml
 ```
 
+# To fix
 
+## Vagrant
 
-# To fix on 
+### Memory limit
 ```
 echo 3 | sudo tee /proc/sys/vm/drop_caches
 ```
 https://forums.virtualbox.org/viewtopic.php?t=112438
 
-## vagrant pbs
-Unable to download the box to solve
+### Unable to download the box
 ```
 vagrant init gusztavvargadr/windows-server --box-version 2102.0.2409
 vagrant up
@@ -217,6 +277,7 @@ vagrant init gusztavvargadr/windows-10 --box-version 2202.0.2409
 vagrant up
 ```
 
+### `rexml-3.3.2`
 
 [Unable to activate vagrant_cloud-3.1.1, because rexml-3.3.2 conflicts with rexml (~> 3.2.5)](https://github.com/hashicorp/vagrant/issues/13502)
 ```
@@ -243,16 +304,16 @@ Edit `/usr/bin/VBox`
         ;;
 ```
 
-# To fix on ansible
+## Ansible
 
 
-## `The trust relationship between this workstation and the primary domain failed.`
+### `The trust relationship between this workstation and the primary domain failed.`
 
 need to reset DNS user role `windows_domain/member_dns`
 
-## sccm
+### sccm
 
-### Publication on forest domains
+#### Publication on forest domains
 
 `Grant GenericAll on the System Management Container to "{{ sccm_server }}"`
 in `windows_domain_sccm_install_extend_adschema/tasks/main.yml`
@@ -283,9 +344,9 @@ in `windows_domain_sccm_install_extend_adschema/tasks/main.yml`
         }
 ```
 
-### Boundaries sur les domaines de la foret
+#### Boundaries sur les domaines de la foret
 
-### Console install
+#### Console install
 
 la commande d'installation de la console ne passe pas.
 
