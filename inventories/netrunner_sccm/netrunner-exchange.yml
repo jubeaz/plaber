@@ -30,7 +30,7 @@ all:
 #            wld_srv01: {} 
         dc:
           hosts:
-            dc_haas: {dc_level: 1} 
+            dc_haas: {dc_level: 0} 
 #            dc_rsc: {dc_level: 1}
 #            dc_wld: {dc_level: 0}    
         dc_slave:

@@ -22,6 +22,13 @@
     ad_gmsas: "{{ domain_gmsa }}"
     domain_data_action: "create"
 
+# - name: debug add foreign
+#   hosts: dc
+#   tasks:
+#     - name: deb
+#       debug:
+#         msg: "domain_data_add_foreign: {{ ('trust' in groups and groups['trust'] | length > 0) or ('child_dc' in groups and groups['child_dc'] | length > 0) }}"
+
 - name: DCS AD DATA Add group members
   hosts: dc
   max_fail_percentage: 0
@@ -40,6 +47,7 @@
   vars:
     ad_groups: "{{ domain_builtin_groups }}"
     domain_data_action: "add_members"
+    domain_data_add_foreign: "{{ ('trust' in groups and groups['trust'] | length > 0) or ('child_dc' in groups and groups['child_dc'] | length > 0) }}"
 
 - name: DCS AD DATA Add delegates on objects
   hosts: dc

@@ -143,15 +143,36 @@ Then build the lab (specific):
 
 # Run lab
 
-* Start all vms
+## Start all vms
 
 ```bash
 for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage startvm $b --type headless; done
 ```
 
-* for `bridged` deployment to perfom actions (winrm, rdp) on domains computers (from ansible controller) 
+## perfom actions (winrm, rdp) on domains computers (from ansible controller)
+### for `bridged` deployment  
 ```bash
 /usr/bin/aansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/enable-lab.yml
+```
+
+### for `Nated` deployment 
+
+```bash
+$ cat proxy-plaber.conf
+strict_chain
+quiet_mode
+proxy_dns
+remote_dns_subnet 224
+tcp_read_time_out 15000
+tcp_connect_time_out 8000
+[ProxyList]
+socks5  127.0.0.1 1234
+```
+
+```bash
+sshpass -p vagrant ssh -C -D 1234 -p 2222 vagrant@127.0.0.1
+
+PROXYCHAINS_CONF_FILE=$PWD/proxy-plaber.conf proxychains -q xfreerdp3 /cert:ignore /u:administrator@haas.local /p:Jubeaz12345+- /v:haas01.haas.local /dynamic-resolution
 ```
 
 * enjoy
