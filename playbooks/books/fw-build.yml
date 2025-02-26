@@ -47,7 +47,7 @@
       ansible.builtin.include_role:
         name: "ufw"
       vars:
-        ufw_in_ssh_ip: "[{{ ufw_in_ssh_allow }}]"
+        ufw_in_ssh_ip: "{{ [] + [ufw_in_ssh_allow] }}"
         ufw_forward: true
         ufw_nat: true
 

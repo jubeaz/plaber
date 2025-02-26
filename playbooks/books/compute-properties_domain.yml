@@ -31,3 +31,10 @@
           - "laps_path: {{ laps_path }}"
 #          - "path: {{ path }}"
           - "domain_ldap_name: {{ domain_ldap_name }}"
+
+
+    - name: Set multi_domain_forest to false on DC
+      no_log: true
+      ansible.builtin.set_fact:
+        multi_domain_forest: false
+      when: "'dc' in group_names"

@@ -21,8 +21,8 @@
 # End Extended inventory computing
 # ################################
 
- - name: Computer build before domain building
-   import_playbook: books/computers-build.yml
+- name: Computer build before domain building
+  import_playbook: books/computers-build.yml
 
 - name: Build domains
   import_playbook: books/domain-build.yml

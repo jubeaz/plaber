@@ -62,7 +62,7 @@ all:
               mssql_reporting:
                 hosts:
 #                  haas_srv01: {}      
-              Exchange:
+              exchange:
                 hosts:
                   haas_srv02: {}      
           hosts:
@@ -95,4 +95,4 @@ all:
 #    rsc_srv01:            {ansible_host: fenris.research.haas.local, domain_ip: 172.16.3.10}#    rsc_ws01:             {ansible_host: 172.16.3.20}
 #    rsc_ws01:             {ansible_host: architect.research.haas.local, domain_ip: 172.16.3.20}
 #    fw:                   {ansible_host: 192.168.2.100, ansible_port: 22, disable_nat: true, ufw_in_ssh_allow: "192.168.2.3" }
-    fw:               {ansible_host: 127.0.0.1, ansible_port: 2222, disable_nat: false, ufw_in_ssh_allow_: "10.0.0.0/8", psrp_port: 1234}
+    fw:               {ansible_host: 127.0.0.1, ansible_port: 2222, disable_nat: false, ufw_in_ssh_allow: "10.0.0.0/8", psrp_port: 1234}
