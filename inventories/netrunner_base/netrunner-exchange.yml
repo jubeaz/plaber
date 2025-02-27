@@ -16,7 +16,7 @@ all:
         haas_domain:
           hosts:
             dc_haas: {}  
-#            haas_srv01: {}
+            haas_srv01: {}
             haas_srv02: {}
 #            haas_ws01: {}
 #        rsc_domain:
@@ -50,7 +50,7 @@ all:
 #                  haas_srv02: {}          
               adcs:
                 hosts:
-#                  haas_srv01: {}
+                  haas_srv01: {}
               iis:
                 hosts:
 #                  rsc_srv01: {}
@@ -88,7 +88,7 @@ all:
 #    wld_srv01:            {ansible_host: archer.weyland.local, domain_ip: 172.16.1.10}
 #    dc_haas:              {ansible_host: haas01.haas.local, domain_ip: 172.16.2.1}
     dc_haas:              {ansible_host: 172.16.2.1, domain_ip: 172.16.2.1}
-#    haas_srv01:           {ansible_host: eli.haas.local, domain_ip: 172.16.2.10}
+    haas_srv01:           {ansible_host: 172.16.2.10, domain_ip: 172.16.2.10}
     haas_srv02:           {ansible_host: 172.16.2.11, domain_ip: 172.16.2.11}
 #    haas_ws01:             {ansible_host: hypoxia.research.haas.local, domain_ip: 172.16.2.20}
 #    dc_rsc:               {ansible_host: rsc01.research.haas.local, domain_ip: 172.16.3.1}

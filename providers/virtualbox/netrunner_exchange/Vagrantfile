@@ -88,19 +88,19 @@ Vagrant.configure("2") do |config|
       #ram: 4*1024,
       cpu: 2
     },
-#    { 
-#      # only internal
-#      bname: "nrunner_haas_srv01", 
-#      ip: "172.16.2.10", 
-#  	  net: net_defs[:haas], 
-#      #box: "gusztavvargadr/windows-server-core",
-#      box: "gusztavvargadr/windows-server",
-#      #box_version: "2102.0.2409",  
-#      os: "windows", 
-#      #ram: 2*1024,
-#      ram: 4*1024,
-#      cpu: 2
-#    },
+    { 
+      # only internal
+      bname: "nrunner_haas_srv01", 
+      ip: "172.16.2.10", 
+  	  net: net_defs[:haas], 
+      #box: "gusztavvargadr/windows-server-core",
+      box: "gusztavvargadr/windows-server",
+      #box_version: "2102.0.2409",  
+      os: "windows", 
+      #ram: 2*1024,
+      ram: 4*1024,
+      cpu: 2
+    },
     { 
       # only internal
       bname: "nrunner_haas_srv02", 

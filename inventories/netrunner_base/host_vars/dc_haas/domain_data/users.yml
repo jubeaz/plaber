@@ -147,15 +147,37 @@ domain_users_regular: {
 #        "path"            : "CN=Users,DC=haas,DC=local"
 #    },
 #
-#    "mbellamy" : {
-#        "firstname"       : "Mason",
-#        "surname"         : "Bellamy",
-#        "password"        : "b_QNoDKoVJTjU3gq", 
-#        "city"            : "-",
-#        "description"     : "",
-#        "groups"          : ["Domain Admins"], # only built-in
-#        "path"            : "CN=Users,DC=haas,DC=local"
-#    },
+# #########################################
+# MECM
+# #########################################
+    "mbellamy" : {
+        "firstname"       : "Mason",
+        "surname"         : "Bellamy",
+        "password"        : "b_QNoDKoVJTjU3gq", 
+        "city"            : "-",
+        "description"     : "Domain admin stored in MECM",
+        "groups"          : ["Domain Admins"], # only built-in
+        "path"            : "CN=Users,DC=haas,DC=local"
+    },
+    "hagen" : {
+        "firstname"       : "ice",
+        "surname"         : "barrier",
+        "password"        : "haGen_Pa$$word", 
+        "city"            : "-",
+        "description"     : "sccm naa",
+        "groups"          : [], # only built-in
+        "path"            : "CN=Users,DC=haas,DC=local",
+
+    },
+    "howler" : {
+        "firstname"       : "ice",
+        "surname"         : "Trap",
+        "password"        : "h0w1er_Pa$$word", 
+        "city"            : "-",
+        "description"     : "sccm push_account",
+        "groups"          : [], # only built-in
+        "path"            : "CN=Users,DC=haas,DC=local",
+    },
 #    "thaas" : {
 #        "firstname"       : "Thomas",
 #        "surname"         : "Haas",

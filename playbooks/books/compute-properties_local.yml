@@ -36,6 +36,13 @@
   hosts: domain
   max_fail_percentage: 0
   tasks:
+#    - name: Display hostvars in a readable format
+#      ansible.builtin.debug:
+#        var: hostvars[inventory_hostname]
+#    - name: STOP
+#      ansible.builtin.fail:
+#        msg: "STOP"
+
     - name: Check Product name
       ansible.windows.win_shell: |
         $ProductName = Get-ItemProperty -Path "HKLM:/Software/Microsoft/Windows NT/CurrentVersion" | Select-Object -ExpandProperty "ProductName"

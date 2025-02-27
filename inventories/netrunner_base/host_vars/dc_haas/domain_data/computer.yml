@@ -10,17 +10,28 @@ domain_real_computers: {
         "proto_transition": false,  # KCD default false
         "sensitive"       : false
     },
-#    "bran": {
-#        "name":             "bran",
-#        "dns_hostname":     "bran.haas.local",
-#        "description":      "mecm iis wsus",
-#        "path":             "OU=Servers,OU=IT,OU=HQ,DC=haas,DC=local",            
-#        "delegates"       : [], # RBCD / must be DN msDS-AllowedToActOnBehalfOfOtherIdentity
-#        "delegation_type" : false, # "KCD", "KUD", false
-#        "constrained"     : [], # KCD / SPN list / msDS-AllowedToDelegateTo
-#        "proto_transition": false,  # KCD default false
-#        "sensitive"       : false
-#    },
+    "bran": {
+        "name":             "bran",
+        "dns_hostname":     "bran.haas.local",
+        "description":      "mecm iis wsus",
+        "path":             "OU=Servers,OU=IT,OU=HQ,DC=haas,DC=local",            
+        "delegates"       : [], # RBCD / must be DN msDS-AllowedToActOnBehalfOfOtherIdentity
+        "delegation_type" : false, # "KCD", "KUD", false
+        "constrained"     : [], # KCD / SPN list / msDS-AllowedToDelegateTo
+        "proto_transition": false,  # KCD default false
+        "sensitive"       : false
+    },
+    "hypoxia": {
+        "name":             "hypoxia",
+        "dns_hostname":     "hypoxia.haas.local",
+        "description":      "workstation",
+        "path":             "OU=Workstations,OU=IT,OU=HQ,DC=haas,DC=local",            
+        "delegates"       : [], # RBCD / must be DN msDS-AllowedToActOnBehalfOfOtherIdentity
+        "delegation_type" : false, # "KCD", "KUD", false
+        "constrained"     : [], # KCD / SPN list / msDS-AllowedToDelegateTo
+        "proto_transition": false,  # KCD default false
+        "sensitive"       : false
+    },
 }
 
 domain_fake_computers: {

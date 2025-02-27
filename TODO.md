@@ -12,6 +12,33 @@ https://www.it-connect.fr/installation-pas-a-pas-de-microsoft-exchange-2019-sur-
 https://github.com/clong/DetectionLab/blob/master/Azure/Ansible/roles/exchange/tasks/main.yml
 https://github.com/clong/DetectionLab/blob/master/Vagrant/scripts/install-exchange.ps1
 
+ Get-User -RecipientTypeDetails User -Filter "UserPrincipalName -ne `$null" -ResultSize unlimited | enable-mailbox
+
+## configuration interne
+
+### installer certif
+```
+New-ExchangeCertificate -FriendlyName "Self-Signed Certificate" -SubjectName "cn=YourExchangeServerName" -DomainName yourdomain.local -PrivateKeyExportable $true
+
+Enable-ExchangeCertificate -Thumbprint <Thumbprint> -Services SMTP,IMAP,POP,IIS
+
+```
+### Configurer les Adresses de Messagerie
+Configurer les politiques d'adresses de messagerie : Configurez les politiques d'adresses de messagerie pour gérer les adresses e-mail internes.
+```
+Set-EmailAddressPolicy -Identity "Default Policy" -EnabledEmailAddressTemplates "SMTP:@yourdomain.local"
+```
+
+Créer un connecteur d'envoi pour la messagerie interne : Configurez un connecteur d'envoi pour gérer le flux de messagerie interne.
+```
+New-SendConnector -Name "Internal Send Connector" -Usage "Internal" -AddressSpaces "SMTP:yourdomain.local;1" -IsScopedConnector $false -DNSRoutingEnabled $true -SourceTransportServers "YourExchangeServerName"
+```
+
+Configurer Outlook : Configurez les clients Outlook pour se connecter au serveur Exchange en utilisant les paramètres internes.
+
+
+
+
  # GPO Restore
 
 ```

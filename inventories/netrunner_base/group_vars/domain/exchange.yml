@@ -2,7 +2,7 @@
 exchange_installation_media_url: "https://download.microsoft.com/download/7/0/a/70a4d908-eacb-426e-ad9f-e7768e27f873/ExchangeServer2019-x64-cu15.iso"
 exchange_installation_media_name: "ExchangeServer2019-x64-cu15.iso"
 
-
+exchange_installation_path: "C:\\Program Files\\Microsoft\\Exchange Server\\V15"
 # CN=ms-Exch-Schema-Version-Pt,CN=Schema,CN=Configuration,DC=haas,DC=local
 range_upper: 17003
 # CN=Microsoft Exchange System Objects,DC=haas,DC=local

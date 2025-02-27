@@ -18,7 +18,6 @@ domain_groups : {
         "managed_by" : "Domain Admins",
         "path" : "CN=Users,DC=haas,DC=local",
         "members" : [
-            "HAAS\\howler"
         ],
         "foreign_users": [],
         "foreign_gmsas": [],
@@ -30,18 +29,7 @@ domain_groups : {
         "managed_by" : "Domain Admins",
         "path" : "CN=Users,DC=haas,DC=local",
         "members" : [
-            "HAAS\\bran$",  # SCCM REQUIREMENTS ADIN OF MSSQL SERVER
-        ],
-        "foreign_users": [],
-        "foreign_gmsas": [],
-        "foreign_computers": [],
-        "foreign_groups": []
-    },
-    "L_LOCAL_ADMINS_BRAN" : {
-        "scope": "domainlocal", # universal, global or domainlocal default domainlocal
-        "managed_by" : "Domain Admins",
-        "path" : "CN=Users,DC=haas,DC=local",
-        "members" : [
+#            "haas.local\\bran$"  # SCCM REQUIREMENTS ADIN OF MSSQL SERVER
         ],
         "foreign_users": [],
         "foreign_gmsas": [],
@@ -63,6 +51,17 @@ domain_groups : {
             "G_CERT_MGR"
         ]
     },
+#    "L_LOCAL_ADMINS_BRAN" : {
+#        "scope": "domainlocal", # universal, global or domainlocal default domainlocal
+#        "managed_by" : "Domain Admins",
+#        "path" : "CN=Users,DC=haas,DC=local",
+#        "members" : [
+#        ],
+#        "foreign_users": [],
+#        "foreign_gmsas": [],
+#        "foreign_computers": [],
+#        "foreign_groups": []
+#    },
     "G_SYSADMIN_ELI" : {
         "scope": "global", # universal, global or domainlocal default domainlocal
         "managed_by" : "Domain Admins",
@@ -71,7 +70,6 @@ domain_groups : {
             "HAAS\\jubeaz", 
             "HAAS\\administrator", 
             "HAAS\\drafter",
-            "HAAS\\bran$"  # SCCM REQUIREMENTS ADIN OF MSSQL SERVER
         ],
         "foreign_users": [],
         "foreign_gmsas": [],
@@ -114,50 +112,50 @@ domain_groups : {
         "foreign_computers": [],
         "foreign_groups": []
     },
-    "G_SCCM_ADMINS" : {
-        "scope": "global", # universal, global or domainlocal default domainlocal
-        "managed_by" : "Domain Admins",
-        "path" : "OU=Groups,OU=IT,OU=HQ,DC=haas,DC=local",
-        "members" : [
-            "HAAS\\hubeaz"
-        ]
-    },
-    "U_SCCM_ADMINS" : {
-        "scope": "universal", # universal, global or domainlocal default domainlocal
-        "managed_by" : "Domain Admins",
-        "path" : "OU=Groups,OU=IT,OU=HQ,DC=haas,DC=local",
-        "members" : [
-            "HAAS\\G_SCCM_ADMINS",
-        ],
-        "foreign_users": [],
-        "foreign_gmsas": [],
-        "foreign_computers": [],
-        "foreign_groups": ["RESEARCH\\G_SCCM_ADMINS"]
-    },
-    "G_SCCM_MANAGED" : {
-        "scope": "global", # universal, global or domainlocal default domainlocal
-        "managed_by" : "Domain Admins",
-        "path" : "OU=Groups,OU=IT,OU=HQ,DC=haas,DC=local",
-        "members" : [ 
-            "bran$"
-        ],
-        "foreign_users": [],
-        "foreign_gmsas": [],
-        "foreign_computers": [],
-        "foreign_groups": []
-    },
-    "U_SCCM_MANAGED" : {
-        "scope": "universal", # universal, global or domainlocal default domainlocal
-        "managed_by" : "Domain Admins",
-        "path" : "OU=Groups,OU=IT,OU=HQ,DC=haas,DC=local",
-        "members" : [ 
-            "HAAS\\G_SCCM_MANAGED",
-        ],
-        "foreign_users": [],
-        "foreign_gmsas": [],
-        "foreign_computers": [],
-        "foreign_groups": ["RESEARCH\\G_SCCM_MANAGED"]
-    },
+#    "G_SCCM_ADMINS" : {
+#        "scope": "global", # universal, global or domainlocal default domainlocal
+#        "managed_by" : "Domain Admins",
+#        "path" : "OU=Groups,OU=IT,OU=HQ,DC=haas,DC=local",
+#        "members" : [
+#            "HAAS\\hubeaz"
+#        ]
+#    },
+#    "U_SCCM_ADMINS" : {
+#        "scope": "universal", # universal, global or domainlocal default domainlocal
+#        "managed_by" : "Domain Admins",
+#        "path" : "OU=Groups,OU=IT,OU=HQ,DC=haas,DC=local",
+#        "members" : [
+#            "HAAS\\G_SCCM_ADMINS",
+#        ],
+#        "foreign_users": [],
+#        "foreign_gmsas": [],
+#        "foreign_computers": [],
+#        "foreign_groups": ["RESEARCH\\G_SCCM_ADMINS"]
+#    },
+#    "G_SCCM_MANAGED" : {
+#        "scope": "global", # universal, global or domainlocal default domainlocal
+#        "managed_by" : "Domain Admins",
+#        "path" : "OU=Groups,OU=IT,OU=HQ,DC=haas,DC=local",
+#        "members" : [ 
+#            "bran$"
+#        ],
+#        "foreign_users": [],
+#        "foreign_gmsas": [],
+#        "foreign_computers": [],
+#        "foreign_groups": []
+#    },
+#    "U_SCCM_MANAGED" : {
+#        "scope": "universal", # universal, global or domainlocal default domainlocal
+#        "managed_by" : "Domain Admins",
+#        "path" : "OU=Groups,OU=IT,OU=HQ,DC=haas,DC=local",
+#        "members" : [ 
+#            "HAAS\\G_SCCM_MANAGED",
+#        ],
+#        "foreign_users": [],
+#        "foreign_gmsas": [],
+#        "foreign_computers": [],
+#        "foreign_groups": ["RESEARCH\\G_SCCM_MANAGED"]
+#    },
 }
 
 #         "foreign_members": ["weyland.local\\G_LAPS_READER"]

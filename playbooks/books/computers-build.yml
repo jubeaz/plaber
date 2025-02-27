@@ -3,13 +3,48 @@
   hosts: domain
   max_fail_percentage: 0
   tags: 'build_computers_setup_1'
-  roles:
-    - { role: 'windows_settings_base_setup', tags: 'base_setup'}
-#    - { role: 'windows_settings_keyboard', tags: 'windows_keyboard'}
-    - { role: 'windows_settings_update_planning', tags: 'update_planning', when: windows_update | default(true) == true}
-    - { role: 'windows_settings_updates', tags: 'updates', when: windows_update | default(true) == true}
-    - { role: 'windows_settings_admin_password', tags: 'admin_password'}
-    - { role: 'windows_settings_hostname', tags: 'hostname'}
-  vars:
-    http_proxy: "{{ enable_http_proxy }}"
-    layout: "fr-FR"
+#  roles:
+#    - { role: 'windows_settings_base_setup', tags: 'base_setup'}
+##    - { role: 'windows_settings_keyboard', tags: 'windows_keyboard'}
+#    - { role: 'windows_settings_update_planning', tags: 'update_planning', when: windows_update | default(true) == true}
+#    - { role: 'windows_settings_updates', tags: 'updates', when: windows_update | default(true) == true}
+#    - { role: 'windows_settings_admin_password', tags: 'admin_password'}
+#    - { role: 'windows_settings_hostname', tags: 'hostname'}
+#  vars:
+#    http_proxy: "{{ enable_http_proxy }}"
+#    layout: "fr-FR"
+  tasks:
+    - name: Display hostvars in a readable format
+      ansible.builtin.debug:
+        var: hostvars[inventory_hostname]
+    - name: STOP
+      ansible.builtin.fail:
+        msg: "STOP"
+    - name: Base setup
+      ansible.builtin.include_role:
+        name: "windows_settings_base_setup"
+      vars:
+        http_proxy: "{{ enable_http_proxy }}"
+      when: not hostvars[inventory_hostname]["ansible_facts"]["domain"]
+    - name: Keyboars setup
+      ansible.builtin.include_role:
+        name: "windows_settings_keyboard"
+      vars:
+        layout: "fr-FR"
+      when: not hostvars[inventory_hostname]["ansible_facts"]["domain"]
+    - name: Update planning setup
+      ansible.builtin.include_role:
+        name: "windows_settings_update_planning"
+      when: not hostvars[inventory_hostname]["ansible_facts"]["domain"]
+    - name: Update setup
+      ansible.builtin.include_role:
+        name: "windows_settings_updates"
+      when: not hostvars[inventory_hostname]["ansible_facts"]["domain"]
+    - name: Admin password setup
+      ansible.builtin.include_role:
+        name: "windows_settings_admin_password"
+      when: not hostvars[inventory_hostname]["ansible_facts"]["domain"]
+    - name: Hostname setup
+      ansible.builtin.include_role:
+        name: "windows_settings_hostname"
+      when: not hostvars[inventory_hostname]["ansible_facts"]["domain"]
