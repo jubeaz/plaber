@@ -81,15 +81,25 @@ all:
             rsc_ws01: {}
             haas_ws01: {}
   hosts:
-    dc_wld:               {ansible_host: wld01.weyland.local, domain_ip: 172.16.1.1}
-    wld_srv01:            {ansible_host: archer.weyland.local, domain_ip: 172.16.1.10}
-    dc_haas:              {ansible_host: haas01.haas.local, domain_ip: 172.16.2.1}
-    haas_srv01:           {ansible_host: eli.haas.local, domain_ip: 172.16.2.10}
-    haas_srv02:           {ansible_host: bran.haas.local, domain_ip: 172.16.2.11}
-    haas_ws01:             {ansible_host: hypoxia.research.haas.local, domain_ip: 172.16.2.20}
-    dc_rsc:               {ansible_host: rsc01.research.haas.local, domain_ip: 172.16.3.1}
-    rsc_srv01:            {ansible_host: fenris.research.haas.local, domain_ip: 172.16.3.10}#    rsc_ws01:             {ansible_host: 172.16.3.20}
-    rsc_ws01:             {ansible_host: architect.research.haas.local, domain_ip: 172.16.3.20}
+    dc_wld:               {ansible_host: wld01.weyland.local, domain_ip: 172.16.1.1, ansible_connection: winrm}
+    wld_srv01:            {ansible_host: archer.weyland.local, domain_ip: 172.16.1.10, ansible_connection: winrm}
+    dc_haas:              {ansible_host: haas01.haas.local, domain_ip: 172.16.2.1, ansible_connection: winrm}
+    haas_srv01:           {ansible_host: eli.haas.local, domain_ip: 172.16.2.10, ansible_connection: winrm}
+    haas_srv02:           {ansible_host: bran.haas.local, domain_ip: 172.16.2.11, ansible_connection: winrm}
+#    haas_ws01:             {ansible_host: hypoxia.research.haas.local, domain_ip: 172.16.2.20, ansible_connection: winrm}
+    dc_rsc:               {ansible_host: rsc01.research.haas.local, domain_ip: 172.16.3.1, ansible_connection: winrm}
+    rsc_srv01:            {ansible_host: fenris.research.haas.local, domain_ip: 172.16.3.10, ansible_connection: winrm}
+    rsc_ws01:             {ansible_host: architect.research.haas.local, domain_ip: 172.16.3.20, ansible_connection: winrm}
+#    dc_wld:               {ansible_host: 172.16.1.1, domain_ip: 172.16.1.1, ansible_connection: psrp}
+#    wld_srv01:            {ansible_host: 172.16.1.10, domain_ip: 172.16.1.10, ansible_connection: psrp}
+#    dc_haas:              {ansible_host: 172.16.2.1, domain_ip: 172.16.2.1, ansible_connection: psrp}
+#    haas_srv01:           {ansible_host: 172.16.2.10, domain_ip: 172.16.2.10, ansible_connection: psrp}
+#    haas_srv02:           {ansible_host: 172.16.2.11, domain_ip: 172.16.2.11, ansible_connection: psrp}
+##    haas_ws01:             {ansible_host: 172.16.2.20, domain_ip: 172.16.2.20, ansible_connection: psrp}
+#    dc_rsc:               {ansible_host: 172.16.3.1, domain_ip: 172.16.3.1, ansible_connection: psrp}
+#    rsc_srv01:            {ansible_host: 172.16.3.10, domain_ip: 172.16.3.10, ansible_connection: psrp}
+#    rsc_ws01:             {ansible_host: 172.16.3.20, domain_ip: 172.16.3.20, ansible_connection: psrp}
+
     fw:                   {ansible_host: 192.168.2.100, ansible_port: 22, disable_nat: true, ufw_in_ssh_allow "192.168.2.3" }
 #    fw:               {ansible_host: 127.0.0.1, ansible_port: 2222, disable_nat: false, ufw_in_ssh_allow: "10.0.0.0/8", psrp_port: 1234}
 

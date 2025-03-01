@@ -3,14 +3,18 @@
 #ansible_password: vagrant
 #ansible_connection: winrm
 ansible_winrm_server_cert_validation: ignore
-ansible_winrm_operation_timeout_sec: 400
-ansible_winrm_read_timeout_sec: 500
+ansible_winrm_connection_timeout: 500
 #ansible_winrm_transport: CredSSP
 ansible_port:  5985
 ansible_user: vagrant
 ansible_password: vagrant
-ansible_connection: psrp
+#ansible_connection: psrp
+ansible_psrp_auth: negotiate
 ansible_psrp_protocol: http
+ansible_psrp_negotiate_service: http
+ansible_psrp_connection_timeout: 400
+ansible_psrp_operation_timeout: 400
+ansible_psrp_read_timeout: 500
 #ansible_psrp_proxy: socks5h://localhost:1234
 
 

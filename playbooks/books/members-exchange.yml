@@ -2,20 +2,20 @@
   hosts: exchange
   max_fail_percentage: 0
   tasks:
-#    - name: Active Directory Prerequisits
-#      ansible.builtin.include_role:
-#        name: "windows_domain_exchange_extend_schema"
-#      vars:
-#        corp_name: "{{ hostvars[domain_dc_ansible_inventory_key].exchange_corp_name }}"
-#        multi_domain_forest: "{{ hostvars[domain_dc_ansible_inventory_key].multi_domain_forest }}"
-#      run_once: true
-#
-#    - name: Install Exchange Mailbox role
-#      ansible.builtin.include_role:
-#        name: "windows_domain_exchange_install_mailbox"
-#      vars:
-#        corp_name: "{{ hostvars[domain_dc_ansible_inventory_key].exchange_corp_name }}"
-#        multi_domain_forest: "{{ hostvars[domain_dc_ansible_inventory_key].multi_domain_forest }}"
+    - name: Active Directory Prerequisits
+      ansible.builtin.include_role:
+        name: "windows_domain_exchange_extend_schema"
+      vars:
+        corp_name: "{{ hostvars[domain_dc_ansible_inventory_key].exchange_corp_name }}"
+        multi_domain_forest: "{{ hostvars[domain_dc_ansible_inventory_key].multi_domain_forest }}"
+      run_once: true
+
+    - name: Install Exchange Mailbox role
+      ansible.builtin.include_role:
+        name: "windows_domain_exchange_install_mailbox"
+      vars:
+        corp_name: "{{ hostvars[domain_dc_ansible_inventory_key].exchange_corp_name }}"
+        multi_domain_forest: "{{ hostvars[domain_dc_ansible_inventory_key].multi_domain_forest }}"
 
     - name: Configure Exchange
       ansible.builtin.include_role:
@@ -26,7 +26,7 @@
         multi_domain_forest: "{{ hostvars[domain_dc_ansible_inventory_key].multi_domain_forest }}"
       run_once: true
       with_items:
-#        - connector
-#        - mailbox
+        - connector
+        - mailbox
         - security
   

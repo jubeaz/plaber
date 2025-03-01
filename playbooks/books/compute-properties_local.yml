@@ -39,6 +39,7 @@
 #    - name: Display hostvars in a readable format
 #      ansible.builtin.debug:
 #        var: hostvars[inventory_hostname]
+#      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname
 #    - name: STOP
 #      ansible.builtin.fail:
 #        msg: "STOP"

@@ -87,7 +87,7 @@ vagrant halt
 
 * disable all vms buildint NAT interfaces in domain computers
 ```bash
-for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2 | grep -v fw); do do vboxmanage modifyvm $b  --cableconnected1 off; done
+for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2 | grep -v fw); do vboxmanage modifyvm $b  --cableconnected1 off; done
 # for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage modifyvm $b  --cableconnected1 off; done
 ```
 

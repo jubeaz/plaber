@@ -14,37 +14,31 @@
 #    http_proxy: "{{ enable_http_proxy }}"
 #    layout: "fr-FR"
   tasks:
-    - name: Display hostvars in a readable format
-      ansible.builtin.debug:
-        var: hostvars[inventory_hostname]
-    - name: STOP
-      ansible.builtin.fail:
-        msg: "STOP"
     - name: Base setup
       ansible.builtin.include_role:
         name: "windows_settings_base_setup"
       vars:
         http_proxy: "{{ enable_http_proxy }}"
-      when: not hostvars[inventory_hostname]["ansible_facts"]["domain"]
+      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname
     - name: Keyboars setup
       ansible.builtin.include_role:
         name: "windows_settings_keyboard"
       vars:
         layout: "fr-FR"
-      when: not hostvars[inventory_hostname]["ansible_facts"]["domain"]
+      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname
     - name: Update planning setup
       ansible.builtin.include_role:
         name: "windows_settings_update_planning"
-      when: not hostvars[inventory_hostname]["ansible_facts"]["domain"]
+      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname
     - name: Update setup
       ansible.builtin.include_role:
         name: "windows_settings_updates"
-      when: not hostvars[inventory_hostname]["ansible_facts"]["domain"]
+      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname
     - name: Admin password setup
       ansible.builtin.include_role:
         name: "windows_settings_admin_password"
-      when: not hostvars[inventory_hostname]["ansible_facts"]["domain"]
+      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname
     - name: Hostname setup
       ansible.builtin.include_role:
         name: "windows_settings_hostname"
-      when: not hostvars[inventory_hostname]["ansible_facts"]["domain"]
+      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname
