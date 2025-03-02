@@ -12,6 +12,7 @@ ansible_password: vagrant
 ansible_psrp_auth: negotiate
 ansible_psrp_protocol: http
 ansible_psrp_negotiate_service: http
+
 ansible_psrp_connection_timeout: 400
 ansible_psrp_operation_timeout: 400
 ansible_psrp_read_timeout: 500

@@ -87,19 +87,19 @@ vagrant halt
 
 * disable all vms buildint NAT interfaces in domain computers
 ```bash
-for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2 | grep -v fw); do vboxmanage modifyvm $b  --cableconnected1 off; done
+for b in $(cat Vagrantfile  | grep nrunner_ | grep -v '#' | cut -d'"' -f 2 | grep -v fw); do vboxmanage modifyvm $b  --cableconnected1 off; done
 # for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage modifyvm $b  --cableconnected1 off; done
 ```
 
 ```bash
-for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2 | grep -v fw); do vboxmanage showvminfo $b |grep 'Cable connected: off' ; done
+for b in $(cat Vagrantfile  | grep nrunner_ | grep -v '#' | cut -d'"' -f 2 | grep -v fw); do echo $b ; vboxmanage showvminfo $b |grep 'Cable connected: off' ; done
 ```
 
 * restart all vms
 ```bash
-for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2 | grep -v fw); do vboxmanage startvm $b --type headless; done
+for b in $(cat Vagrantfile  | grep nrunner_ | grep -v '#' | cut -d'"' -f 2 | grep -v fw); do vboxmanage startvm $b --type headless; done
 
-for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage startvm $b --type headless; done
+for b in $(cat Vagrantfile  | grep nrunner_ | grep -v '#' | cut -d'"' -f 2); do vboxmanage startvm $b --type headless; done
 ```
 
 ```bash
@@ -334,6 +334,12 @@ Edit `/usr/bin/VBox`
 ### `The trust relationship between this workstation and the primary domain failed.`
 
 need to reset DNS user role `windows_domain/member_dns`
+
+### Exchange
+
+#### Mailbox role
+
+installation process is not detecting the end but 
 
 ### sccm
 

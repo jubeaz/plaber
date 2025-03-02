@@ -25,7 +25,7 @@
         name: "windows_settings_keyboard"
       vars:
         layout: "fr-FR"
-      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname
+      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname and is_server_os
     - name: Update planning setup
       ansible.builtin.include_role:
         name: "windows_settings_update_planning"
