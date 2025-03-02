@@ -4,6 +4,10 @@
   max_fail_percentage: 0
   gather_facts: false
   tasks:
+    - name: Compute multi_domain_forest default value (false)
+      ansible.builtin.set_fact:
+        multi_domain_forest: false
+
     - name: Compute parent domain name on chid DC
       ansible.builtin.set_fact:
         domain_parent_domain_name: "{{ '.'.join(domain_name.split('.')[1:]) }}"
@@ -39,17 +43,22 @@
     - name: Compute multi_domain_forest on parent DC
       #no_log: true
       ansible.builtin.set_fact:
-        multi_domain_forest: "{{ true if (child_domains | length) > 0 else false }}"
-      when: item.value.domain_parent_domain_name is defined and domain_name == item.value.domain_parent_domain_name
+        multi_domain_forest: true
+      when: child_domains is defined
 
-    - name: Print child_domains
+    - name: Print multi_domain_forest
       ansible.builtin.debug:
         var: multi_domain_forest
 
-#    - name: Print child_domains
-#      ansible.builtin.debug:
-#        msg:
-#          - "{{ item[1] }}.{{ item[2] }}"
-#          - "{{ hostvars[item[0]].ansible_host }}"
-#      loop: "{{ child_domains }}"
-#      when: child_domains is defined
+    - name: Print child_domains
+      ansible.builtin.debug:
+        msg:
+          - "{{ item[1] }}.{{ item[2] }}"
+          - "{{ hostvars[item[0]].ansible_host }}"
+      loop: "{{ child_domains }}"
+      when: child_domains is defined
+
+
+    - name: fail
+      fail:
+        msg: "stop"
