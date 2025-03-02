@@ -46,19 +46,14 @@
         multi_domain_forest: true
       when: child_domains is defined
 
-    - name: Print multi_domain_forest
-      ansible.builtin.debug:
-        var: multi_domain_forest
-
-    - name: Print child_domains
-      ansible.builtin.debug:
-        msg:
-          - "{{ item[1] }}.{{ item[2] }}"
-          - "{{ hostvars[item[0]].ansible_host }}"
-      loop: "{{ child_domains }}"
-      when: child_domains is defined
-
-
-    - name: fail
-      fail:
-        msg: "stop"
+#    - name: Print multi_domain_forest
+#      ansible.builtin.debug:
+#        var: multi_domain_forest
+#
+#    - name: Print child_domains
+#      ansible.builtin.debug:
+#        msg:
+#          - "{{ item[1] }}.{{ item[2] }}"
+#          - "{{ hostvars[item[0]].ansible_host }}"
+#      loop: "{{ child_domains }}"
+#      when: child_domains is defined
