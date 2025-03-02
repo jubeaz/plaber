@@ -67,11 +67,11 @@ all:
           hosts:
         sccm_console:
           hosts: 
+#            haas_ws01: {}    
         mssql_ssms:
           hosts: 
             rsc_ws01: {}             
-#            haas_ws01: {}                      
-            haas_srv02: {}                      
+#            haas_ws01: {}                                   
         webdav:
           hosts:          
 #            rsc_srv01: {}

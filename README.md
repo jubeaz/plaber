@@ -337,6 +337,13 @@ need to reset DNS user role `windows_domain/member_dns`
 
 ### Exchange
 
+#### Schema update
+Synchronizes all domains does not work
+```
+TASK [windows_domain_exchange_extend_schema : Synchronizes all domains] **********************************************
+fatal: [haas_srv02]: FAILED! => {"changed": true, "cmd": "repadmin /syncall haas01.haas.local /AdeP", "delta": "0:00:01.034464", "end": "2025-03-02 16:39:32.003382", "msg": "non-zero return code", "rc": 1, "start": "2025-03-02 16:39:30.968918", "stderr": "", "stderr_lines": [], "stdout": "DsBindWithCred to haas01.haas.local failed with status 5 (0x5):\r\r\n    Access is denied.\r\r\n", "stdout_lines": ["DsBindWithCred to haas01.haas.local failed with status 5 (0x5):", "", "    Access is denied.", ""]}
+```
+
 #### Mailbox role
 
 installation process is not detecting the end but 
