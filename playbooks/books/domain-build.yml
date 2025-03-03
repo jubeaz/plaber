@@ -27,3 +27,13 @@
   max_fail_percentage: 0
   roles:
     - { role: 'windows_domain_child_dns', tags: 'child_dns'}
+
+
+- name: Compute Replication Subnet
+  hosts: dc
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain_replication_subnet', tags: 'child_dns'}
+  vars:
+      ip_address: "{{ domaine_interface_def[0]['ipv4']['address'] }}"
+      network_prefix: "{{ domaine_interface_def[0]['ipv4']['prefix'] }}"

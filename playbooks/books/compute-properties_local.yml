@@ -82,7 +82,7 @@
     - name: Register Domain interface definition 
       ansible.builtin.set_fact: 
         domaine_interface_def: "{{  hostvars[inventory_hostname]['ansible_facts']['interfaces'] | selectattr('connection_name', 'equalto', domain_adapter) | list }}"
-      when: not hostvars['fw'].disable_nat
+#      when: not hostvars['fw'].disable_nat
 
 #    - name: Print domaine_interface_def
 #      ansible.builtin.debug:
