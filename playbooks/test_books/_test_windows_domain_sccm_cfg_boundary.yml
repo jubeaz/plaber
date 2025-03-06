@@ -1,0 +1,5 @@
+- name: "SCCM config"
+  hosts: sccm
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain_sccm_cfg_boundary', tags: 'sccm_boundary'}

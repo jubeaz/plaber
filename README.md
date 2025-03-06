@@ -78,11 +78,22 @@ Edit `Vagrantfile`:
 * build all  vms
 ```bash
 vagrant up --debug --timestamp
+echo 3 | sudo tee /proc/sys/vm/drop_caches
+vagrant up nrunner_fw; for b in $(cat Vagrantfile  | grep nrunner_ | grep -v '#' | cut -d'"' -f 2 | grep -v fw); do vagrant up $b ; vagrant halt $b ; done
+```
+problem with port forward
+```
+vboxmanage showvminfo  nrunner_rsc_srv01 --machinereadable | grep Forwarding
+vboxmanage modifyvm "nrunner_rsc_srv01" --natpf delete "ssh"
+
+for pf in "ssh" "winrm" "winrm-ssl" "tcp53389"; do vboxmanage modifyvm nrunner_rsc_srv01 --natpf1 delete $pf ; done
+
 ```
 
 * stop all  vms
 ```bash
-vagrant halt
+for b in $(cat Vagrantfile  | grep nrunner_ | grep -v '#' | cut -d'"' -f 2 | grep -v fw); do vagrant halt $b ; done
+
 ```
 
 * disable all vms buildint NAT interfaces in domain computers
@@ -99,7 +110,6 @@ for b in $(cat Vagrantfile  | grep nrunner_ | grep -v '#' | cut -d'"' -f 2 | gre
 ```bash
 for b in $(cat Vagrantfile  | grep nrunner_ | grep -v '#' | cut -d'"' -f 2 | grep -v fw); do vboxmanage startvm $b --type headless; done
 
-for b in $(cat Vagrantfile  | grep nrunner_ | grep -v '#' | cut -d'"' -f 2); do vboxmanage startvm $b --type headless; done
 ```
 
 ```bash
@@ -337,8 +347,13 @@ need to reset DNS user role `windows_domain/member_dns`
 
 ### Exchange
 
+https://learn.microsoft.com/en-us/exchange/troubleshoot/exchange-server-welcome
+
+exchange incompatible sccm ?
+https://learn.microsoft.com/en-us/exchange/troubleshoot/client-connectivity/owa-stops-working-after-update
+
 #### Schema update
-Synchronizes all domains does not work
+Synchronizes all domains does not work because of double hop problem
 ```
 TASK [windows_domain_exchange_extend_schema : Synchronizes all domains] **********************************************
 fatal: [haas_srv02]: FAILED! => {"changed": true, "cmd": "repadmin /syncall haas01.haas.local /AdeP", "delta": "0:00:01.034464", "end": "2025-03-02 16:39:32.003382", "msg": "non-zero return code", "rc": 1, "start": "2025-03-02 16:39:30.968918", "stderr": "", "stderr_lines": [], "stdout": "DsBindWithCred to haas01.haas.local failed with status 5 (0x5):\r\r\n    Access is denied.\r\r\n", "stdout_lines": ["DsBindWithCred to haas01.haas.local failed with status 5 (0x5):", "", "    Access is denied.", ""]}

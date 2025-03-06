@@ -1,0 +1,13 @@
+- name: "Exchange Setup"
+  hosts: exchange
+  max_fail_percentage: 0
+  tasks:
+    - name: Configure Exchange
+      ansible.builtin.include_role:
+        name: "windows_domain_exchange_cfg"
+      vars:
+        corp_name: "{{ hostvars[domain_dc_ansible_inventory_key].exchange_corp_name }}"
+        windows_domain_exchange_cfg_action: "{{ item }}"
+        multi_domain_forest: "{{ hostvars[domain_dc_ansible_inventory_key].multi_domain_forest }}"
+      with_items:
+        - dns

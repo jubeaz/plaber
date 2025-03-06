@@ -1,6 +1,7 @@
 ---
 - name: "Compute DOMAIN info on each host"
   hosts: domain
+  tags: mandatory
   max_fail_percentage: 0
   tasks:
     - name: Compute domain dc on all hosts

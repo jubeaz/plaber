@@ -1,3 +1,6 @@
+update_initial: true
+update_continuous: false
+
 enable_webdav: false
 
 # 0: UAC won't prompt (like disabled)                                                                                                                                                                  │

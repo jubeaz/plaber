@@ -1,6 +1,7 @@
 ---
 #- name: Compute ansible_controller_ip for each network 
 #  hosts: firewalls
+#  tags: mandatory
 #  become: true
 #  max_fail_percentage: 0
 #  become_user: root
@@ -34,6 +35,7 @@
 
 - name: "Compute LOCAL info on each host"
   hosts: domain
+  tags: mandatory
   max_fail_percentage: 0
   tasks:
 #    - name: Display hostvars in a readable format

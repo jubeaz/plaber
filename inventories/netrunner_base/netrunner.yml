@@ -63,7 +63,8 @@ all:
                   haas_srv01: {}      
               exchange:
                 hosts:
-                  haas_srv02: {}      
+#                  haas_srv01: {}      
+                  haas_srv01: {}      
           hosts:
         sccm_console:
           hosts: 

@@ -1,0 +1,8 @@
+- name: Compute Replication Subnet
+  hosts: dc
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain_replication_subnet', tags: 'child_dns'}
+  vars:
+    wdrs_ip_address: "{{ domaine_interface_def[0]['ipv4']['address'] }}"
+    wdrs_network_prefix: "{{ domaine_interface_def[0]['ipv4']['prefix'] }}"

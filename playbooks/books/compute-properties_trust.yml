@@ -1,6 +1,7 @@
 ---
 - name: "Compute TRUST info on each host"
   hosts: trust
+  tags: mandatory
   max_fail_percentage: 0
   tasks:
     - name: Compute trusted domain infos on DC
@@ -43,6 +44,7 @@
 
 # - name: "COMPUTE SCCM ON DC"
 #   hosts: dc
+#   tags: mandatory
 #   max_fail_percentage: 0
 #   gather_facts: no
 #   tasks:

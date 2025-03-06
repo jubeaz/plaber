@@ -1,5 +1,6 @@
 - name: "SCCM prerequisites"
   hosts: dc
+  tags: prerequisites
   max_fail_percentage: 0
   tasks:
     - name: Install DHCP
@@ -25,15 +26,34 @@
 
 - name: "SCCM install"
   hosts: sccm
+  tags: build
   max_fail_percentage: 0
   roles:
     - { role: 'windows_domain_sccm_install_iis', tags: 'sccm_iis'}
     - { role: 'windows_domain_sccm_install_adk', tags: 'sccm_adk'}
     - { role: 'windows_domain_sccm_install_wsus', tags: 'sccm_wsus'}
     - { role: 'windows_domain_sccm_install_mecm', tags: 'sccm_mecm', install_type: "server"}
- 
+
+#- name: "SCCM console install"
+#  hosts: sccm_console
+#  tags: build
+#  max_fail_percentage: 0
+#  roles:
+#    - { role: 'windows_domain_sccm_install_mecm', tags: 'sccm_mecm', install_type: "console"}
+
+# - name: "SCCM config"
+#   hosts: sccm
+#   tags: build
+#   max_fail_percentage: 0
+#   tasks:
+#     - name: Reboot
+#       ansible.windows.win_reboot:
+#         reboot_timeout: 600
+#         post_reboot_delay: 30
+
 - name: "SCCM config"
   hosts: sccm
+  tags: config
   max_fail_percentage: 0
   roles:
     - { role: 'windows_domain_sccm_cfg_discovery', tags: 'sccm_discovery'}
@@ -59,22 +79,19 @@
       }
     }
 
-- name: "SCCM console install"
-  hosts: sccm_console
-  max_fail_percentage: 0
-  roles:
-    - { role: 'windows_domain_sccm_install_mecm', tags: 'sccm_mecm', install_type: "console"}
 
-- name: "SCCM PXE setup"
-  hosts: sccm
-  roles:
-    - { role: 'windows_domain_sccm_pxe', tags: 'sccm_pxe' }
-  vars:
-    naa_user: "{{domain_name}}\\{{sccm_network_access_account}}"
-    naa_pass: "{{hostvars[domain_dc_ansible_inventory_key].domain_users_regular[sccm_network_access_account].password}}"
-
-#- name: "SCCM config"
+#- name: "SCCM PXE setup"
 #  hosts: sccm
-#  max_fail_percentage: 0
+#  tags: config
 #  roles:
-#    - { role: 'windows_domain/sccm/config/client_install', tags: 'sccm_client_install'}
+#    - { role: 'windows_domain_sccm_pxe', tags: 'sccm_pxe' }
+#  vars:
+#    naa_user: "{{domain_name}}\\{{sccm_network_access_account}}"
+#    naa_pass: "{{hostvars[domain_dc_ansible_inventory_key].domain_users_regular[sccm_network_access_account].password}}"
+#
+##- name: "SCCM config"
+##  hosts: sccm
+##  tags: config
+##  max_fail_percentage: 0
+##  roles:
+##    - { role: 'windows_domain/sccm/config/client_install', tags: 'sccm_client_install'}

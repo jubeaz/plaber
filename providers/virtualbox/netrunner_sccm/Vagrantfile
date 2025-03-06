@@ -216,6 +216,9 @@ Vagrant.configure("2") do |config|
       if box[:os] == "windows"
         target.vm.guest = :windows
         target.vm.communicator = "winrm"
+        #config.vm.communicator = 'winrm'
+        #config.winssh.shell = 'powershell'
+      
         #  alway provision an INTERNAL network on Ethernet 2
         n_info = box[:net]
         target.vm.network :private_network, ip: box[:ip], virtualbox__intnet: n_info[:name]

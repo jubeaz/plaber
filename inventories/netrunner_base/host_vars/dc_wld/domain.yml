@@ -1,1 +1,3 @@
 domain_dc_ansible_inventory_key: "dc_wld" # ansible inventory name
+default_first_site_name: Argus
+subnets: ["172.16.1.0/24"]

@@ -22,7 +22,8 @@
 # End Extended inventory computing
 # ################################
 
-
+#- name: Add user data
+#  import_playbook: books/members-user_data.yml
 
 - name: Deploy SCCM
   import_playbook: books/members-sccm.yml

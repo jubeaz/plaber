@@ -26,14 +26,18 @@
       vars:
         layout: "fr-FR"
       when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname and is_server_os
+    - name: Update Windows
+      ansible.builtin.include_role:
+        name: "windows_settings_updates"
+      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname and update_initial
     - name: Update planning setup
       ansible.builtin.include_role:
         name: "windows_settings_update_planning"
-      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname
-    - name: Update setup
+      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname and update_continuous 
+    - name: Prevent update
       ansible.builtin.include_role:
-        name: "windows_settings_updates"
-      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname
+        name: "windows_settings_no_updates"
+      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname and not update_continuous
     - name: Admin password setup
       ansible.builtin.include_role:
         name: "windows_settings_admin_password"

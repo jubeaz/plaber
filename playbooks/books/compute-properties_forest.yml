@@ -1,6 +1,7 @@
 ---
 - name: "Compute FOREST info on each host"
   hosts: dc
+  tags: mandatory
   max_fail_percentage: 0
   gather_facts: false
   tasks:
@@ -11,6 +12,7 @@
     - name: Compute parent domain name on chid DC
       ansible.builtin.set_fact:
         domain_parent_domain_name: "{{ '.'.join(domain_name.split('.')[1:]) }}"
+        default_first_site_name: "{{ hostvars[parent_domain_dc_ansible_inventory_key].domain_password }}"
         cacheable: true
       when: dc_level != 0
 

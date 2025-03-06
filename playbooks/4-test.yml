@@ -1,8 +1,8 @@
 ---
 - name: Ensure domains are reachable
   import_playbook: books/domains-reachable.yml
-- name: Compute kerberos Auth
-  import_playbook: books/compute-kerberos-auth.yml
+#- name: Compute kerberos Auth
+#  import_playbook: books/compute-kerberos-auth.yml
 
 # ##################################
 # Start Extended inventory computing
@@ -23,8 +23,16 @@
 # End Extended inventory computing
 # ################################
 
-- name: Build domains
-  import_playbook: books/_test_kerberos.yml
+- name: test 1
+  import_playbook: test_books/_test_dns.yml
+
+#- nadns exchange
+#  import_playbook: test_books/_test_exchange.yml
+
+#- name: play windows_domain_sccm_cfg_boundary
+#  import_playbook: test_books/_test_windows_domain_sccm_cfg_boundary.yml
+#- name: Build domains
+#  import_playbook: test_books/_test_kerberos.yml
 
 #- name: Compute extended inventory (local)
 #  import_playbook: books/compute-properties_local.yml

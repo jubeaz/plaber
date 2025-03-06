@@ -1,6 +1,7 @@
 ---
 - name: Add Ansible Controller routes to networks (NAT DISABLED)
   hosts: firewalls
+  tags: mandatory
   become: true
   max_fail_percentage: 0
   become_user: root
@@ -27,6 +28,7 @@
 
 - name: Add proxy to psrp connexion (NAT ENABLED)
   hosts: domain
+  tags: mandatory
   max_fail_percentage: 0
   gather_facts: no
   tasks:
