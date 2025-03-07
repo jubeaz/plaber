@@ -1,4 +1,4 @@
-domain_groups : {
+plbr_domain_groups : {
     "G_LAPS_READER" : {
         "scope": "global", # universal, global or domainlocal default domainlocal
         "managed_by" : "Domain Admins",

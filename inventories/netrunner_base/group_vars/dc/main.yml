@@ -1,12 +1,12 @@
 
-domain_password : "Jubeaz12345+-"
+plbr_domain_password : "Jubeaz12345+-"
 #domain_netbios_name: "HAAS"
 #domain_name : "haas.local"
 
 #trust_domain_dc_ansible_inventory_key : "" # ansible inventory name
 #parent_domain_dc_ansible_inventory_key: "" # ansible inventory name
 
-password_policy: {
+plbr_domain_password_policy: {
   "default": {
     "try_before_lock": "5",
     "pass_length": "5",

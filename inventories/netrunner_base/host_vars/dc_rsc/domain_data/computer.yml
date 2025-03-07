@@ -1,4 +1,4 @@
-domain_real_computers: {
+plbr_domain_real_computers: {
     "fenris": {
         "name":             "fenris",
         "dns_hostname":     "fenris.research.haas.local",
@@ -23,7 +23,7 @@ domain_real_computers: {
     },
 }
 
-domain_fake_computers: {
+plbr_domain_fake_computers: {
 #    "ws01" : {
 #        "name":             "ws01",
 #        "dns_hostname":     "ws01.research.haas.local",

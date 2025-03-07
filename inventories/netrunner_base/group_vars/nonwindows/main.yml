@@ -2,5 +2,5 @@ ansible_connection: ssh
 ansible_user: vagrant
 ansible_password: vagrant
 
-force_dns_server: yes
-dns_server: "8.8.8.8"
+plbr_force_dns_server: yes
+plbr_dns_server: "8.8.8.8"

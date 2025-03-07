@@ -1,5 +1,5 @@
-domain_dc_ansible_inventory_key: "dc_haas" # ansible inventory name
+plbr_domain_dc_inventory_key: "dc_haas" # ansible inventory name
 
-use_laps: false
+plbr_use_laps: false
 
-installed_gmsa: []
+plbr_installed_gmsa: []

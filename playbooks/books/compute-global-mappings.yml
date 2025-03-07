@@ -5,7 +5,7 @@
   tasks:
     - name: clean previously computed glocal mappings
       set_fact:
-        user_identity_mapping_gc: ""      
+        user_identity_mapping_gc: ""
         group_identity_mapping_gc: ""
         computer_identity_mapping_gc: ""
     ########

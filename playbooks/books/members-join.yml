@@ -1,22 +1,44 @@
 ---
-- name: "Adjust DNS Server"
-  hosts: dc
-  roles:
-    - { role: 'windows_domain_dns_listening', tags: 'server'}
-
-- name: "JOIN SERVERS TO DOMAIN"
+- name: JOIN SERVERS TO DOMAIN
   hosts: domain_server
   max_fail_percentage: 0
-  roles:
-    - { role: 'windows_domain_member_server', tags: 'server'}
-    - { role: 'windows_domain_install_features', tags: 'install_features'}
+  gather_facts: false
+  tags: 'domain_join_server'
+  tasks:
+    - name: Join servers
+      ansible.builtin.include_role:
+        name: windows_domain_join_server
+    - name: Install features
+      ansible.builtin.include_role:
+        name: windows_domain_member_features
   vars:
-    features: "{{ extra_features }}"
-- name: "JOIN WORKSTATIONS TO DOMAIN"
+    wd_join_srv_domain_adapter: "{{ plbr_domain_adapter }}"
+    wd_join_srv_two_adapters: "{{ plbr_two_adapters }}"
+    wd_join_srv_domain_dc_ip: "{{ plbr_domain_dc_ip }}"
+    wd_join_srv_domain_name: "{{ plbr_domain_name }}"
+    wd_join_srv_hostname: "{{ plbr_hostname }}"
+    wd_join_srv_domain_password: "{{ plbr_domain_password }}"
+    wd_join_srv_path: "{{ plbr_path }}"
+    wd_mbr_features_features: "{{ plbr_extra_features }}"
+
+- name: JOIN WORKSTATIONS TO DOMAIN
   hosts: domain_workstation
   max_fail_percentage: 0
-  roles:
-    - { role: 'windows_domain_member_workstation', tags: 'workstation'}
-    - { role: 'windows_domain_install_capabilities', tags: 'install_features'}
+  gather_facts: false
+  tags: 'domain_join_workstation'
+  tasks:
+    - name: Join servers
+      ansible.builtin.include_role:
+        name: windows_domain_join_workstation
+    - name: Install capabilities
+      ansible.builtin.include_role:
+        name: windows_domain_member_capabilities
   vars:
-    capabilities: "{{ extra_capabilities }}"
+    wd_join_wks_domain_adapter: "{{ plbr_domain_adapter }}"
+    wd_join_wks_two_adapters: "{{ plbr_two_adapters }}"
+    wd_join_wks_domain_dc_ip: "{{ plbr_domain_dc_ip }}"
+    wd_join_wks_domain_name: "{{ plbr_domain_name }}"
+    wd_join_wks_hostname: "{{ plbr_hostname }}"
+    wd_join_wks_domain_password: "{{ plbr_domain_password }}"
+    wd_join_wks_path: "{{ plbr_path }}"
+    wd_mbr_capab_capabilities: "{{ plbr_extra_capabilities }}"

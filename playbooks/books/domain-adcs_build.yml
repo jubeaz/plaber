@@ -1,6 +1,25 @@
 ---
-- name: ADCS INSTALL
+- name: BUILD ADCS
   hosts: adcs
+  gather_facts: false
   max_fail_percentage: 0
   roles:
     - { role: 'windows_domain_adcs_ca', tags: 'adcs'}
+  vars:
+    wd_adcs_ca_domain_name: "{{ plbr_domain_name }}"
+    wd_adcs_ca_domain_password: "{{ plbr_domain_password }}"
+    wd_adcs_ca_ca_common_name: "{{ plbr_ca_common_name }}"
+    wd_adcs_ca_web_enrollment: "{{ plbr_web_enrollment }}"
+
+- name: CONFIG ADCS
+  hosts: adcs
+  gather_facts: false
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain_adcs_templates', tags: 'adcs_templates', when: plbr_cert_templates is defined and plbr_cert_templates|length > 0}
+  vars:
+    wd_adcs_template_domain_name: "{{ plbr_domain_name }}"
+    wd_adcs_template_domain_password: "{{ plbr_domain_password }}"
+    wd_adcs_template_cert_templates: "{{ plbr_cert_templates }}"
+    wd_adcs_template_ca_common_name: "{{ plbr_ca_common_name }}"
+    wd_adcs_template_hostname: "{{ plbr_hostname }}"

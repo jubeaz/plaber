@@ -1,38 +1,86 @@
 ---
-- name: ROOT DC AD BUILD
+- name: ROOT DC BUILD
   hosts: dc
   max_fail_percentage: 0
-  tags: 'build_domains_parents_domains'
-  roles:
-    - { role: 'windows_domain_domain_root', tags: 'dc_main_domains', when: "dc_level == 0"}
-    - { role: 'windows_domain_default_site_rename', tags: 'dc_main_domains', when: "dc_level == 0"}
+  tags: 'domain_build_root'
+  gather_facts: false
+  tasks:
+    - name: Build root domains
+      ansible.builtin.include_role:
+        name: windows_domain_build_root
+      when: "plbr_dc_level == 0"
+    - name: Rename default site
+      ansible.builtin.include_role:
+        name: windows_domain_cfg_default_site
+      when: "plbr_dc_level == 0"
+    - name: Add root domain subnets
+      ansible.builtin.include_role:
+        name: windows_domain_cfg_subnet
+      when: plbr_dc_level == 0
+  vars:
+    wd_build_root_two_adapters: "{{ plbr_two_adapters }}"
+    wd_build_root_pub_adapter: "{{ plbr_pub_adapter }}"
+    wd_build_root_domain_adapter: "{{ plbr_domain_adapter }}"
+    wd_build_root_domain_netbios_name: "{{ plbr_domain_netbios_name }}"
+    wd_build_root_domain_name: "{{ plbr_domain_name }}"
+    wd_build_root_domain_password: "{{ plbr_domain_password }}"
+    wd_build_root_domain_ip: "{{ plbr_domain_ip }}"
+    wd_cfg_site_name: "{{ plbr_domain_default_first_site_name }}"
+    wd_cfg_site_domain_name: "{{ plbr_domain_name }}"
+    wd_cfg_site_domain_password: "{{ plbr_domain_password }}"
+    wd_cfg_subnet_subnets: "{{ plbr_domain_subnets }}"
+    wd_cfg_subnet_site_name: "{{ plbr_domain_default_first_site_name }}"
+    wd_cfg_subnet_domain_name: "{{ plbr_domain_name }}"
+    wd_cfg_subnet_domain_password: "{{ plbr_domain_password }}"
 
-- name: CHILD DC AD BUILD
+- name: CHILD DC BUILD
   hosts: dc
   gather_facts: false
   max_fail_percentage: 0
-  tags: 'build_domains_child_domains'
-  roles:
-    - { role: 'windows_domain_domain_child', tags: 'child_domain', when: "dc_level == 1"}
-    - { role: 'windows_domain_dns_conditional_forwarder', tags: 'dns_conditional_forwarder', when: "dc_level == 1" }
+  tags: 'domain_build_children'
+  tasks:
+    - name: Build child domains
+      ansible.builtin.include_role:
+        name: windows_domain_build_child
+      when: plbr_dc_level == 1
+    - name: Create DNS conditional forwarder to parent
+      ansible.builtin.include_role:
+        name: windows_domain_dns_conditional_forwarder
+      when: plbr_dc_level == 1
   vars:
-    master_server: "{{ domain_parent_dc_ip }}"
-    zone_name: "{{ domain_parent_domain_name }}"
-    replication: "none"
-    site_name: "{{ default_first_site_name }}"
+    wd_build_child_two_adapters: "{{ plbr_two_adapters }}"
+    wd_build_child_pub_adapter: "{{ plbr_pub_adapter }}"
+    wd_build_child_domain_adapter: "{{ plbr_domain_adapter }}"
+    wd_build_child_parent_dc_ip: "{{ plbr_domain_parent_dc_ip }}"
+    wd_build_child_parent_domain_password: "{{ plbr_domain_parent_domain_password }}"
+    wd_build_child_domain_password: "{{ plbr_domain_password }}"
+    wd_build_child_parent_domain_name: "{{ plbr_domain_parent_domain_name }}"
+    wd_build_child_parent_dc_name: "{{ plbr_domain_parent_dc_name }}"
+    wd_build_child_netbios_name: "{{ plbr_domain_netbios_name }}"
+    wd_build_child_site_name: "{{ plbr_default_first_site_name }}"
+    wd_dns_forwarder_master_server: "{{ plbr_domain_parent_dc_ip }}"
+    wd_dns_forwarder_zone_name: "{{ plbr_domain_parent_domain_name }}"
+    wd_dns_forwarder_replication: "none"
+    wd_dns_forwarder_domain_name: "{{ plbr_domain_name }}"
+    wd_dns_forwarder_domain_password: "{{ plbr_domain_password }}"
 
-- name: ROOT DC ADD DNS CONFIGURATION
+- name: DC ADD DNS CONFIGURATION
   hosts: dc
   max_fail_percentage: 0
-  roles:
-    - { role: 'windows_domain_dns_parent_forward', tags: 'child_dns', when: "dc_level == 0 and child_domains is defined"}
-
-
-- name: ROOT DC ADD SUBNETS
-  hosts: dc
-  max_fail_percentage: 0
-  roles:
-    - { role: 'windows_domain_replication_subnet',when: "dc_level == 0" }
-  vars: 
-    wdrs_subnets: "{{ subnets }}"
-    wdrs_site_name: "{{ default_first_site_name }}"
+  gather_facts: false
+  tags: 'domain_cfg_dns'
+  tasks:
+    - name: Create DNS conditional forwarder to children
+      ansible.builtin.include_role:
+        name: windows_domain_dns_children_forward
+      when: plbr_child_domains is defined
+    - name: "Adjust DNS Server"
+      ansible.builtin.include_role:
+        name: windows_domain_dns_listening
+  vars:
+    wd_dns_child_forward_domain_name: "{{ plbr_domain_name }}"
+    wd_dns_child_forward_child_domains: "{{ plbr_child_domains }}"
+    wd_dns_listen_domain_dc_ip: "{{ plbr_domain_dc_ip }}"
+    wd_dns_listen_domain_name: "{{ plbr_domain_dc_name }}"
+    wd_dns_listen_domain_password: "{{ plbr_domain_password }}"
+    wd_dns_listen_two_adapters: "{{ plbr_two_adapters }}"

@@ -1,10 +1,10 @@
-local_users: {
+plbr_local_users: {
     "LA_jubeaz" : {
         "password"        : "Zaebuj12345+-", 
         }
 }
 
-local_groups: {
+plbr_local_groups: {
     "Administrators" : [".\\LA_jubeaz", "HAAS\\L_LOCAL_ADMINS", "HAAS\\L_LOCAL_ADMINS_ARCHITECT"],
     "Remote Management Users": [".\\LA_jubeaz","HAAS\\L_LOCAL_ADMINS", "HAAS\\L_LOCAL_ADMINS_ARCHITECT", "HAAS\\lowpriv"],
     "Remote Desktop Users" : [".\\LA_jubeaz","HAAS\\L_LOCAL_ADMINS", "HAAS\\L_LOCAL_ADMINS_ARCHITECT", "HAAS\\lowpriv"]
@@ -12,7 +12,7 @@ local_groups: {
 
 
 # Get-WindowsCapability -Name RSAT* -Online | Select-Object -Property DisplayName, State
-extra_features: [
+plbr_extra_features: [
     "Rsat.CertificateServices.Tools~~~~0.0.1.0",
     "Rsat.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.0",
     "Rsat.Dns.Tools~~~~0.0.1.0",
@@ -28,16 +28,17 @@ extra_features: [
 
 #features: ["NET-Framework-Core"]
 ## https://community.chocolatey.org/packages
-softwares: [  "git", "visualstudio2022community", "notepadplusplus", "python", "libreoffice","7zip"]
+plbr_softwares: [  "git", "visualstudio2022community", "notepadplusplus", "python", "libreoffice","7zip"]
 
-user_repos: {
+plbr_user_repos: {
     rubeaz: [
         ["Mimikatz", "https://github.com/gentilkiwi/mimikatz.git"],
         ["Rubeus", "https://github.com/GhostPack/Rubeus"],
         [HardeningKitty, https://github.com/scipag/HardeningKitty.git]
     ]
 }
-user_downloads: {
+
+plbr_user_downloads: {
     rubeaz: [
         ["GRMWDK_EN_7600_1.ISO", "https://download.microsoft.com/download/4/A/2/4A25C7D5-EFBE-4182-B6A9-AE6850409A78/GRMWDK_EN_7600_1.ISO"]
     ]

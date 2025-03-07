@@ -1,4 +1,4 @@
-laps_path:  {
+plbr_domain_laps_path:  {
 #    "E_workstations"    : { "name": "Workstations", "path": "OU=Executives,OU=Argus,DC=weyland,DC=local"},
 #    "S_workstations"    : { "name": "Workstations", "path": "OU=Sales,OU=Argus,DC=weyland,DC=local"},
 #    "PR_workstations"   : { "name": "Workstations", "path": "OU=Public relationships,OU=Argus,DC=weyland,DC=local"},
@@ -6,4 +6,4 @@ laps_path:  {
     "IT_workstations"   : { "name": "Workstations", "path": "OU=IT,OU=Argus,DC=weyland,DC=local"}
 }
 
-laps_readers: ["L_LAPS_READER"]
+plbr_laps_readers: ["L_LAPS_READER"]

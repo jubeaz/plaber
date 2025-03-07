@@ -1,41 +1,24 @@
 ---
-- name: "Compute DOMAIN info on each host"
+- name: Compute domain info on all domain computers
   hosts: domain
   tags: mandatory
+  gather_facts: false
   max_fail_percentage: 0
   tasks:
-    - name: Compute domain dc on all hosts
+    - name: Register domain info on all domain computers
       ansible.builtin.set_fact:
-        domain_dc_ip: "{{ hostvars[domain_dc_ansible_inventory_key].domain_ip }}"
-        domain_dc_name: "{{ hostvars[domain_dc_ansible_inventory_key].hostname }}"
-        domain_ldap_name: "DC={{ hostvars[domain_dc_ansible_inventory_key].domain_name.split('.') | join(',DC=') }}"
+        plbr_domain_dc_ip: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_ip }}"
+        plbr_domain_dc_name: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_hostname }}"
+        plbr_domain_ldap_name: "DC={{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name.split('.') | join(',DC=') }}"
+        cacheable: true
 
-    - name: Compute domain info on non DC
+    - name: Register domain  info on non DC
       ansible.builtin.set_fact:
-        domain_name: "{{ hostvars[domain_dc_ansible_inventory_key].domain_name }}"
-        domain_password: "{{ hostvars[domain_dc_ansible_inventory_key].domain_password }}"
-        domain_netbios_name: "{{ hostvars[domain_dc_ansible_inventory_key].domain_netbios_name }}"
-        domain_gmsa: "{{ hostvars[domain_dc_ansible_inventory_key].domain_gmsa }}"
-        laps_path: "{{ hostvars[domain_dc_ansible_inventory_key].laps_path }}"
-        path: "{{ hostvars[domain_dc_ansible_inventory_key].domain_real_computers[hostname].path }}"
+        plbr_domain_name: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}"
+        plbr_domain_password: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_password }}"
+        plbr_domain_netbios_name: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_netbios_name }}"
+        plbr_domain_gmsa: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_gmsa }}"
+        plbr_laps_path: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_laps_path }}"
+        plbr_path: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_real_computers[plbr_hostname].path }}"
+        cacheable: true
       when: inventory_hostname not in groups['dc']
-
-#    - name: Print host configuration
-#      ansible.builtin.debug:
-#        msg:
-#          - "domain_password: {{ domain_password }}"
-#          - "domain_name: {{ domain_name }}"
-#          - "domain_netbios_name: {{ domain_netbios_name }}"
-#          - "domain_dc_ip: {{ domain_dc_ip }}"
-#          - "domain_dc_name: {{ domain_dc_name }}"
-#          - "domain_gmsa: {{ domain_gmsa }}"
-#          - "laps_path: {{ laps_path }}"
-##          - "path: {{ path }}"
-#          - "domain_ldap_name: {{ domain_ldap_name }}"
-
-
-    - name: Set multi_domain_forest to false on DC
-      no_log: true
-      ansible.builtin.set_fact:
-        multi_domain_forest: false
-      when: "'dc' in group_names"

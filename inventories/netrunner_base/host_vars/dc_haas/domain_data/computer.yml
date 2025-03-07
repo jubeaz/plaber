@@ -1,4 +1,4 @@
-domain_real_computers: {
+plbr_domain_real_computers: {
     "eli": {
         "name":             "eli",
         "dns_hostname":     "eli.haas.local",
@@ -34,7 +34,7 @@ domain_real_computers: {
     },
 }
 
-domain_fake_computers: {
+plbr_domain_fake_computers: {
     "jaguarundi" : {
         "name":             "jaguarundi",
         "dns_hostname":     "jaguarundi.haas.local",

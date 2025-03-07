@@ -1,1 +1,1 @@
-domain_dc_ansible_inventory_key: "dc_rsc" # ansible inventory name
+plbr_domain_dc_inventory_key: "dc_rsc" # ansible inventory name

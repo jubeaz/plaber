@@ -12,7 +12,7 @@
 
 # https://admx.help/?Category=security-compliance-toolkit
 
-gpo_global: {
+plbr_gpo_global: {
   "global.refresh_gpo_policy": {
     gpo_ous: {},
     gpo_desc: "global.refresh_gpo_policy",

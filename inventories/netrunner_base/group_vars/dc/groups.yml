@@ -1,4 +1,4 @@
-domain_groups : {
+plbr_domain_groups : {
 #    "L_GMSA_ICHI" : {
 #        "scope": "domainlocal", # universal, global or domainlocal default domainlocal
 #        "managed_by" : "Domain Admins",
@@ -16,7 +16,7 @@ domain_groups : {
 #    } 
 }
 
-domain_builtin_groups: {
+plbr_domain_builtin_groups: {
 #    "Enterprise Admins" : {
 #        "path" : "CN=Users,DC=haas,DC=local",
 #        "members" : [

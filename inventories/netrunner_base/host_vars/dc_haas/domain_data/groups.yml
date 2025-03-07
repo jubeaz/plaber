@@ -1,4 +1,4 @@
-domain_groups : {
+plbr_domain_groups : {
     "G_LAPS_READER" : {
         "scope": "global", # universal, global or domainlocal default domainlocal
         "managed_by" : "Domain Admins",
@@ -162,7 +162,7 @@ domain_groups : {
 
 #         "foreign_members": ["weyland.local\\G_LAPS_READER"]
 
-domain_builtin_groups: {
+plbr_domain_builtin_groups: {
     "Enterprise Admins" : {
         "path" : "CN=Users,DC=haas,DC=local",
         "members" : [

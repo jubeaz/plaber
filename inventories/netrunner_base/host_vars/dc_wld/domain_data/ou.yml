@@ -1,4 +1,4 @@
-domain_ous: {
+plbr_domain_ous: {
     "Argus"                     : { "name": "Argus",                     "path" : "DC=weyland,DC=local"},
 #    "Executives"                : { "name": "Executives",                "path" : "OU=Argus,DC=weyland,DC=local"},
 #    "E_servers"                 : { "name": "Servers",                   "path" : "OU=Executives,OU=Argus,DC=weyland,DC=local"},

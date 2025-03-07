@@ -1,5 +1,5 @@
-domain_dc_ansible_inventory_key: "dc_haas" # ansible inventory name
+plbr_domain_dc_inventory_key: "dc_haas" # ansible inventory name
 
 
-default_first_site_name: HQ
-subnets: ["172.16.2.0/24","172.16.3.0/24"]
+plbr_domain_default_first_site_name: HQ
+plbr_domain_subnets: ["172.16.2.0/24","172.16.3.0/24"]

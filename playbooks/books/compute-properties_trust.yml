@@ -1,45 +1,47 @@
 ---
-- name: "Compute TRUST info on each host"
+- name: Compute TRUST info on DC
   hosts: trust
   tags: mandatory
+  gather_facts: false
   max_fail_percentage: 0
   tasks:
-    - name: Compute trusted domain infos on DC
+    - name: Register trusted domain infos on DC
       ansible.builtin.set_fact:
-        domain_trust_remote_dc_name: "{{ hostvars[trust_domain_dc_ansible_inventory_key].hostname }}"
-        domain_trust_remote_dc_ip: "{{ hostvars[trust_domain_dc_ansible_inventory_key].domain_ip }}"
-        domain_trust_remote_domain_name: "{{ hostvars[trust_domain_dc_ansible_inventory_key].domain_name }}"
-        domain_trust_remote_domain_password: "{{ hostvars[trust_domain_dc_ansible_inventory_key].domain_password }}"
+        plbr_domain_trust_remote_dc_name: "{{ hostvars[plbr_trust_domain_dc_inventory_key].plbr_hostname }}"
+        plbr_domain_trust_remote_dc_ip: "{{ hostvars[plbr_trust_domain_dc_inventory_key].plbr_domain_ip }}"
+        plbr_domain_trust_remote_domain_name: "{{ hostvars[plbr_trust_domain_dc_inventory_key].plbr_domain_name }}"
+        plbr_domain_trust_remote_domain_password: "{{ hostvars[plbr_trust_domain_dc_inventory_key].plbr_domain_password }}"
         cacheable: true
 
-#    - name: print trused domain info
-#       ansible.builtin.debug:
-#        msg:
-#          - "domain_trust_remote_dc_name: {{ domain_trust_remote_dc_name }}"
-#          - "domain_trust_remote_dc_ip: {{ domain_trust_remote_dc_ip }}"
-#          - "domain_trust_remote_domain_name: {{ domain_trust_remote_domain_name }}"
-#          - "domain_trust_remote_domain_password: {{ domain_trust_remote_domain_password }}"
-#          - "domain_name: {{ domain_name }}"
+    - name: Print trused domain info
+      ansible.builtin.debug:
+        msg:
+          - "plbr_domain_trust_remote_dc_name: {{ plbr_domain_trust_remote_dc_name }}"
+          - "plbr_domain_trust_remote_dc_ip: {{ plbr_domain_trust_remote_dc_ip }}"
+          - "plbr_domain_trust_remote_domain_name: {{ plbr_domain_trust_remote_domain_name }}"
+          - "plbr_domain_trust_remote_domain_password: {{ plbr_domain_trust_remote_domain_password }}"
+          - "plbr_domain_name: {{ plbr_domain_name }}"
 
-    - name: Compute transitive trusted domains
-      # no_log: true
+    - name: Register transitive trusted domains info
+      no_log: true
       ansible.builtin.set_fact:
-        transitive_trusts_domains: "{{ transitive_trusts_domains | default([]) + [[item.value.domain_ip, item.value.domain_name]] }}"
+        plbr_domain_trust_transitive_domains: "{{ plbr_domain_trust_transitive_domains | default([]) + [[item.value.plbr_domain_ip, item.value.plbr_domain_name]] }}"
+#        cacheable: true
       with_dict: "{{ hostvars }}"
-      when: item.value.domain_name is defined
-        and item.value.dc_level is defined
-        and item.value.domain_name != domain_name
-        and item.value.domain_name != domain_trust_remote_domain_name
-        and '.'.join(item.value.domain_name.split('.')[1:]) != domain_name
-        and item.value.domain_name != '.'.join(domain_name.split('.')[1:])
+# is a DC and not the domain itself and not the trusted domain and not a subdomain of itself an 
+      when: item.value.plbr_multi_domain_forest is defined
+        and item.value.plbr_domain_name != plbr_domain_name
+        and item.value.plbr_domain_name != plbr_domain_trust_remote_domain_name
+        and '.'.join(item.value.plbr_domain_name.split('.')[1:]) != plbr_domain_name
+        and item.value.plbr_domain_name != '.'.join(plbr_domain_name.split('.')[1:])
 
-#    - name: Print transitive_trusts_domains
-#       ansible.builtin.debug:
-#        msg:
-#          - "{{ item[1] }}"
-#          - "{{ item[0] }}"
-#      loop: "{{ transitive_trusts_domains }}"
-#      when: transitive_trusts_domains is defined
+    - name: Print transitive_trusts_domains
+      ansible.builtin.debug:
+        msg:
+          - "{{ item[1] }}"
+          - "{{ item[0] }}"
+      loop: "{{ plbr_domain_trust_transitive_domains }}"
+      when: plbr_domain_trust_transitive_domains is defined
 
 
 # - name: "COMPUTE SCCM ON DC"

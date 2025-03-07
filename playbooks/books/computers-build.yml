@@ -2,47 +2,48 @@
 - name: BUILD ALL COMPUTERS
   hosts: domain
   max_fail_percentage: 0
-  tags: 'build_computers_setup_1'
-#  roles:
-#    - { role: 'windows_settings_base_setup', tags: 'base_setup'}
-##    - { role: 'windows_settings_keyboard', tags: 'windows_keyboard'}
-#    - { role: 'windows_settings_update_planning', tags: 'update_planning', when: windows_update | default(true) == true}
-#    - { role: 'windows_settings_updates', tags: 'updates', when: windows_update | default(true) == true}
-#    - { role: 'windows_settings_admin_password', tags: 'admin_password'}
-#    - { role: 'windows_settings_hostname', tags: 'hostname'}
-#  vars:
-#    http_proxy: "{{ enable_http_proxy }}"
-#    layout: "fr-FR"
+  tags: 'build_computers'
+  gather_facts: false
   tasks:
     - name: Base setup
       ansible.builtin.include_role:
-        name: "windows_settings_base_setup"
-      vars:
-        http_proxy: "{{ enable_http_proxy }}"
-      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname
-    - name: Keyboars setup
+        name: "windows_cfg_base"
+      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != plbr_hostname
+    - name: Keyboard setup
       ansible.builtin.include_role:
-        name: "windows_settings_keyboard"
-      vars:
-        layout: "fr-FR"
-      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname and is_server_os
+        name: "windows_cfg_keyboard"
+      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != plbr_hostname and plbr_is_server_os
     - name: Update Windows
       ansible.builtin.include_role:
-        name: "windows_settings_updates"
-      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname and update_initial
+        name: "windows_cfg_updates"
+      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != plbr_hostname and plbr_update_initial
     - name: Update planning setup
       ansible.builtin.include_role:
-        name: "windows_settings_update_planning"
-      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname and update_continuous 
+        name: "windows_cfg_update_planning"
+      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != plbr_hostname and plbr_update_continuous
     - name: Prevent update
       ansible.builtin.include_role:
-        name: "windows_settings_no_updates"
-      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname and not update_continuous
+        name: "windows_cfg_updates_stop"
+      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != plbr_hostname and not plbr_update_continuous
     - name: Admin password setup
       ansible.builtin.include_role:
-        name: "windows_settings_admin_password"
-      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname
+        name: "windows_cfg_admin_password"
+      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != plbr_hostname
     - name: Hostname setup
       ansible.builtin.include_role:
-        name: "windows_settings_hostname"
-      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != hostname
+        name: "windows_cfg_hostname"
+      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != plbr_hostname
+  vars:
+    w_cfg_kbd_layout: "fr-FR"
+    w_cfg_base_winrm_allow_ip: "{{ []  + [plbr_ansible_controller_ip] }}"
+    w_cfg_base_rdp_allow_ip: "{{ []  + [plbr_ansible_controller_ip] }}"
+    w_cfg_base_any_allow_ip: "{{ []  + [plbr_ansible_controller_ip] }}"
+    w_cfg_hostname_name: "{{ plbr_hostname }}"
+    w_cfg_base_force_dns_server: "{{ plbr_force_dns_server }}"
+    w_cfg_base_dns_server: "{{ plbr_dns_server }}"
+    w_cfg_base_enable_http_proxy: "{{ plbr_enable_http_proxy }}"
+    w_cfg_base_http_proxy: "{{ plbr_http_proxy }}"
+    w_cfg_base_https_proxy: "{{ plbr_https_proxy }}"
+    w_cfg_base_two_adapters: "{{ plbr_two_adapters }}"
+    w_cfg_base_domain_adapter: "{{ plbr_domain_adapter }}"
+    w_cfg_lap_password: "{{ plbr_local_admin_password }}"

@@ -1,4 +1,4 @@
-domain_service_accounts: {
+plbr_domain_service_accounts: {
 #    "example" : {
 #        "firstname"   : "ex",
 #        "surname"     : "ample",
@@ -16,7 +16,7 @@ domain_service_accounts: {
 #    }
 }
 
-domain_users_regular: {
+plbr_domain_users_regular: {
     "lowpriv" : {
         "firstname"       : "low",
         "surname"         : "l",

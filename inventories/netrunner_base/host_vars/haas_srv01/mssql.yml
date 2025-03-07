@@ -1,23 +1,23 @@
-#mssql_instance_name: "{{hostname}}"
-mssql_sa_password: "52DT_MFkqdCyuEH3Shprm"
-#mssql_svcaccount_method: 'local' # domain, gmsa, local
-#mssql_svcaccount_local: NetworkService #  "NetworkService, System, LocalService"'
-#mssql_svcaccount_key: '' # for domain or gmsa mssql_svcaccount_method
-mssql_svcaccount_method: 'domain' # domain, gmsa, local
-mssql_svcaccount_key: "drafter" # default : 'NT AUTHORITY\\NETWORK SERVICE'
+#plbr_mssql_instance_name: "{{hostname}}"
+plbr_mssql_sa_password: "52DT_MFkqdCyuEH3Shprm"
+#plbr_mssql_svcaccount_method: 'local' # domain, gmsa, local
+#plbr_mssql_svcaccount_local: NetworkService #  "NetworkService, System, LocalService"'
+#plbr_mssql_svcaccount_key: '' # for domain or gmsa mssql_svcaccount_method
+plbr_mssql_svcaccount_method: 'domain' # domain, gmsa, local
+plbr_mssql_svcaccount_key: "drafter" # default : 'NT AUTHORITY\\NETWORK SERVICE'
 
-mssql_sysadmins: ["HAAS\\G_SYSADMIN_ELI"]
+plbr_mssql_sysadmins: ["HAAS\\G_SYSADMIN_ELI"]
 
-mssql_domain_accounts: ["HAAS\\G_SQL_ACCOUNTS_ELI"]
+plbr_mssql_domain_accounts: ["HAAS\\G_SQL_ACCOUNTS_ELI"]
 
-mssql_local_accounts: {
+plbr_mssql_local_accounts: {
     "link_account": "rEKA2mcGJte5f_9z7PZQ6p"
 }
 
-mssql_executeaslogin: {
+plbr_mssql_executeaslogin: {
 #    "HAAS\\rknight" : "sa"
 }
-mssql_executeasuser: {
+plbr_mssql_executeasuser: {
 #    "master_dbo": {
 #        "user": "HAAS\\mhendrik",
 #        "db"  : "master",
@@ -29,7 +29,7 @@ mssql_executeasuser: {
 #        "impersonate" : "dbo"
 #        }
 }
-mssql_linked_servers: {
+plbr_mssql_linked_servers: {
 #    "archer" : {
 #        "data_src": "archer.weyland.local",
 #        "users_mapping": [

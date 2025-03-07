@@ -1,39 +1,5 @@
 ---
-#- name: Compute ansible_controller_ip for each network 
-#  hosts: firewalls
-#  tags: mandatory
-#  become: true
-#  max_fail_percentage: 0
-#  become_user: root
-#  tasks:
-#    - name: Display hostvars in a readable format
-#      ansible.builtin.debug:
-#        var: hostvars[inventory_hostname]
-#    - name: Create ansible_controller_ip
-#      ansible.builtin.set_fact:
-#        ansible_controller_ip: {}
-#    - name: Display hostvars in a readable format
-#      ansible.builtin.debug:
-#        var: hostvars[inventory_hostname]['ansible_facts']
-
-#    - name: Add ansible_controller_ip for each network (NAT Enabled)
-#      ansible.builtin.set_fact:
-#        ansible_controller_ip: "{{ ansible_controller_ip | combine( { hostvars[inventory_hostname]['ansible_facts'][item]['ipv4']['network']: hostvars[inventory_hostname]['ansible_facts'][item]['ipv4']['address'] } ) }}"
-#      with_items: "{{ domains_interfaces }}"  
-#      when: not hostvars['fw'].disable_nat
-#
-#    - name: Add ansible_controller_ip for each network (NAT Disabled)
-#      ansible.builtin.set_fact:
-#        ansible_controller_ip: "{{ ansible_controller_ip | combine( { hostvars[inventory_hostname]['ansible_facts'][item]['ipv4']['network']: ufw_in_ssh_allow } ) }}"
-#      with_items: "{{ domains_interfaces }}"  
-#      when: hostvars['fw'].disable_nat
-#
-#    - name: Print ansible_controller_ip
-#      ansible.builtin.debug:
-#        var: ansible_controller_ip
-
-
-- name: "Compute LOCAL info on each host"
+- name: Compute LOCAL info on each windows host
   hosts: domain
   tags: mandatory
   max_fail_percentage: 0
@@ -53,9 +19,10 @@
       register: product_name
       changed_when: false
 
-    - name: Register is_server_os
+    - name: Register plbr_is_server_os
       ansible.builtin.set_fact:
-        is_server_os: "{{  product_name.stdout_lines[0] is search('Windows Server') }}"
+        plbr_is_server_os: "{{  product_name.stdout_lines[0] is search('Windows Server') }}"
+        cacheable: true
 
     - name: Check InstallationType
       ansible.windows.win_shell: |
@@ -64,40 +31,39 @@
       register: is_server_core
       changed_when: false
 
-    - name: Register is_core_install
+    - name: Register plbr_is_core_install
       ansible.builtin.set_fact:
-        is_core_install: "{{ is_server_core.stdout_lines[0] }}"
+        plbr_is_core_install: "{{ is_server_core.stdout_lines[0] }}"
+        cacheable: true
 
-    - name: Register ansible_controller_ip from firewall ufw_in_ssh_allow (NAT Disabled)
+    - name: Register domain interface definition
       ansible.builtin.set_fact:
-        ansible_controller_ip: "{{ hostvars['fw'].ufw_in_ssh_allow }}"
+        plbr_domaine_interface_def: "{{  hostvars[inventory_hostname]['ansible_facts']['interfaces'] | selectattr('connection_name', 'equalto', plbr_domain_adapter) | list }}"
+        cacheable: true
+
+    - name: Register plbr_ansible_controller_ip from firewall ufw_in_ssh_allow (NAT Disabled)
+      ansible.builtin.set_fact:
+        plbr_ansible_controller_ip: "{{ hostvars['fw'].ufw_in_ssh_allow }}"
+        cacheable: true
       when: hostvars['fw'].disable_nat
 
-#    - name: Display hostvars in a readable format
-#      ansible.builtin.debug:
-#        var: hostvars[inventory_hostname]
-#    - name: STOP
-#      ansible.builtin.fail:
-#        msg: "STOP"
-
-
-    - name: Register Domain interface definition 
-      ansible.builtin.set_fact: 
-        domaine_interface_def: "{{  hostvars[inventory_hostname]['ansible_facts']['interfaces'] | selectattr('connection_name', 'equalto', domain_adapter) | list }}"
-#      when: not hostvars['fw'].disable_nat
-
-#    - name: Print domaine_interface_def
-#      ansible.builtin.debug:
-#        var: domaine_interface_def
-#      when: not hostvars['fw'].disable_nat
-
-
-    - name: Register ansible_controller_ip from Domain Interface default gateway (NAT Enabled)
+    - name: Register plbr_ansible_controller_ip from Domain Interface default gateway (NAT Enabled)
       ansible.builtin.set_fact:
-        ansible_controller_ip: "{{ domaine_interface_def[0]['default_gateway'] }}"
+        plbr_ansible_controller_ip: "{{ domaine_interface_def[0]['default_gateway'] }}"
+        cacheable: true
       when: not hostvars['fw'].disable_nat
 
-
-    - name: Print ansible_controller_ip
-      ansible.builtin.debug:
-        var: ansible_controller_ip
+#    - name: Compute windows config role variables
+#      ansible.builtin.set_fact:
+#        w_cfg_base_winrm_allow_ip: "{{ w_cfg_base_winrm_allow_ip | default([]) }} + {{ plbr_ansible_controller_ip }}"
+#        w_cfg_base_rdp_allow_ip: "{{ w_cfg_base_winrm_allow_ip | default([]) }} + {{ plbr_ansible_controller_ip }}"
+#        w_cfg_base_any_allow_ip: "{{ w_cfg_base_winrm_allow_ip | default([]) }} + {{ plbr_ansible_controller_ip }}"
+#        w_cfg_hostname_name: "{{ plbr_hostname }}"
+#        w_cfg_base_force_dns_server: "{{ plbr_force_dns_server }}"
+#        w_cfg_base_dns_server: "{{ plbr_dns_server }}"
+#        w_cfg_base_enable_http_proxy: "{{ plbr_enable_http_proxy }}"
+#        w_cfg_base_http_proxy: "{{ plbr_http_proxy }}"
+#        w_cfg_base_https_proxy: "{{ plbr_https_proxy }}"
+#        w_cfg_base_two_adapters: "{{ plbr_two_adapters }}"
+#        w_cfg_base_domain_adapter: "{{ plbr_domain_adapter }}"
+#        w_cfg_lap_password: "{{ plbr_local_admin_password }}"

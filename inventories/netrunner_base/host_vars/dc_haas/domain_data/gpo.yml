@@ -12,8 +12,8 @@
 
 # https://admx.help/?Category=security-compliance-toolkit
 
-gpo_local: {
+plbr_gpo_local: {
 }
 
 
-gpo:  "{{ gpo_global | combine(gpo_local) }}"
+plbr_gpo:  "{{ gpo_global | combine(gpo_local) }}"

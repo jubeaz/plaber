@@ -1,5 +1,3 @@
-sccm_server: bran
-#sccm_mssql_server: 
-#sccm_clients:
+plbr_sccm_server: bran
 
 

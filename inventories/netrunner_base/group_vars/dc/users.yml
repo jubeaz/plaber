@@ -1,6 +1,6 @@
-domain_users: "{{domain_service_accounts | ansible.builtin.combine(domain_users_regular)}}"
+plbr_domain_users: "{{plbr_domain_service_accounts | ansible.builtin.combine(plbr_domain_users_regular)}}"
 
-domain_service_accounts: {
+plbr_domain_service_accounts: {
 #    "imcguire" : {
 #        "firstname"       : "Isabel",
 #        "surname"         : "McGuire",
@@ -70,7 +70,7 @@ domain_service_accounts: {
 #    }
 }
 
-domain_users_regular: {
+plbr_domain_users_regular: {
 #    "emoon" : {
 #        "firstname"       : "Estelle",
 #        "surname"         : "Moon",

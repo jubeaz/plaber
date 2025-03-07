@@ -17,8 +17,3 @@ ansible_psrp_connection_timeout: 400
 ansible_psrp_operation_timeout: 400
 ansible_psrp_read_timeout: 500
 #ansible_psrp_proxy: socks5h://localhost:1234
-
-
-nat_adapter: Ethernet
-domain_adapter: Ethernet 2
-pub_adapter: Ethernet 3

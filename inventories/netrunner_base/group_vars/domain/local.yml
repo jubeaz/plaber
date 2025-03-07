@@ -1,4 +1,4 @@
-local_admin_password: "Jubeaz12345+-"
+plbr_local_admin_password: "Jubeaz12345+-"
 windows_update: false 
 
 local_users: {
@@ -19,7 +19,7 @@ local_groups: {
 #vulns: ["disable_firewall"]
 
 # worksation: Get-WindowsCapability -Name RSAT* -Online |
-extra_features: [
+plbr_extra_features: [
 #    "Rsat.CertificateServices.Tools~~~~0.0.1.0",
 #    "Rsat.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.0",
 #    "Rsat.Dns.Tools~~~~0.0.1.0",
@@ -32,7 +32,7 @@ extra_features: [
 ]
 
 # server: https://learn.microsoft.com/en-us/windows-server/administration/server-core/server-core-roles-and-services
-extra_capabilities: [
+plbr_extra_capabilities: [
     "RSAT-AD-Tools",
     "RSAT-DHCP",
     "RSAT-DNS-Server",
@@ -40,7 +40,7 @@ extra_capabilities: [
 
 ]
 ## https://community.chocolatey.org/packages
-softwares: ["notepadplusplus", "7zip"]
+plbr_softwares: ["notepadplusplus", "7zip"]
 #
 #user_repos: {
 #    jubeaz: [

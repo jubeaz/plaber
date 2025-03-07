@@ -1,26 +1,26 @@
-#mssql_instance_name: "{{hostname}}"
-mssql_sa_password: "zdP3_q9yFLVHRXv4Agwb6Q"
-#mssql_svcaccount_method: 'gmsa' # domain, gmsa, local
-#mssql_svcaccount_key: "ichi" 
-#mssql_svcaccount_method: 'local' # domain, gmsa, local
-#mssql_svcaccount_local: NetworkService #  "NetworkService, System, LocalService"'
-mssql_svcaccount_method: 'gmsa' # domain, gmsa, local
-mssql_svcaccount_key: "ichi" # default : 'NT AUTHORITY\\NETWORK SERVICE'
+#plbr_mssql_instance_name: "{{hostname}}"
+plbr_mssql_sa_password: "zdP3_q9yFLVHRXv4Agwb6Q"
+#plbr_mssql_svcaccount_method: 'gmsa' # domain, gmsa, local
+#plbr_mssql_svcaccount_key: "ichi" 
+#plbr_mssql_svcaccount_method: 'local' # domain, gmsa, local
+#plbr_mssql_svcaccount_local: NetworkService #  "NetworkService, System, LocalService"'
+plbr_mssql_svcaccount_method: 'gmsa' # domain, gmsa, local
+plbr_mssql_svcaccount_key: "ichi" # default : 'NT AUTHORITY\\NETWORK SERVICE'
 
-mssql_sysadmins: ["RESEARCH\\U_SYSADMIN_FENRIS"]
+plbr_mssql_sysadmins: ["RESEARCH\\U_SYSADMIN_FENRIS"]
 
-mssql_domain_accounts: ["RESEARCH\\U_SQL_ACCOUNTS_FENRIS"]
+plbr_mssql_domain_accounts: ["RESEARCH\\U_SQL_ACCOUNTS_FENRIS"]
 
-mssql_local_accounts: {
+plbr_mssql_local_accounts: {
     "link_account": "nQAhqFRaBJ9XxgC6WYT_tM"
 }
 
-mssql_executeaslogin: {
+plbr_mssql_executeaslogin: {
 }
 
-mssql_executeasuser: {
+plbr_mssql_executeasuser: {
 }
-mssql_linked_servers: {
+plbr_mssql_linked_servers: {
 #    "bran" : {
 #        "data_src": "bran.haas.local",
 #        "users_mapping": [

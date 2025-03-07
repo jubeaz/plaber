@@ -1,9 +1,14 @@
 ---
 - name: CONFIGURE LAPS ON DCS
   hosts: dc
+  gather_facts: false
   max_fail_percentage: 0
   # serial: 1 # add one trust at a time to avoid issues
   roles:
-    - { role: 'windows_domain_laps_dc', tags: 'laps-dc', when: laps_path  | length > 0}
+    - { role: 'windows_domain_laps_dc', tags: 'laps-dc', when: plbr_domain_laps_path  | length > 0}
   vars:
-    replication_wait_in_minutes: 60
+#    replication_wait_in_minutes: 60
+    wd_laps_dc_domain_name: "{{ plbr_domain_name }}"
+    wd_laps_dc_domain_password: "{{ plbr_domain_password }}"
+    wd_laps_dc_laps_path: "{{ plbr_domain_laps_path }}"
+    wd_laps_dc_dc_level: "{{ plbr_dc_level }}"

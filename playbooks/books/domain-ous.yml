@@ -1,8 +1,13 @@
 ---
-- name: DCS AD OU CONFIGURATION
+- name: ORGANIZATIONAL UNITES CONFIGURATION
   hosts: dc
   max_fail_percentage: 0
-  roles:
-    - { role: 'windows_domain_data_ou', tags: 'ad_domain_data'}
+  tags: 'domain_cfg_ou'
+  tasks:
+    - name: Base setup
+      ansible.builtin.include_role:
+        name: "windows_domain_cfg_ou"
   vars:
-    ad_ous: "{{ domain_ous }}"
+    wd_cfg_ou_ous: "{{ plbr_domain_ous }}"
+    wd_cfg_ou_domain_name: "{{ plbr_domain_name }}"
+    wd_cfg_ou_domain_password: "{{ plbr_domain_password }}"

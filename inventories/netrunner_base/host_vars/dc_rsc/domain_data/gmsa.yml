@@ -1,4 +1,4 @@
-domain_gmsa : {
+plbr_domain_gmsa : {
   "ichi": {
     "gMSA_Name" : "ichi",
     "gMSA_FQDN" : "ichi.haas.local",

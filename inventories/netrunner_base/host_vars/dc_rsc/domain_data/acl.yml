@@ -1,4 +1,4 @@
-acls: {
+plbr_acls: {
   # 
   #"forcechangepassword_xxx_yyy" : {"for": "xxx", "to": "yyy", "right": "Ext-User-Force-Change-Password", "inheritance": "None"}
   }

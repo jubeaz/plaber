@@ -1,12 +1,12 @@
 
-local_users: {
+plbr_local_users: {
     "LA_jubeaz" : {
         "password"        : "Zaebuj12345+-", 
         }
 }
 
 
-local_groups: {
+plbr_local_groups: {
     "Administrators" : [".\\LA_jubeaz", "weyland.local\\L_LOCAL_ADMINS", "weyland.local\\L_LOCAL_ADMINS_ARCHER"],
     "Remote Management Users": [".\\LA_jubeaz", "weyland.local\\L_LOCAL_ADMINS", "weyland.local\\L_LOCAL_ADMINS_ARCHER", "weyland.local\\lowpriv"],
     "Remote Desktop Users" : [".\\LA_jubeaz", "weyland.local\\L_LOCAL_ADMINS", "weyland.local\\L_LOCAL_ADMINS_ARCHER", "weyland.local\\lowpriv"],
@@ -14,5 +14,5 @@ local_groups: {
 
 
 
-scripts : ["sidhistory.ps1"]
-vulns: ["disable_firewall"]
+plbr_scripts : ["sidhistory.ps1"]
+plbr_vulns: ["disable_firewall"]

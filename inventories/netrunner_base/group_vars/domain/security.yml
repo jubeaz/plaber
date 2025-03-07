@@ -1,7 +1,7 @@
-update_initial: true
-update_continuous: false
+plbr_update_initial: true
+plbr_update_continuous: false
 
-enable_webdav: false
+plbr_enable_webdav: false
 
 # 0: UAC won't prompt (like disabled)                                                                                                                                                                  │
 # 1: ask for username and password to execute the binary with high rights (on Secure Desktop)                                                                                                          │
@@ -10,16 +10,16 @@ enable_webdav: false
 # 4: like 2 but not necessary on Secure Desktop                                                                                                                                                        │
 # 5: ask the administrator to confirm to run non Windows binaries with high privileges     
 #uac_status_level: 5
-enable_run_as_ppl: false
+plbr_enable_run_as_ppl: false
 #windows_defender: true
-windows_defender: false
+plbr_windows_defender: false
 
-connection_profiles: {
+plbr_connection_profiles: {
 #  #"domain":  {"interface": "{{domain_adapter}}", "NetworkCategory": "Public", "IPv4Connectivity": "", "IPv6Connectivity": ""}
 #  "public":  {"interface": "{{pub_adapter}}",     "NetworkCategory": "Public", "IPv4Connectivity": "LocalNetwork", "IPv6Connectivity": "Disconnected"}
 }
 
-firewall_profiles: {
+plbr_firewall_profiles: {
   "Domain": {"enabled": "True", "inbound": "allow", "outbound": "allow"},
   "Public": {"enabled": "True", "inbound": "allow", "outbound": "allow"},
   "Private": {"enabled": "True", "inbound": "allow", "outbound": "allow"},
@@ -29,7 +29,7 @@ firewall_profiles: {
 # key: ["Domain", "Private", "Public"], 
 }
 
-HardeningKitty: {
+plbr_HardeningKitty: {
 #  "Name": {
 #    FileFindingList: "https://github.com/scipag/HardeningKitty/raw/refs/heads/master/lists/finding_list_cis_microsoft_windows_server_2022_22h2_3.0.0_machine.csv",
 #    FileCriteria: "cis_microsoft_windows_server_2022_22h2_3.0.0_machine",
@@ -38,7 +38,7 @@ HardeningKitty: {
 #  },
 }
 
-firewall_rules: {
+plbr_firewall_rules: {
 #   "FTP_IN_1": {
 #      "name": "FTP In",
 #      "enabled": true, 

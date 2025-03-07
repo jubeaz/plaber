@@ -1,10 +1,10 @@
 
 #domain_password : "Jubeaz12345+-"
-domain_netbios_name: "RESEARCH"
-domain_name: "research.haas.local"
+plbr_domain_netbios_name: "RESEARCH"
+plbr_domain_name: "research.haas.local"
 
 
-trust_domain_dc_ansible_inventory_key : "" # ansible inventory name
-parent_domain_dc_ansible_inventory_key: "dc_haas" # ansible inventory name
+plbr_trust_domain_dc_inventory_key : "" # ansible inventory name
+plbr_parent_domain_dc_inventory_key: "dc_haas" # ansible inventory name
 
 

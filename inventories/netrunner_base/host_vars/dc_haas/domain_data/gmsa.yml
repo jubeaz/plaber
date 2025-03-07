@@ -1,4 +1,4 @@
-domain_gmsa : {
+plbr_domain_gmsa : {
 #  "drafter": {
 #    "gMSA_Name" : "drafter",
 #    "gMSA_FQDN" : "drafter.haas.local",

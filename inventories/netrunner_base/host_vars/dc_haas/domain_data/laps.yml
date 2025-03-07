@@ -1,8 +1,8 @@
-laps_path:  {
+plbr_domain_laps_path:  {
 #    "BO_workstations" : { "name": "Workstations",   "path" : "OU=Black Ops,OU=HQ,DC=haas,DC=local"},
 #    "GO_workstations" : { "name": "Workstations",   "path" : "OU=Grey Ops,OU=HQ,DC=haas,DC=local"},
 #    "WO_workstations" : { "name": "Workstations",   "path" : "OU=White Ops,OU=HQ,DC=haas,DC=local"},
     "C_workstations"  : { "name": "Workstations",   "path" : "OU=IT,OU=HQ,DC=haas,DC=local"}
 }
 
-laps_readers: ["L_LAPS_READER"]
+plbr_laps_readers: ["L_LAPS_READER"]

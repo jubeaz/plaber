@@ -22,7 +22,7 @@
 #    - name: Add proxy to psrp connexion
 #      ansible.builtin.set_fact:
 #        ansible_psrp_proxy: socks5h://localhost:1234
-#      with_items: "{{ groups['domain'] }}"  
+#      with_items: "{{ groups['domain'] }}"
 #      when: not hostvars['fw'].disable_nat
 
 
@@ -30,11 +30,10 @@
   hosts: domain
   tags: mandatory
   max_fail_percentage: 0
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: Add proxy to psrp connexion
       ansible.builtin.set_fact:
         ansible_psrp_proxy: socks5h://localhost:1234
-      with_items: "{{ groups['domain'] }}"  
+      with_items: "{{ groups['domain'] }}"
       when: not hostvars['fw'].disable_nat
-

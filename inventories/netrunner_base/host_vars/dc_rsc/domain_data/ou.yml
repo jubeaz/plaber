@@ -1,4 +1,4 @@
-domain_ous: {
+plbr_domain_ous: {
     "Asa"           : { "name": "Asa",              "path" : "DC=research,DC=haas,DC=local"},
 #    "Black Ops"       : { "name": "Black Ops",      "path" : "OU=Asa,DC=research,DC=haas,DC=local"},
 #    "BO_servers"      : { "name": "Servers",        "path" : "OU=Black Ops,OU=Asa,DC=research,DC=haas,DC=local"},

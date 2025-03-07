@@ -1,3 +1,3 @@
-domain_ous: {
+plbr_domain_ous: {
 #    "C_admins"        : { "name": "Admins",         "path" : "OU=IT,OU=HQ,DC=haas,DC=local"}
 }
