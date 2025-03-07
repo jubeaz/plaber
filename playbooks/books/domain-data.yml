@@ -1,4 +1,4 @@
----
+#---
 #- name: DOMAIN PASSWORD POLICY
 #  hosts: dc
 #  max_fail_percentage: 0
@@ -34,14 +34,14 @@
 #    wd_cfg_gmsa_domain_password: "{{ plbr_domain_password }}"
 #    wd_cfg_gmsa_domain_name: "{{ plbr_domain_name }}"
 #    wd_cfg_gmsa_gmsas: "{{ plbr_domain_gmsa }}"
-
-# - name: debug add foreign
-#   hosts: dc
-#   tasks:
-#     - name: deb
-#       debug:
-#         msg: "domain_data_add_foreign: {{ ('trust' in groups and groups['trust'] | length > 0) or ('child_dc' in groups and groups['child_dc'] | length > 0) }}"
-
+#
+## - name: debug add foreign
+##   hosts: dc
+##   tasks:
+##     - name: deb
+##       debug:
+##         msg: "domain_data_add_foreign: {{ ('trust' in groups and groups['trust'] | length > 0) or ('child_dc' in groups and groups['child_dc'] | length > 0) }}"
+#
 #- name: DOMAIN ADD GROUP MEMBERS
 #  hosts: dc
 #  max_fail_percentage: 0
@@ -68,91 +68,116 @@
 #    wd_cfg_group_groups: "{{ plbr_domain_builtin_groups }}"
 #    wd_cfg_group_add_foreign: "{{ ('trust' in groups and groups['trust'] | length > 0) or ('child_dc' in groups and groups['child_dc'] | length > 0) }}"
 #
-- name: DCS AD DATA Add delegates on objects
-  hosts: dc
-  max_fail_percentage: 0
-  gather_facts: false
-  roles:
-    - { role: 'windows_domain_gmsa_ad', tags: 'ad_domain_data'}
-    - { role: 'windows_domain_data_user', tags: 'ad_domain_data'}
-    - { role: 'windows_domain_data_computer', tags: 'ad_domain_data'}
-  vars:
-    ad_users: "{{ domain_service_accounts }}"
-    ad_computers: "{{ domain_computers }}"
-    ad_gmsas: "{{ domain_gmsa }}"
-    domain_data_action: "add_delegates"
+#- name: DOMAIN ADD DELEGATES ON OBJECTS
+#  hosts: dc
+#  max_fail_percentage: 0
+#  gather_facts: false
+#  roles:
+#    - { role: 'windows_domain_gmsa_cfg', tags: 'ad_domain_data'}
+#    - { role: 'windows_domain_cfg_user', tags: 'ad_domain_data'}
+#    - { role: 'windows_domain_cfg_computer', tags: 'ad_domain_data'}
+#  vars:
+#    wd_cfg_user_action: "add_delegates"
+#    wd_cfg_user_domain_password: "{{ plbr_domain_password }}"
+#    wd_cfg_user_domain_name: "{{ plbr_domain_name }}"
+#    wd_cfg_user_users: "{{ plbr_domain_service_accounts }}"
+#    wd_cfg_computer_action: "add_delegates"
+#    wd_cfg_computer_domain_password: "{{ plbr_domain_password }}"
+#    wd_cfg_computer_domain_name: "{{ plbr_domain_name }}"
+#    wd_cfg_computer_computers: "{{ plbr_domain_computers }}"
+#    wd_cfg_gmsa_action: "add_delegates"
+#    wd_cfg_gmsa_domain_password: "{{ plbr_domain_password }}"
+#    wd_cfg_gmsa_domain_name: "{{ plbr_domain_name }}"
+#    wd_cfg_gmsa_gmsas: "{{ plbr_domain_gmsa }}"
+#
+#
+#- name: DOMAIN ADD KERBEROS DELEGATION (SERVICE ACCOUNTS)
+#  hosts: dc
+#  max_fail_percentage: 0
+#  gather_facts: false
+#  roles:
+#    - { role: 'windows_domain_cfg_kerberos_delegation', tags: 'ad_domain_data'}
+#  vars:
+#    wd_cfg_krb_deleg_domain_name: "{{ plbr_domain_name }}"
+#    wd_cfg_krb_deleg_domain_password: "{{ plbr_domain_password }}"
+#    wd_cfg_krb_deleg_objects: "{{ plbr_domain_service_accounts }}"
+#
+#- name: DOMAIN ADD KERBEROS DELEGATION (GMSA)
+#  hosts: dc
+#  max_fail_percentage: 0
+#  gather_facts: false
+#  roles:
+#    - { role: 'windows_domain_cfg_kerberos_delegation', tags: 'ad_domain_data'}
+#  vars:
+#    wd_cfg_krb_deleg_domain_name: "{{ plbr_domain_name }}"
+#    wd_cfg_krb_deleg_domain_password: "{{ plbr_domain_password }}"
+#    wd_cfg_krb_deleg_objects: "{{ plbr_domain_gmsa }}"
+#
+#- name: DOMAIN ADD KERBEROS DELEGATION (COMPUTER)
+#  hosts: dc
+#  max_fail_percentage: 0
+#  gather_facts: false
+#  roles:
+#    - { role: 'windows_domain_cfg_kerberos_delegation', tags: 'ad_domain_data'}
+#  vars:
+#    wd_cfg_krb_deleg_domain_name: "{{ plbr_domain_name }}"
+#    wd_cfg_krb_deleg_domain_password: "{{ plbr_domain_password }}"
+#    wd_cfg_krb_deleg_objects: "{{ plbr_domain_computers }}"
+#
+#
+#- name: DOMAIN ADD UAC (GMSA)
+#  hosts: dc
+#  max_fail_percentage: 0
+#  gather_facts: false
+#  roles:
+#    - { role: 'windows_domain_cfg_account_control', tags: 'ad_domain_data'}
+#  vars:
+#    wd_cfg_uac_domain_name: "{{ plbr_domain_name }}"
+#    wd_cfg_uac_domain_password: "{{ plbr_domain_password }}"
+#    wd_cfg_uac_objects: "{{ plbr_domain_gmsa }}"
+#
+#- name: DOMAIN ADD UAC (USER)
+#  hosts: dc
+#  max_fail_percentage: 0
+#  gather_facts: false
+#  roles:
+#    - { role: 'windows_domain_cfg_account_control', tags: 'ad_domain_data'}
+#  vars:
+#    wd_cfg_uac_domain_name: "{{ plbr_domain_name }}"
+#    wd_cfg_uac_domain_password: "{{ plbr_domain_password }}"
+#    wd_cfg_uac_objects: "{{ plbr_domain_users }}"
+#
+#- name: DOMAIN ADD UAC (COMPUTER)
+#  hosts: dc
+#  max_fail_percentage: 0
+#  gather_facts: false
+#  roles:
+#    - { role: 'windows_domain_cfg_account_control', tags: 'ad_domain_data'}
+#  vars:
+#    wd_cfg_uac_domain_name: "{{ plbr_domain_name }}"
+#    wd_cfg_uac_domain_password: "{{ plbr_domain_password }}"
+#    wd_cfg_uac_objects: "{{ plbr_domain_computers }}"
 
-- name: DCS AD DATA Add kerberos delegations on service accounts
-  hosts: dc
-  max_fail_percentage: 0
-  gather_facts: false
-  roles:
-    - { role: 'windows_domain_kerberos_delegation', tags: 'ad_domain_data'}
-  vars:
-    objects: "{{ domain_service_accounts }}"
-
-- name: DCS AD DATA Add kerberos delegations on gmsa accounts
-  hosts: dc
-  max_fail_percentage: 0
-  gather_facts: false
-  roles:
-    - { role: 'windows_domain_kerberos_delegation', tags: 'ad_domain_data'}
-  vars:
-    objects: "{{ domain_gmsa }}"
-
-- name: DCS AD DATA Add kerberos delegations on computer accounts
-  hosts: dc
-  max_fail_percentage: 0
-  gather_facts: false
-  roles:
-    - { role: 'windows_domain_kerberos_delegation', tags: 'ad_domain_data'}
-  vars:
-    objects: "{{ domain_computers }}"
-
-- name: DCS AD DATA Set UAC on gmsa accounts
-  hosts: dc
-  max_fail_percentage: 0
-  gather_facts: false
-  roles:
-    - { role: 'windows_domain_ad_account_control', tags: 'ad_domain_data'}
-  vars:
-    objects: "{{ domain_gmsa }}"
-
-- name: DCS AD DATA Set UAC on user accounts
-  hosts: dc
-  max_fail_percentage: 0
-  gather_facts: false
-  roles:
-    - { role: 'windows_domain_ad_account_control', tags: 'ad_domain_data'}
-  vars:
-    objects: "{{ domain_users }}"
-
-- name: DCS AD DATA Set UAC on computer accounts
-  hosts: dc
-  max_fail_percentage: 0
-  gather_facts: false
-  roles:
-    - { role: 'windows_domain_ad_account_control', tags: 'ad_domain_data'}
-  vars:
-    objects: "{{ domain_computers }}"
-
-- name: "DCS AD DATA GPOs Management"
+- name: DOMAIN ADD GPO
   hosts: dc
   max_fail_percentage: 0
   gather_facts: false
   tasks:
     - name: Install GPO
       ansible.builtin.include_role:
-        name: "windows_domain_gpo"
+        name: "windows_domain_cfg_gpo"
       vars:
-        windows_domain_gpo_ous: "{{ g.value.gpo_ous }}"
-        windows_domain_gpo_name: "{{ g.key }}"
-        windows_domain_gpo_desc: "{{ g.value.gpo_desc }}"
-        windows_domain_gpo_registry: "{{ g.value.gpo_registry }}"
-        windows_domain_gpo_domain: "{{ g.value.gpo_domain }}"
-        windows_domain_gpo_domain_enforced: "{{ g.value.gpo_domain_enforced }}"
-        windows_domain_gpo_domain_enabled: "{{ g.value.gpo_domain_enabled }}"
-        windows_domain_gpo_domain_state: "{{ g.value.gpo_domain_state }}"
-      loop: "{{ gpo | dict2items }}"
+        windows_domain_cfg_gpo_domain_ldap_name: "{{ plbr_domain_ldap_name }}"
+        windows_domain_cfg_gpo_domain_name: "{{ plbr_domain_name }}"
+        windows_domain_cfg_gpo_domain_password: "{{ plbr_domain_password }}"
+        windows_domain_cfg_gpo_ous: "{{ g.value.gpo_ous }}"
+        windows_domain_cfg_gpo_name: "{{ g.key }}"
+        windows_domain_cfg_gpo_desc: "{{ g.value.gpo_desc }}"
+        windows_domain_cfg_gpo_registry: "{{ g.value.gpo_registry }}"
+        windows_domain_cfg_gpo_domain: "{{ g.value.gpo_domain }}"
+        windows_domain_cfg_gpo_domain_enforced: "{{ g.value.gpo_domain_enforced }}"
+        windows_domain_cfg_gpo_domain_enabled: "{{ g.value.gpo_domain_enabled }}"
+        windows_domain_cfg_gpo_domain_state: "{{ g.value.gpo_domain_state }}"
+      loop: "{{ plbr_gpo | dict2items }}"
       loop_control:
         loop_var: g

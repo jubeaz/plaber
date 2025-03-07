@@ -340,6 +340,8 @@ Edit `/usr/bin/VBox`
 
 ## Ansible
 
+### Defender and tamper protection
+Tamper protection block disable real time protection
 
 ### `The trust relationship between this workstation and the primary domain failed.`
 

@@ -1,0 +1,56 @@
+---
+- name: MSSQL SET FACTS
+  hosts: mssql
+  max_fail_percentage: 0
+  gather_facts: false
+  tasks:
+    - name: Register service account login password
+      ansible.builtin.set_fact:
+        plbr_sql_svcaccount_name: "{{ plbr_mssql_svcaccount_local | default('') }}"
+        plbr_sql_svcaccount_password: ""
+        cacheable: true
+
+    - name: Register become account for System
+      ansible.builtin.set_fact:
+        plbr_config_sql_svcaccount: "NT AUTHORITY\\SYSTEM"
+        cacheable: true
+      when: plbr_mssql_svcaccount_method == 'local' and plbr_sql_svcaccount_name == 'System'
+
+    - name: Register become account for LocalService
+      ansible.builtin.set_fact:
+        plbr_config_sql_svcaccount: "NT AUTHORITY\\LOCAL SERVICE"
+        cacheable: true
+      when: plbr_mssql_svcaccount_method == 'local' and plbr_sql_svcaccount_name == 'LocalService'
+
+    - name: Register become account for NetworkService
+      ansible.builtin.set_fact:
+        plbr_config_sql_svcaccount: "NT AUTHORITY\\NETWORK SERVICE"
+        cacheable: true
+      when: plbr_mssql_svcaccount_method == 'local' and plbr_sql_svcaccount_name == 'NetworkService'
+
+    - name: Register service account login as domain service
+      ansible.builtin.set_fact:
+        plbr_sql_svcaccount_name: "{{ plbr_domain_name }}\\{{ plbr_mssql_svcaccount_key }}"
+        plbr_config_sql_svcaccount: "{{ plbr_domain_name }}\\{{ plbr_mssql_svcaccount_key }}"
+        cacheable: true
+      when: plbr_mssql_svcaccount_method == 'domain'
+
+    - name: Register service account login as gmsa
+      ansible.builtin.set_fact:
+        plbr_sql_svcaccount_name: "{{ plbr_domain_name }}\\{{ plbr_mssql_svcaccount_key }}$"
+        plbr_config_sql_svcaccount: "{{ plbr_domain_name }}\\{{ plbr_mssql_svcaccount_key }}$"
+        cacheable: true
+      when: plbr_mssql_svcaccount_method == 'gmsa'
+
+    - name: Register service account password for domain service
+      ansible.builtin.set_fact:
+        plbr_sql_svcaccount_password: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_users[plbr_mssql_svcaccount_key].password }}"
+        cacheable: true
+      when: plbr_mssql_svcaccount_method == 'domain'
+
+    - name: Print some vars
+      ansible.builtin.debug:
+        msg:
+          - "plbr_sql_svc_account: {{ plbr_sql_svcaccount_name }}"
+          - "plbr_config_sql_svc_account: {{ plbr_config_sql_svcaccount }}"
+          - "plbr_sql_svc_password: {{ plbr_sql_svcaccount_password }}"

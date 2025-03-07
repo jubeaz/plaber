@@ -1,92 +1,72 @@
 ---
-- name: MSSQL set facts
-  hosts: mssql
-  max_fail_percentage: 0
-  tasks:
-    - name: Set service account login password
-      ansible.builtin.set_fact:
-        sql_svcaccount_name: "{{ mssql_svcaccount_local | default('') }}"
-        sql_svcaccount_password: ""
-
-    - name: Set service account login as domain service
-      ansible.builtin.set_fact:
-        sql_svcaccount_name: "{{ domain_name }}\\{{ mssql_svcaccount_key }}"
-      when: mssql_svcaccount_method == 'domain'
-
-    - name: Set service account login as gmsa
-      ansible.builtin.set_fact:
-        sql_svcaccount_name: "{{ domain_name }}\\{{ mssql_svcaccount_key }}$"
-      when: mssql_svcaccount_method == 'gmsa'
-
-    - name: Set service account password for domain service
-      ansible.builtin.set_fact:
-        sql_svcaccount_password: "{{ hostvars[domain_dc_ansible_inventory_key].domain_users[mssql_svcaccount_key].password }}"
-      when: mssql_svcaccount_method == 'domain'
-
-
 - name: "CONFIG MSSQL EXPRESS (mssql_accounts_domain)"
   hosts: mssql
   max_fail_percentage: 0
+  gather_facts: false
   roles:
-    - { role: 'windows_domain_mssql_accounts_domain', tags: 'mssql'}
+    - { role: 'windows_domain_mssql_cfg_accounts_domain', tags: 'mssql'}
   vars:
-    sql_version: "{{ mssql_version }}"
-    isgmsa: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
-    sql_svc_account: "{{ sql_svcaccount_name }}"
-    sql_svc_password: "{{ sql_svcaccount_password }}"
-    sa_password: "{{ mssql_sa_password }}"
-    sql_domain_accounts: "{{ mssql_domain_accounts | default([]) }}"
+    sql_version: "{{ plbr_mssql_version }}"
+    isgmsa: "{{ true if plbr_mssql_svcaccount_method == 'gmsa' else false }}"
+    sql_svc_account: "{{ plbr_sql_svcaccount_name }}"
+    sql_svc_password: "{{ plbr_sql_svcaccount_password }}"
+    sa_password: "{{ plbr_mssql_sa_password }}"
+    sql_domain_accounts: "{{ plbr_mssql_domain_accounts | default([]) }}"
 
 
 - name: "CONFIG MSSQL EXPRESS (mssql_accounts_local)"
   hosts: mssql
   max_fail_percentage: 0
+  gather_facts: false
   roles:
-    - { role: 'windows_domain_mssql_accounts_local', tags: 'mssql'}
+    - { role: 'windows_domain_mssql_cfg_accounts_local', tags: 'mssql'}
   vars:
-    sql_version: "{{ mssql_version }}"
-    isgmsa: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
-    sql_svc_account: "{{ sql_svcaccount_name }}"
-    sql_svc_password: "{{ sql_svcaccount_password }}"
-    sa_password: "{{ mssql_sa_password }}"
-    sql_local_accounts: "{{ mssql_local_accounts | default({}) }}"
+    sql_version: "{{ plbr_mssql_version }}"
+    isgmsa: "{{ true if plbr_mssql_svcaccount_method == 'gmsa' else false }}"
+    sql_svc_account: "{{ plbr_sql_svcaccount_name }}"
+    sql_svc_password: "{{ plbr_sql_svcaccount_password }}"
+    sa_password: "{{ plbr_mssql_sa_password }}"
+    sql_local_accounts: "{{ plbr_mssql_local_ccounts | default({}) }}"
 
 - name: "CONFIG MSSQL EXPRESS (mssql_admin)"
   hosts: mssql
   max_fail_percentage: 0
+  gather_facts: false
   roles:
-    - { role: 'windows_domain_mssql_admin', tags: 'mssql'}
+    - { role: 'windows_domain_mssql_cfg_admin', tags: 'mssql'}
   vars:
-    sql_version: "{{ mssql_version }}"
-    isgmsa: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
-    sql_svc_account: "{{ sql_svcaccount_name }}"
-    sql_svc_password: "{{ sql_svcaccount_password }}"
-    sa_password: "{{ mssql_sa_password }}"
-    sql_sysadmins: "{{ mssql_sysadmins | default([]) }}"
+    sql_version: "{{ plbr_mssql_version }}"
+    isgmsa: "{{ true if plbr_mssql_svcaccount_method == 'gmsa' else false }}"
+    sql_svc_account: "{{ plbr_sql_svcaccount_name }}"
+    sql_svc_password: "{{ plbr_sql_svcaccount_password }}"
+    sa_password: "{{ plbr_mssql_sa_password }}"
+    sql_sysadmins: "{{ plbr_mssql_sysadmins | default([]) }}"
 
 - name: "CONFIG MSSQL EXPRESS (mssql_impersonate)"
   hosts: mssql
   max_fail_percentage: 0
+  gather_facts: false
   roles:
-    - { role: 'windows_domain_mssql_impersonate', tags: 'mssql'}
+    - { role: 'windows_domain_mssql_cfg_impersonate', tags: 'mssql'}
   vars:
-    sql_version: "{{ mssql_version }}"
-    isgmsa: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
-    sql_svc_account: "{{ sql_svcaccount_name }}"
-    sql_svc_password: "{{ sql_svcaccount_password }}"
-    sa_password: "{{ mssql_sa_password }}"
+    sql_version: "{{ plbr_mssql_version }}"
+    isgmsa: "{{ true if plbr_mssql_svcaccount_method == 'gmsa' else false }}"
+    sql_svc_account: "{{ plbr_sql_svcaccount_name }}"
+    sql_svc_password: "{{ plbr_sql_svcaccount_password }}"
+    sa_password: "{{ plbr_mssql_sa_password }}"
     executeasuser: "{{ mssql_executeasuser | default({}) }}"
-    executeaslogin: "{{ mssql_executeaslogin | default({}) }}"
+    executeaslogin: "{{ plbr_mssql_executeaslogin | default({}) }}"
 
 - name: "CONFIG MSSQL EXPRESS (mssql_link)"
   hosts: mssql
   max_fail_percentage: 0
+  gather_facts: false
   roles:
-    - { role: 'windows_domain_mssql_link', tags: 'mssql, mssql_link'}
+    - { role: 'windows_domain_mssql_cfg_link', tags: 'mssql, mssql_link'}
   vars:
-    sql_version: "{{ mssql_version }}"
-    isgmsa: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
-    sql_svc_account: "{{ sql_svcaccount_name }}"
-    sql_svc_password: "{{ sql_svcaccount_password }}"
-    sa_password: "{{ mssql_sa_password }}"
-    linked_servers: "{{ mssql_linked_servers | default({}) }}"
+    sql_version: "{{ plbr_mssql_version }}"
+    isgmsa: "{{ true if plbr_mssql_svcaccount_method == 'gmsa' else false }}"
+    sql_svc_account: "{{ plbr_sql_svcaccount_name }}"
+    sql_svc_password: "{{ plbr_sql_svcaccount_password }}"
+    sa_password: "{{ plbr_mssql_sa_password }}"
+    linked_servers: "{{ plbr_mssql_linked_servers | default({}) }}"

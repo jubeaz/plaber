@@ -10,5 +10,5 @@ plbr_acls_adcs_templates: {
 
 plbr_acls_adcs_authority: {
   # 'ManageCA', 'ManageCertificates', 'Read', 'Enroll'
-  "ManageCertificates_L_CERT_MGR_internal_ca" : {"for": "L_CERT_MGR", "to": "{{ca_common_name}}", "right": "ManageCertificates", "inheritance": "None"}
+  "ManageCertificates_L_CERT_MGR_internal_ca" : {"for": "L_CERT_MGR", "to": "{{plbr_ca_common_name}}", "right": "ManageCertificates", "inheritance": "None"}
 }

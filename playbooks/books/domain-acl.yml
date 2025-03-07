@@ -1,25 +1,36 @@
 ---
-- name: AD ACL
+- name: DOMAIN ADD ACL
   hosts: dc
   max_fail_percentage: 0
+  gather_facts: false
   roles:
-    - { role: 'windows_domain_acl', tags: 'acl'}
+    - { role: 'windows_domain_cfg_acl', tags: 'acl'}
   vars:
-    ad_acls: "{{ acls | default({}) }}"
+    wd_cfg_acl_domain_name: "{{ plbr_domain_name }}"
+    wd_cfg_acl_domain_password: "{{ plbr_domain_password }}"
+    wd_cfg_acl_acls: "{{ plbr_acls | default({}) }}"
 
-- name: ADCS ACL
+- name: DOMAIN ADD ADCS ACL
   hosts: adcs
   max_fail_percentage: 0
+  gather_facts: false
   roles:
-    - { role: 'windows_domain_adcs_acl_templates', tags: 'adcs_templates', when: acls_adcs_templates   | length >0}
-    - { role: 'windows_domain_adcs_acl_authority', tags: 'adcs_templates', when: acls_adcs_authority   | length >0}
+    - { role: 'windows_domain_adcs_acl_templates', tags: 'adcs_templates', when: plbr_acls_adcs_templates   | length >0}
+    - { role: 'windows_domain_adcs_acl_authority', tags: 'adcs_templates', when: plbr_acls_adcs_authority   | length >0}
   vars:
-    templates_acls: "{{ acls_adcs_templates }}"
-    authority_acls: "{{ acls_adcs_authority }}"
-    authority_ca_name: "{{ ca_common_name }}"
+    wd_adcs_acl_ca_domain_name: "{{ plbr_domain_name }}"
+    wd_adcs_acl_ca_domain_password: "{{ plbr_domain_password }}"
+    wd_adcs_acl_ca_acls: "{{ plbr_acls_adcs_authority }}"
+    wd_adcs_acl_ca_name: "{{ plbr_ca_common_name }}"
+    wd_adcs_acl_tmplt_domain_name: "{{ plbr_domain_name }}"
+    wd_adcs_acl_tmplt_domain_password: "{{ plbr_domain_password }}"
+    wd_adcs_acl_tmplt_acls: "{{ plbr_acls_adcs_templates }}"
 
-- name: SET LAPS USERS AND GROUPS PERMISSION
+- name: DOMAIN SET LAPS USERS AND GROUPS PERMISSION
   hosts: dc
   max_fail_percentage: 0
+  gather_facts: false
   roles:
-    - { role: 'windows_domain_laps_permissions', tags: 'laps-permissions', when: laps_path  | length > 0}
+    - { role: 'windows_domain_laps_acl', tags: 'laps-permissions', when: plbr_domain_laps_path  | length > 0}
+  vars:
+    wd_laps_acl_laps_readers: "{{ plbr_laps_readers }}"

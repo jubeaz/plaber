@@ -2,5 +2,8 @@
 - name: "INSTALL WEBDAV"
   hosts: domain_server, domain_workstation
   max_fail_percentage: 0
+  gather_facts: false
   roles:
-    - { role: 'windows_domain_webdav', tags: 'webdav', when: enable_webdav}
+    - { role: 'windows_cfg_webdav', tags: 'webdav', when: plbr_enable_webdav}
+  vars:
+    w_cfg_webdav_is_core_install: "{{ plbr_is_core_install }}"

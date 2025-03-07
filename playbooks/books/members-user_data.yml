@@ -1,22 +1,25 @@
 ---
 - name: "INSTALL USER DATA ON MEMBERS"
   hosts: domain_server, domain_workstation
+  gather_facts: false
   tasks:
     - name: Install softwares
       ansible.builtin.include_role:
-        name: "windows_domain_install_softwares"
-      when: softwares | default([]) | length > 0
+        name: "windows_cfg_software_install"
+      when: plbr_softwares | default([]) | length > 0
+      vars:
+        windows_cfg_software_install_softwares: "{{ plbr_softwares }}"
 
     - name: Clone repos
       ansible.builtin.include_role:
-        name: "windows_domain_clone_repos"
+        name: "windows_domain_git_clone"
       vars:
-        windows_domain_clone_repos_repositories: "{{ u.value }}"
-        windows_domain_clone_repos_user: "{{ u.key }}"
-        windows_domain_clone_repos_net_bios: "{{ domain_netbios_name }}"
-        windows_domain_clone_repos_password: "{{ hostvars[domain_dc_ansible_inventory_key].domain_users_regular[u.key].password }}"
-      loop: "{{ user_repos | dict2items }}"
-      when: user_repos is defined
+        windows_domain_git_clone_repositories: "{{ u.value }}"
+        windows_domain_git_clone_user: "{{ u.key }}"
+        windows_domain_git_clone_net_bios: "{{ plbr_domain_netbios_name }}"
+        windows_domain_git_clone_password: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_users_regular[u.key].password }}"
+      loop: "{{ plbr_user_repos | dict2items }}"
+      when: plbr_user_repos is defined
       loop_control:
         loop_var: u
 
@@ -30,5 +33,5 @@
       vars:
         windows_domain_download_files_downloads: "{{ u.value }}"
         windows_domain_download_files_user: "{{ u.key }}"
-        windows_domain_download_files_net_bios: "{{ domain_netbios_name }}"
-        windows_domain_download_files_password: "{{ hostvars[domain_dc_ansible_inventory_key].domain_users_regular[u.key].password }}"
+        windows_domain_download_files_net_bios: "{{ plbr_domain_netbios_name }}"
+        windows_domain_download_files_password: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_users_regular[u.key].password }}"

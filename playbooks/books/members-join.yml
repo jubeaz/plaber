@@ -18,7 +18,7 @@
     wd_join_srv_domain_name: "{{ plbr_domain_name }}"
     wd_join_srv_hostname: "{{ plbr_hostname }}"
     wd_join_srv_domain_password: "{{ plbr_domain_password }}"
-    wd_join_srv_path: "{{ plbr_path }}"
+    wd_join_srv_path: "{{ plbr_domain_path }}"
     wd_mbr_features_features: "{{ plbr_extra_features }}"
 
 - name: JOIN WORKSTATIONS TO DOMAIN
@@ -40,5 +40,5 @@
     wd_join_wks_domain_name: "{{ plbr_domain_name }}"
     wd_join_wks_hostname: "{{ plbr_hostname }}"
     wd_join_wks_domain_password: "{{ plbr_domain_password }}"
-    wd_join_wks_path: "{{ plbr_path }}"
+    wd_join_wks_path: "{{ plbr_domain_path }}"
     wd_mbr_capab_capabilities: "{{ plbr_extra_capabilities }}"

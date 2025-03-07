@@ -1,74 +1,38 @@
 ---
-- name: MSSQL set facts
-  hosts: mssql
-  max_fail_percentage: 0
-  tasks:
-    - name: Set service account login password
-      ansible.builtin.set_fact:
-        sql_svcaccount_name: "{{ mssql_svcaccount_local | default('') }}"
-        sql_svcaccount_password: ""
-    - name: Set become account for System
-      ansible.builtin.set_fact:
-        config_sql_svcaccount: "NT AUTHORITY\\SYSTEM"
-      when: mssql_svcaccount_method == 'local' and sql_svcaccount_name == 'System'
-    - name: Set become account for LocalService
-      ansible.builtin.set_fact:
-        config_sql_svcaccount: "NT AUTHORITY\\LOCAL SERVICE"
-      when: mssql_svcaccount_method == 'local' and sql_svcaccount_name == 'LocalService'
-
-    - name: Set become account for NetworkService
-      ansible.builtin.set_fact:
-        config_sql_svcaccount: "NT AUTHORITY\\NETWORK SERVICE"
-      when: mssql_svcaccount_method == 'local' and sql_svcaccount_name == 'NetworkService'
-
-    - name: Set service account login as domain service
-      ansible.builtin.set_fact:
-        sql_svcaccount_name: "{{ domain_name }}\\{{ mssql_svcaccount_key }}"
-        config_sql_svcaccount: "{{ domain_name }}\\{{ mssql_svcaccount_key }}"
-      when: mssql_svcaccount_method == 'domain'
-
-    - name: Set service account login as gmsa
-      ansible.builtin.set_fact:
-        sql_svcaccount_name: "{{ domain_name }}\\{{ mssql_svcaccount_key }}$"
-        config_sql_svcaccount: "{{ domain_name }}\\{{ mssql_svcaccount_key }}$"
-      when: mssql_svcaccount_method == 'gmsa'
-
-    - name: Set service account password for domain service
-      ansible.builtin.set_fact:
-        sql_svcaccount_password: "{{ hostvars[domain_dc_ansible_inventory_key].domain_users[mssql_svcaccount_key].password }}"
-      when: mssql_svcaccount_method == 'domain'
-
-    - name: Print some vars
-      ansible.builtin.debug:
-        msg:
-          - "sql_svc_account: {{ sql_svcaccount_name }}"
-          - "config_sql_svc_account: {{ config_sql_svcaccount }}"
-          - "sql_svc_password: {{ sql_svcaccount_password }}"
 
 
 - name: "INSTALL MSSQL EXPRESS"
   hosts: mssql
   max_fail_percentage: 0
+  gather_facts: false
   roles:
-    - { role: 'windows_domain_mssql_install', tags: 'mssql'}
+    - { role: 'windows_domain_mssql_build_mssql', tags: 'mssql'}
   vars:
-    isgmsa: "{{ true if mssql_svcaccount_method == 'gmsa' else false }}"
-    sql_instance_name: "{{ mssql_instance_name }}"
-    sql_version: "{{ mssql_version }}"
-    sql_svc_account: "{{ sql_svcaccount_name }}"
-    config_sql_svc_account: "{{ config_sql_svcaccount }}"
-    sql_svc_password: "{{ sql_svcaccount_password }}"
-    sql_admin: "{{ sql_svcaccount_name }}"
-    sa_password: "{{ mssql_sa_password }}"
+    isgmsa: "{{ true if plbr_mssql_svcaccount_method == 'gmsa' else false }}"
+    sql_instance_name: "{{ plbr_mssql_instance_name }}"
+    sql_version: "{{ plbr_mssql_version }}"
+    sql_svc_account: "{{ plbr_sql_svcaccount_name }}"
+    config_sql_svc_account: "{{ plbr_config_sql_svcaccount }}"
+    sql_svc_password: "{{ plbr_sql_svcaccount_password }}"
+    sql_admin: "{{ plbr_sql_svcaccount_name }}"
+    sa_password: "{{ plbr_mssql_sa_password }}"
+    domain_name: "{{ plbr_domain_name }}"
+    domain_password: "{{ plbr_domain_password }}"
+    mssql_svcaccount_method: "{{ plbr_mssql_svcaccount_method }}"
 
-- name: "Install SQL Server reporting"
+- name: "INSTALL MSSQL  SERVER REPORTING"
   hosts: mssql_reporting
   max_fail_percentage: 0
+  gather_facts: false
   roles:
-    - { role: 'windows_domain_mssql_reporting', tags: 'mssql_reporting'}
+    - { role: 'windows_domain_mssql_build_reporting', tags: 'mssql_reporting'}
+  vars:
+    wd_mssql_build_reporting_domain_name: "{{ plbr_domain_name }}"
+    wd_mssql_build_reporting_domain_password: "{{ plbr_domain_password }}"
 
 
 - name: "INSTALL SQL SERVER MANAGEMENT STUDIO"
   hosts: mssql_ssms
+  gather_facts: false
   roles:
-    - { role: 'windows_domain_mssql_ssms', tags: 'mssql_ssms'}
+    - { role: 'windows_domain_mssql_build_ssms', tags: 'mssql_ssms'}

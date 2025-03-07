@@ -1,18 +1,23 @@
 ---
 - name: "Add local data"
-  hosts: domain
+  hosts: domain_server, domain_workstation
+  gather_facts: false
   max_fail_percentage: 0
   roles:
-    - { role: "windows_settings_groups", tags: 'adjust_rights'}
-    - { role: "windows_settings_users", tags: 'adjust_rights'}
-    - { role: "windows_settings_user_rights", tags: 'adjust_rights'}
+    - { role: "windows_cfg_group", tags: 'adjust_rights'}
+    - { role: "windows_cfg_user", tags: 'adjust_rights'}
+    - { role: "windows_cfg_user_right", tags: 'adjust_rights'}
   vars:
-    group_action: "create"
+    w_cfg_group_action: "create"
+    w_cfg_group_groups: "{{ plbr_local_groups }}"
+    w_cfg_user_users: "{{ plbr_local_users }}"
 
 - name: "Add local groups members"
-  hosts: domain
+  hosts: domain_server, domain_workstation
+  gather_facts: false
   max_fail_percentage: 0
   roles:
-    - { role: "windows_settings_groups", tags: 'adjust_rights'}
+    - { role: "windows_cfg_group", tags: 'adjust_rights'}
   vars:
-    group_action: "add_members"
+    w_cfg_group_action: "add_members"
+    w_cfg_group_groups: "{{ plbr_local_groups }}"

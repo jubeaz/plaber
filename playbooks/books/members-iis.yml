@@ -2,5 +2,8 @@
 - name: "INSTALL IIS"
   hosts: iis
   max_fail_percentage: 0
+  gather_facts: false
   roles:
-    - {role: 'windows_domain_iis', tags: 'iis'}
+    - {role: 'windows_domain_iis_build', tags: 'iis'}
+  vars:
+    wd_iis_build_is_core_install: "{{ plbr_is_core_install}}"

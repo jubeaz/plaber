@@ -18,7 +18,7 @@
         plbr_domain_password: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_password }}"
         plbr_domain_netbios_name: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_netbios_name }}"
         plbr_domain_gmsa: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_gmsa }}"
-        plbr_laps_path: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_laps_path }}"
-        plbr_path: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_real_computers[plbr_hostname].path }}"
+        plbr_domain_laps_path: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_laps_path }}"
+        plbr_domain_path: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_real_computers[plbr_hostname].path }}"
         cacheable: true
       when: inventory_hostname not in groups['dc']
