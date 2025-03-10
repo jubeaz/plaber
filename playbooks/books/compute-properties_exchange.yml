@@ -19,8 +19,11 @@
   tasks:
     - name: Register Exchange role facts on exchange servers
       ansible.builtin.set_fact:
+        xchg_hostname: "{{ plbr_hostname }}"
+        xchg_domain_ip: "{{ plbr_domain_ip }}"
         xchg_domain_name: "{{ plbr_domain_name }}"
         xchg_domain_password: "{{ plbr_domain_password }}"
         xchg_multi_domain_forest: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_multi_domain_forest }}"
+        xchg_domain_dc_name: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_dc_name }}"
         xchg_corp_name: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_exchange_corp_name }}"
         cacheable: true
