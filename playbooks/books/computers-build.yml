@@ -8,31 +8,40 @@
     - name: Base setup
       ansible.builtin.include_role:
         name: "windows_cfg_base"
-      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != plbr_hostname
+      when: ansible_hostname != plbr_hostname
     - name: Keyboard setup
       ansible.builtin.include_role:
         name: "windows_cfg_keyboard"
-      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != plbr_hostname and plbr_is_server_os
+      when: ansible_hostname != plbr_hostname and plbr_is_server_os
     - name: Update Windows
       ansible.builtin.include_role:
         name: "windows_cfg_updates"
-      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != plbr_hostname and plbr_update_initial
+      when: ansible_hostname != plbr_hostname and plbr_update_initial
     - name: Update planning setup
       ansible.builtin.include_role:
         name: "windows_cfg_update_planning"
-      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != plbr_hostname and plbr_update_continuous
+      when: ansible_hostname != plbr_hostname and plbr_update_continuous
     - name: Prevent update
       ansible.builtin.include_role:
         name: "windows_cfg_updates_stop"
-      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != plbr_hostname and not plbr_update_continuous
+      when: ansible_hostname != plbr_hostname and not plbr_update_continuous
     - name: Admin password setup
       ansible.builtin.include_role:
         name: "windows_cfg_admin_password"
-      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != plbr_hostname
+      when: ansible_hostname != plbr_hostname
     - name: Hostname setup
       ansible.builtin.include_role:
         name: "windows_cfg_hostname"
-      when: hostvars[inventory_hostname]["ansible_facts"]["hostname"] != plbr_hostname
+      when: ansible_hostname != plbr_hostname
+    - name: Hostname setup
+      ansible.builtin.include_role:
+        name: "windows_cfg_hostname"
+      when: ansible_hostname != plbr_hostname
+    - name: Register ansible_hostname for cache
+      ansible.builtin.set_fact:
+        ansible_hostname: "{{ plbr_hostname }}"
+        cacheable: true
+      when: ansible_hostname != plbr_hostname
   vars:
     w_cfg_kbd_layout: "fr-FR"
     w_cfg_base_winrm_allow_ip: "{{ []  + [plbr_ansible_controller_ip] }}"

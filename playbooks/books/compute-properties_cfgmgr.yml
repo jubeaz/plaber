@@ -1,0 +1,48 @@
+---
+- name: CONFIGURATION MANAGER SET FACTS (SERVER)
+  hosts: cfgmgr
+  max_fail_percentage: 0
+  gather_facts: false
+  tasks:
+    - name: Register CM roles facts
+      ansible.builtin.set_fact:
+        cfgmgr_installation_media_url: "{{ plbr_cfgmgr_installation_media_url }}"
+        cfgmgr_installation_media_name: "{{ plbr_cfgmgr_installation_media_name }}"
+        cfgmgr_installation_cpp_redist: "{{ plbr_cfgmgr_installation_cpp_redist }}"
+        cfgmgr_installation_sqlserver_odbcdriver: "{{ plbr_cfgmgr_installation_sqlserver_odbcdriver }}"
+        cfgmgr_mssql_server: "{{ plbr_cfgmgr_mssql_server }}"
+        cfgmgr_domain_name: "{{ plbr_domain_name }}"
+        cfgmgr_domain_password: "{{ plbr_domain_password }}"
+        cfgmgr_server_cn: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_cfgmgr_server }}"
+        cfgmgr_server_fqdn: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_cfgmgr_server }}.{{ plbr_domain_name }}"
+        cfgmgr_site_code: "{{ plbr_cfgmgr_site_code }}"
+        cfgmgr_network_access_account: "{{ plbr_cfgmgr_network_access_account }}"
+        cfgmgr_push_account: "{{ plbr_cfgmgr_push_account }}"
+        cfgmgr_push_account_pass: "{{hostvars[plbr_domain_dc_inventory_key].plbr_domain_users_regular[plbr_cfgmgr_push_account].password}}"
+        cfgmgr_naa_user: "{{ plbr_cfgmgr_network_access_account }}"
+        cfgmgr_naa_user_pass: "{{hostvars[plbr_domain_dc_inventory_key].plbr_domain_users_regular[plbr_cfgmgr_network_access_account].password}}"
+        cfgmgr_account_da: "{{ plbr_cfgmgr_account_da }}"
+        cfgmgr_account_da_pass: "{{hostvars[plbr_domain_dc_inventory_key].plbr_domain_users_regular[plbr_cfgmgr_account_da].password}}"
+        cfgmgr_clients: "{{ plbr_cfgmgr_clients }}"
+        cfgmgr_pxe_pass: "{{ plbr_cfgmgr_pxe_pass }}"
+        cfgmgr_pxe_location: "{{ plbr_cfgmgr_pxe_location }}"
+        cfgmgr_pxe_admin_pass: "{{ plbr_cfgmgr_pxe_admin_pass }}"
+        cfgmgr_domain_admins: "{{ plbr_cfgmgr_domain_admins }}"
+        cfgmgr_users: "{{ plbr_cfgmgr_users }}"
+        cfgmgr_discovery_group: "{{ plbr_cfgmgr_discovery_group }}"
+        cfgmgr_boundary_site_name: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_default_first_site_name }}"
+        cacheable: true
+
+- name: CONFIGURATION MANAGER SET FACTS (DC)
+  hosts: dc
+  max_fail_percentage: 0
+  gather_facts: false
+  tasks:
+    - name: Register CM roles facts
+      ansible.builtin.set_fact:
+        cfgmgr_domain_name: "{{ plbr_domain_name }}"
+        cfgmgr_domain_password: "{{ plbr_domain_password }}"
+        cfgmgr_server_cn: "{{ plbr_cfgmgr_server }}"
+        cfgmgr_installation_media_url: "{{ plbr_cfgmgr_installation_media_url }}"
+        cfgmgr_installation_media_name: "{{ plbr_cfgmgr_installation_media_name }}"
+      when: plbr_cfgmgr_server | length > 0

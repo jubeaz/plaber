@@ -1,5 +1,5 @@
 ---
-- name: Compute TRUST info on DC
+- name: TRUST SET FACTS
   hosts: trust
   tags: mandatory
   gather_facts: false
@@ -44,7 +44,7 @@
       when: plbr_domain_trust_transitive_domains is defined
 
 
-# - name: "COMPUTE SCCM ON DC"
+# - name: "COMPUTE CFGMGR ON DC"
 #   hosts: dc
 #   tags: mandatory
 #   max_fail_percentage: 0

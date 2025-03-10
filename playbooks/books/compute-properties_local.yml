@@ -1,8 +1,9 @@
 ---
-- name: Compute LOCAL info on each windows host
+- name: LOCAL SET FACTS
   hosts: domain
   tags: mandatory
   max_fail_percentage: 0
+  gather_facts: true
   tasks:
 #    - name: Display hostvars in a readable format
 #      ansible.builtin.debug:
@@ -12,28 +13,28 @@
 #      ansible.builtin.fail:
 #        msg: "STOP"
 
-    - name: Check Product name
-      ansible.windows.win_shell: |
-        $ProductName = Get-ItemProperty -Path "HKLM:/Software/Microsoft/Windows NT/CurrentVersion" | Select-Object -ExpandProperty "ProductName"
-        Return $ProductName
-      register: product_name
-      changed_when: false
+#    - name: Check Product name
+#      ansible.windows.win_shell: |
+#        $ProductName = Get-ItemProperty -Path "HKLM:/Software/Microsoft/Windows NT/CurrentVersion" | Select-Object -ExpandProperty "ProductName"
+#        Return $ProductName
+#      register: product_name
+#      changed_when: false
 
-    - name: Register plbr_is_server_os
+    - name: Register plbr_is_server_os (ansible_os_installation_type)
       ansible.builtin.set_fact:
-        plbr_is_server_os: "{{  product_name.stdout_lines[0] is search('Windows Server') }}"
+        plbr_is_server_os: "{{ true if ansible_os_installation_type is search('Server') else false }}"
         cacheable: true
 
-    - name: Check InstallationType
-      ansible.windows.win_shell: |
-        $InstallationType = Get-ItemProperty -Path "HKLM:/Software/Microsoft/Windows NT/CurrentVersion" | Select-Object -ExpandProperty "InstallationType"
-        Return $InstallationType -eq "Server Core"
-      register: is_server_core
-      changed_when: false
+#    - name: Check InstallationType
+#      ansible.windows.win_shell: |
+#        $InstallationType = Get-ItemProperty -Path "HKLM:/Software/Microsoft/Windows NT/CurrentVersion" | Select-Object -ExpandProperty "InstallationType"
+#        Return $InstallationType -eq "Server Core"
+#      register: is_server_core
+#      changed_when: false
 
     - name: Register plbr_is_core_install
       ansible.builtin.set_fact:
-        plbr_is_core_install: "{{ is_server_core.stdout_lines[0] }}"
+        plbr_is_core_install: "{{ true if ansible_os_installation_type is search('Core') else false }}"
         cacheable: true
 
     - name: Register domain interface definition

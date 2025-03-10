@@ -1,162 +1,162 @@
-#---
-#- name: DOMAIN PASSWORD POLICY
-#  hosts: dc
-#  max_fail_percentage: 0
-#  gather_facts: false
-#  roles:
-#    - { role: 'windows_domain_cfg_password_policy', tags: 'policy'}
-#  vars:
-#    wd_cfg_passpol_policy: "{{ plbr_domain_password_policy.default }}"
-#
-#- name: DOMAIN CREATE OBJECTS
-#  hosts: dc
-#  max_fail_percentage: 0
-#  gather_facts: false
-#  roles:
-#    - { role: 'windows_domain_cfg_group', tags: 'ad_domain_data'}
-#    - { role: 'windows_domain_cfg_user', tags: 'ad_domain_data'}
-#    - { role: 'windows_domain_cfg_computer', tags: 'ad_domain_data'}
-#    - { role: 'windows_domain_gmsa_cfg', tags: 'ad_domain_data'}
-#  vars:
-#    wd_cfg_group_action: "create"
-#    wd_cfg_group_domain_password: "{{ plbr_domain_password }}"
-#    wd_cfg_group_domain_name: "{{ plbr_domain_name }}"
-#    wd_cfg_group_groups: "{{ plbr_domain_groups }}"
-#    wd_cfg_user_action: "create"
-#    wd_cfg_user_domain_password: "{{ plbr_domain_password }}"
-#    wd_cfg_user_domain_name: "{{ plbr_domain_name }}"
-#    wd_cfg_user_users: "{{ plbr_domain_users }}"
-#    wd_cfg_computer_action: "create"
-#    wd_cfg_computer_domain_password: "{{ plbr_domain_password }}"
-#    wd_cfg_computer_domain_name: "{{ plbr_domain_name }}"
-#    wd_cfg_computer_computers: "{{ plbr_domain_computers }}"
-#    wd_cfg_gmsa_action: "create"
-#    wd_cfg_gmsa_domain_password: "{{ plbr_domain_password }}"
-#    wd_cfg_gmsa_domain_name: "{{ plbr_domain_name }}"
-#    wd_cfg_gmsa_gmsas: "{{ plbr_domain_gmsa }}"
-#
-## - name: debug add foreign
-##   hosts: dc
-##   tasks:
-##     - name: deb
-##       debug:
-##         msg: "domain_data_add_foreign: {{ ('trust' in groups and groups['trust'] | length > 0) or ('child_dc' in groups and groups['child_dc'] | length > 0) }}"
-#
-#- name: DOMAIN ADD GROUP MEMBERS
-#  hosts: dc
-#  max_fail_percentage: 0
-#  gather_facts: false
-#  roles:
-#    - { role: 'windows_domain_cfg_group', tags: 'ad_domain_data'}
-#  vars:
-#    wd_cfg_group_action: "add_members"
-#    wd_cfg_group_domain_password: "{{ plbr_domain_password }}"
-#    wd_cfg_group_domain_name: "{{ plbr_domain_name }}"
-#    wd_cfg_group_groups: "{{ plbr_domain_groups }}"
-#    wd_cfg_group_add_foreign: "{{ ('trust' in groups and groups['trust'] | length > 0) or ('child_dc' in groups and groups['child_dc'] | length > 0) }}"
-#
-#- name: DOMAIN ADD GROUP MEMBERS (bBUILTIN GROUPS)
-#  hosts: dc
-#  max_fail_percentage: 0
-#  gather_facts: false
-#  roles:
-#    - { role: 'windows_domain_cfg_group', tags: 'ad_domain_data'}
-#  vars:
-#    wd_cfg_group_action: "add_members"
-#    wd_cfg_group_domain_password: "{{ plbr_domain_password }}"
-#    wd_cfg_group_domain_name: "{{ plbr_domain_name }}"
-#    wd_cfg_group_groups: "{{ plbr_domain_builtin_groups }}"
-#    wd_cfg_group_add_foreign: "{{ ('trust' in groups and groups['trust'] | length > 0) or ('child_dc' in groups and groups['child_dc'] | length > 0) }}"
-#
-#- name: DOMAIN ADD DELEGATES ON OBJECTS
-#  hosts: dc
-#  max_fail_percentage: 0
-#  gather_facts: false
-#  roles:
-#    - { role: 'windows_domain_gmsa_cfg', tags: 'ad_domain_data'}
-#    - { role: 'windows_domain_cfg_user', tags: 'ad_domain_data'}
-#    - { role: 'windows_domain_cfg_computer', tags: 'ad_domain_data'}
-#  vars:
-#    wd_cfg_user_action: "add_delegates"
-#    wd_cfg_user_domain_password: "{{ plbr_domain_password }}"
-#    wd_cfg_user_domain_name: "{{ plbr_domain_name }}"
-#    wd_cfg_user_users: "{{ plbr_domain_service_accounts }}"
-#    wd_cfg_computer_action: "add_delegates"
-#    wd_cfg_computer_domain_password: "{{ plbr_domain_password }}"
-#    wd_cfg_computer_domain_name: "{{ plbr_domain_name }}"
-#    wd_cfg_computer_computers: "{{ plbr_domain_computers }}"
-#    wd_cfg_gmsa_action: "add_delegates"
-#    wd_cfg_gmsa_domain_password: "{{ plbr_domain_password }}"
-#    wd_cfg_gmsa_domain_name: "{{ plbr_domain_name }}"
-#    wd_cfg_gmsa_gmsas: "{{ plbr_domain_gmsa }}"
-#
-#
-#- name: DOMAIN ADD KERBEROS DELEGATION (SERVICE ACCOUNTS)
-#  hosts: dc
-#  max_fail_percentage: 0
-#  gather_facts: false
-#  roles:
-#    - { role: 'windows_domain_cfg_kerberos_delegation', tags: 'ad_domain_data'}
-#  vars:
-#    wd_cfg_krb_deleg_domain_name: "{{ plbr_domain_name }}"
-#    wd_cfg_krb_deleg_domain_password: "{{ plbr_domain_password }}"
-#    wd_cfg_krb_deleg_objects: "{{ plbr_domain_service_accounts }}"
-#
-#- name: DOMAIN ADD KERBEROS DELEGATION (GMSA)
-#  hosts: dc
-#  max_fail_percentage: 0
-#  gather_facts: false
-#  roles:
-#    - { role: 'windows_domain_cfg_kerberos_delegation', tags: 'ad_domain_data'}
-#  vars:
-#    wd_cfg_krb_deleg_domain_name: "{{ plbr_domain_name }}"
-#    wd_cfg_krb_deleg_domain_password: "{{ plbr_domain_password }}"
-#    wd_cfg_krb_deleg_objects: "{{ plbr_domain_gmsa }}"
-#
-#- name: DOMAIN ADD KERBEROS DELEGATION (COMPUTER)
-#  hosts: dc
-#  max_fail_percentage: 0
-#  gather_facts: false
-#  roles:
-#    - { role: 'windows_domain_cfg_kerberos_delegation', tags: 'ad_domain_data'}
-#  vars:
-#    wd_cfg_krb_deleg_domain_name: "{{ plbr_domain_name }}"
-#    wd_cfg_krb_deleg_domain_password: "{{ plbr_domain_password }}"
-#    wd_cfg_krb_deleg_objects: "{{ plbr_domain_computers }}"
-#
-#
-#- name: DOMAIN ADD UAC (GMSA)
-#  hosts: dc
-#  max_fail_percentage: 0
-#  gather_facts: false
-#  roles:
-#    - { role: 'windows_domain_cfg_account_control', tags: 'ad_domain_data'}
-#  vars:
-#    wd_cfg_uac_domain_name: "{{ plbr_domain_name }}"
-#    wd_cfg_uac_domain_password: "{{ plbr_domain_password }}"
-#    wd_cfg_uac_objects: "{{ plbr_domain_gmsa }}"
-#
-#- name: DOMAIN ADD UAC (USER)
-#  hosts: dc
-#  max_fail_percentage: 0
-#  gather_facts: false
-#  roles:
-#    - { role: 'windows_domain_cfg_account_control', tags: 'ad_domain_data'}
-#  vars:
-#    wd_cfg_uac_domain_name: "{{ plbr_domain_name }}"
-#    wd_cfg_uac_domain_password: "{{ plbr_domain_password }}"
-#    wd_cfg_uac_objects: "{{ plbr_domain_users }}"
-#
-#- name: DOMAIN ADD UAC (COMPUTER)
-#  hosts: dc
-#  max_fail_percentage: 0
-#  gather_facts: false
-#  roles:
-#    - { role: 'windows_domain_cfg_account_control', tags: 'ad_domain_data'}
-#  vars:
-#    wd_cfg_uac_domain_name: "{{ plbr_domain_name }}"
-#    wd_cfg_uac_domain_password: "{{ plbr_domain_password }}"
-#    wd_cfg_uac_objects: "{{ plbr_domain_computers }}"
+---
+- name: DOMAIN PASSWORD POLICY
+  hosts: dc
+  max_fail_percentage: 0
+  gather_facts: false
+  roles:
+    - { role: 'windows_domain_cfg_password_policy', tags: 'policy'}
+  vars:
+    wd_cfg_passpol_policy: "{{ plbr_domain_password_policy.default }}"
+
+- name: DOMAIN CREATE OBJECTS
+  hosts: dc
+  max_fail_percentage: 0
+  gather_facts: false
+  roles:
+    - { role: 'windows_domain_cfg_group', tags: 'ad_domain_data'}
+    - { role: 'windows_domain_cfg_user', tags: 'ad_domain_data'}
+    - { role: 'windows_domain_cfg_computer', tags: 'ad_domain_data'}
+    - { role: 'windows_domain_gmsa_cfg', tags: 'ad_domain_data'}
+  vars:
+    wd_cfg_group_action: "create"
+    wd_cfg_group_domain_password: "{{ plbr_domain_password }}"
+    wd_cfg_group_domain_name: "{{ plbr_domain_name }}"
+    wd_cfg_group_groups: "{{ plbr_domain_groups }}"
+    wd_cfg_user_action: "create"
+    wd_cfg_user_domain_password: "{{ plbr_domain_password }}"
+    wd_cfg_user_domain_name: "{{ plbr_domain_name }}"
+    wd_cfg_user_users: "{{ plbr_domain_users }}"
+    wd_cfg_computer_action: "create"
+    wd_cfg_computer_domain_password: "{{ plbr_domain_password }}"
+    wd_cfg_computer_domain_name: "{{ plbr_domain_name }}"
+    wd_cfg_computer_computers: "{{ plbr_domain_computers }}"
+    wd_cfg_gmsa_action: "create"
+    wd_cfg_gmsa_domain_password: "{{ plbr_domain_password }}"
+    wd_cfg_gmsa_domain_name: "{{ plbr_domain_name }}"
+    wd_cfg_gmsa_gmsas: "{{ plbr_domain_gmsa }}"
+
+# - name: debug add foreign
+#   hosts: dc
+#   tasks:
+#     - name: deb
+#       debug:
+#         msg: "domain_data_add_foreign: {{ ('trust' in groups and groups['trust'] | length > 0) or ('child_dc' in groups and groups['child_dc'] | length > 0) }}"
+
+- name: DOMAIN ADD GROUP MEMBERS
+  hosts: dc
+  max_fail_percentage: 0
+  gather_facts: false
+  roles:
+    - { role: 'windows_domain_cfg_group', tags: 'ad_domain_data'}
+  vars:
+    wd_cfg_group_action: "add_members"
+    wd_cfg_group_domain_password: "{{ plbr_domain_password }}"
+    wd_cfg_group_domain_name: "{{ plbr_domain_name }}"
+    wd_cfg_group_groups: "{{ plbr_domain_groups }}"
+    wd_cfg_group_add_foreign: "{{ ('trust' in groups and groups['trust'] | length > 0) or ('child_dc' in groups and groups['child_dc'] | length > 0) }}"
+
+- name: DOMAIN ADD GROUP MEMBERS (bBUILTIN GROUPS)
+  hosts: dc
+  max_fail_percentage: 0
+  gather_facts: false
+  roles:
+    - { role: 'windows_domain_cfg_group', tags: 'ad_domain_data'}
+  vars:
+    wd_cfg_group_action: "add_members"
+    wd_cfg_group_domain_password: "{{ plbr_domain_password }}"
+    wd_cfg_group_domain_name: "{{ plbr_domain_name }}"
+    wd_cfg_group_groups: "{{ plbr_domain_builtin_groups }}"
+    wd_cfg_group_add_foreign: "{{ ('trust' in groups and groups['trust'] | length > 0) or ('child_dc' in groups and groups['child_dc'] | length > 0) }}"
+
+- name: DOMAIN ADD DELEGATES ON OBJECTS
+  hosts: dc
+  max_fail_percentage: 0
+  gather_facts: false
+  roles:
+    - { role: 'windows_domain_gmsa_cfg', tags: 'ad_domain_data'}
+    - { role: 'windows_domain_cfg_user', tags: 'ad_domain_data'}
+    - { role: 'windows_domain_cfg_computer', tags: 'ad_domain_data'}
+  vars:
+    wd_cfg_user_action: "add_delegates"
+    wd_cfg_user_domain_password: "{{ plbr_domain_password }}"
+    wd_cfg_user_domain_name: "{{ plbr_domain_name }}"
+    wd_cfg_user_users: "{{ plbr_domain_service_accounts }}"
+    wd_cfg_computer_action: "add_delegates"
+    wd_cfg_computer_domain_password: "{{ plbr_domain_password }}"
+    wd_cfg_computer_domain_name: "{{ plbr_domain_name }}"
+    wd_cfg_computer_computers: "{{ plbr_domain_computers }}"
+    wd_cfg_gmsa_action: "add_delegates"
+    wd_cfg_gmsa_domain_password: "{{ plbr_domain_password }}"
+    wd_cfg_gmsa_domain_name: "{{ plbr_domain_name }}"
+    wd_cfg_gmsa_gmsas: "{{ plbr_domain_gmsa }}"
+
+
+- name: DOMAIN ADD KERBEROS DELEGATION (SERVICE ACCOUNTS)
+  hosts: dc
+  max_fail_percentage: 0
+  gather_facts: false
+  roles:
+    - { role: 'windows_domain_cfg_kerberos_delegation', tags: 'ad_domain_data'}
+  vars:
+    wd_cfg_krb_deleg_domain_name: "{{ plbr_domain_name }}"
+    wd_cfg_krb_deleg_domain_password: "{{ plbr_domain_password }}"
+    wd_cfg_krb_deleg_objects: "{{ plbr_domain_service_accounts }}"
+
+- name: DOMAIN ADD KERBEROS DELEGATION (GMSA)
+  hosts: dc
+  max_fail_percentage: 0
+  gather_facts: false
+  roles:
+    - { role: 'windows_domain_cfg_kerberos_delegation', tags: 'ad_domain_data'}
+  vars:
+    wd_cfg_krb_deleg_domain_name: "{{ plbr_domain_name }}"
+    wd_cfg_krb_deleg_domain_password: "{{ plbr_domain_password }}"
+    wd_cfg_krb_deleg_objects: "{{ plbr_domain_gmsa }}"
+
+- name: DOMAIN ADD KERBEROS DELEGATION (COMPUTER)
+  hosts: dc
+  max_fail_percentage: 0
+  gather_facts: false
+  roles:
+    - { role: 'windows_domain_cfg_kerberos_delegation', tags: 'ad_domain_data'}
+  vars:
+    wd_cfg_krb_deleg_domain_name: "{{ plbr_domain_name }}"
+    wd_cfg_krb_deleg_domain_password: "{{ plbr_domain_password }}"
+    wd_cfg_krb_deleg_objects: "{{ plbr_domain_computers }}"
+
+
+- name: DOMAIN ADD UAC (GMSA)
+  hosts: dc
+  max_fail_percentage: 0
+  gather_facts: false
+  roles:
+    - { role: 'windows_domain_cfg_account_control', tags: 'ad_domain_data'}
+  vars:
+    wd_cfg_uac_domain_name: "{{ plbr_domain_name }}"
+    wd_cfg_uac_domain_password: "{{ plbr_domain_password }}"
+    wd_cfg_uac_objects: "{{ plbr_domain_gmsa }}"
+
+- name: DOMAIN ADD UAC (USER)
+  hosts: dc
+  max_fail_percentage: 0
+  gather_facts: false
+  roles:
+    - { role: 'windows_domain_cfg_account_control', tags: 'ad_domain_data'}
+  vars:
+    wd_cfg_uac_domain_name: "{{ plbr_domain_name }}"
+    wd_cfg_uac_domain_password: "{{ plbr_domain_password }}"
+    wd_cfg_uac_objects: "{{ plbr_domain_users }}"
+
+- name: DOMAIN ADD UAC (COMPUTER)
+  hosts: dc
+  max_fail_percentage: 0
+  gather_facts: false
+  roles:
+    - { role: 'windows_domain_cfg_account_control', tags: 'ad_domain_data'}
+  vars:
+    wd_cfg_uac_domain_name: "{{ plbr_domain_name }}"
+    wd_cfg_uac_domain_password: "{{ plbr_domain_password }}"
+    wd_cfg_uac_objects: "{{ plbr_domain_computers }}"
 
 - name: DOMAIN ADD GPO
   hosts: dc

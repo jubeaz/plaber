@@ -6,24 +6,32 @@
 # ##################################
 # Start Extended inventory computing
 # ##################################
-- name: Compute extended inventory (local)
+- name: COMPUTE EXTENDED INVENTORY (LOCAL)
   import_playbook: books/compute-properties_local.yml
-- name: Compute extended inventory (domain)
+
+- name: COMPUTE EXTENDED INVENTORY (DOMAIN)
   import_playbook: books/compute-properties_domain.yml
 
-- name: Compute extended inventory (forest)
+- name: COMPUTE EXTENDED INVENTORY (FOREST)
   import_playbook: books/compute-properties_forest.yml
   when: groups["child_dc"] | length > 0
 
-- name: Compute extended inventory (trust)
+- name: COMPUTE EXTENDED INVENTORY (TRUST)
   import_playbook: books/compute-properties_trust.yml
   when: groups["trust"] | length > 0
+
+- name: COMPUTE EXTENDED INVENTORY (MSSQL)
+  import_playbook: books/compute-properties_mssql.yml
+  when: groups["mssql"] | length > 0
+
+- name: COMPUTE EXTENDED INVENTORY (CONFIGMANAGER)
+  import_playbook: books/compute-properties_cfgmgr.yml
 # ################################
 # End Extended inventory computing
 # ################################
 
 #- name: Add user data
 #  import_playbook: books/members-user_data.yml
-
-- name: Deploy SCCM
-  import_playbook: books/members-sccm.yml
+  
+- name: DEPLOY CONFIGURATION MANAGER
+  import_playbook: books/members-cfgmgr.yml

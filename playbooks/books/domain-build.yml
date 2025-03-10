@@ -1,6 +1,6 @@
 ---
 - name: ROOT DC BUILD
-  hosts: dc
+  hosts: root_dc
   max_fail_percentage: 0
   tags: 'domain_build_root'
   gather_facts: false
@@ -8,15 +8,23 @@
     - name: Build root domains
       ansible.builtin.include_role:
         name: windows_domain_build_root
-      when: "plbr_dc_level == 0"
+      when: not ansible_windows_domain_member
+
     - name: Rename default site
       ansible.builtin.include_role:
         name: windows_domain_cfg_default_site
-      when: "plbr_dc_level == 0"
+      when: not ansible_windows_domain_member
+
     - name: Add root domain subnets
       ansible.builtin.include_role:
         name: windows_domain_cfg_subnet
-      when: plbr_dc_level == 0
+      when: not ansible_windows_domain_member
+
+    - name: Register ansible_windows_domain_member for cache
+      ansible.builtin.set_fact:
+        ansible_windows_domain_member: true
+        cacheable: true
+      when: not ansible_windows_domain_member
   vars:
     wd_build_root_two_adapters: "{{ plbr_two_adapters }}"
     wd_build_root_pub_adapter: "{{ plbr_pub_adapter }}"
@@ -34,7 +42,7 @@
     wd_cfg_subnet_domain_password: "{{ plbr_domain_password }}"
 
 - name: CHILD DC BUILD
-  hosts: dc
+  hosts: child_dc
   gather_facts: false
   max_fail_percentage: 0
   tags: 'domain_build_children'
@@ -42,11 +50,24 @@
     - name: Build child domains
       ansible.builtin.include_role:
         name: windows_domain_build_child
-      when: plbr_dc_level == 1
-    - name: Create DNS conditional forwarder to parent
+      when: not ansible_windows_domain_member
+
+    - name: Create DNS conditional forwarder to root domain
       ansible.builtin.include_role:
-        name: windows_domain_dns_conditional_forwarder
-      when: plbr_dc_level == 1
+        name: windows_domain_dns_cond_forwarder
+      vars:
+        windows_domain_dns_cond_forwarder_master_server: "{{ plbr_domain_parent_dc_ip }}"
+        windows_domain_dns_cond_forwarder_zone: "{{ plbr_domain_parent_domain_name }}"
+        windows_domain_dns_cond_forwarder_replication: "none"
+        windows_domain_dns_cond_forwarder_domain_name: "{{ plbr_domain_name }}"
+        windows_domain_dns_cond_forwarder_domain_password: "{{ plbr_domain_password }}"
+      when: not ansible_windows_domain_member
+
+    - name: Register ansible_windows_domain_member for cache
+      ansible.builtin.set_fact:
+        ansible_windows_domain_member: true
+        cacheable: true
+      when: not ansible_windows_domain_member
   vars:
     wd_build_child_two_adapters: "{{ plbr_two_adapters }}"
     wd_build_child_pub_adapter: "{{ plbr_pub_adapter }}"
@@ -58,11 +79,6 @@
     wd_build_child_parent_dc_name: "{{ plbr_domain_parent_dc_name }}"
     wd_build_child_netbios_name: "{{ plbr_domain_netbios_name }}"
     wd_build_child_site_name: "{{ plbr_default_first_site_name }}"
-    wd_dns_forwarder_master_server: "{{ plbr_domain_parent_dc_ip }}"
-    wd_dns_forwarder_zone_name: "{{ plbr_domain_parent_domain_name }}"
-    wd_dns_forwarder_replication: "none"
-    wd_dns_forwarder_domain_name: "{{ plbr_domain_name }}"
-    wd_dns_forwarder_domain_password: "{{ plbr_domain_password }}"
 
 - name: DC ADD DNS CONFIGURATION
   hosts: dc
@@ -70,17 +86,34 @@
   gather_facts: false
   tags: 'domain_cfg_dns'
   tasks:
-    - name: Create DNS conditional forwarder to children
+#    - name: Configure DNS delegation
+#      ansible.builtin.include_role:
+#        name: windows_domain_dns_delegation
+#      vars:
+#        windows_domain_dns_delegation_domain: "{{ plbr_domain_name }}"
+#        windows_domain_dns_delegation_server_fqdn: "{{ item[1] | lower }}.{{ item[2] }}"
+#        windows_domain_dns_delegation_server_ip: "{{ item[3] }}"
+#        windows_domain_dns_delegation_zone: "{{ item[2] }}"
+#      loop: "{{ plbr_child_domains }}"
+#      when: plbr_child_domains is defined
+
+    - name: Configure DNS conditional forwarder to children
       ansible.builtin.include_role:
-        name: windows_domain_dns_children_forward
+        name: windows_domain_dns_cond_forwarder
+      vars:
+        windows_domain_dns_cond_forwarder_domain_name: "{{ plbr_domain_name }}"
+        windows_domain_dns_cond_forwarder_domain_password: "{{ plbr_domain_password }}"
+        windows_domain_dns_cond_forwarder_replication: "none"
+        windows_domain_dns_cond_forwarder_master_server: "{{ item[3] }}"
+        windows_domain_dns_cond_forwarder_zone: "{{ item[2] }}"
+      loop: "{{ plbr_child_domains }}"
       when: plbr_child_domains is defined
+
     - name: "Adjust DNS Server"
       ansible.builtin.include_role:
         name: windows_domain_dns_listening
-  vars:
-    wd_dns_child_forward_domain_name: "{{ plbr_domain_name }}"
-    wd_dns_child_forward_child_domains: "{{ plbr_child_domains }}"
-    wd_dns_listen_domain_dc_ip: "{{ plbr_domain_dc_ip }}"
-    wd_dns_listen_domain_name: "{{ plbr_domain_dc_name }}"
-    wd_dns_listen_domain_password: "{{ plbr_domain_password }}"
-    wd_dns_listen_two_adapters: "{{ plbr_two_adapters }}"
+      vars:
+        windows_domain_dns_listening_domain_dc_ip: "{{ plbr_domain_dc_ip }}"
+        windows_domain_dns_listening_domain_name: "{{ plbr_domain_dc_name }}"
+        windows_domain_dns_listening_domain_password: "{{ plbr_domain_password }}"
+        windows_domain_dns_listening_two_adapters: "{{ plbr_two_adapters }}"

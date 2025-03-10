@@ -13,7 +13,7 @@ plbr_domain_real_computers: {
     "bran": {
         "name":             "bran",
         "dns_hostname":     "bran.haas.local",
-        "description":      "mecm iis wsus",
+        "description":      "cfgmgr iis wsus",
         "path":             "OU=Servers,OU=IT,OU=HQ,DC=haas,DC=local",            
         "delegates"       : [], # RBCD / must be DN msDS-AllowedToActOnBehalfOfOtherIdentity
         "delegation_type" : false, # "KCD", "KUD", false

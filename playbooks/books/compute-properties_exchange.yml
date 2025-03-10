@@ -1,0 +1,26 @@
+---
+- name: EXCHANGE SET FACTS
+  hosts: dc
+  max_fail_percentage: 0
+  gather_facts: false
+  tasks:
+    - name: Register Exchange role facts on DC
+      ansible.builtin.set_fact:
+        xchg_domain_name: "{{  plbr_domain_name  }}"
+        xchg_domain_password: "{{ plbr_domain_password }}"
+        xchg_multi_domain_forest: "{{ plbr_multi_domain_forest }}"
+        xchg_corp_name: "{{ plbr_exchange_corp_name  }}"
+        cacheable: true
+      when: plbr_exchange_corp_name is defined
+- name: EXCHANGE SET FACTS
+  hosts: exchange
+  max_fail_percentage: 0
+  gather_facts: false
+  tasks:
+    - name: Register Exchange role facts on exchange servers
+      ansible.builtin.set_fact:
+        xchg_domain_name: "{{ plbr_domain_name }}"
+        xchg_domain_password: "{{ plbr_domain_password }}"
+        xchg_multi_domain_forest: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_multi_domain_forest }}"
+        xchg_corp_name: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_exchange_corp_name }}"
+        cacheable: true

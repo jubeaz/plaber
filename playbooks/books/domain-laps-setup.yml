@@ -11,4 +11,4 @@
     wd_laps_dc_domain_name: "{{ plbr_domain_name }}"
     wd_laps_dc_domain_password: "{{ plbr_domain_password }}"
     wd_laps_dc_laps_path: "{{ plbr_domain_laps_path }}"
-    wd_laps_dc_dc_level: "{{ plbr_dc_level }}"
+    wd_laps_dc_is_root: "{{ true if inventory_hostname in groups['root_dc'] else false }}"

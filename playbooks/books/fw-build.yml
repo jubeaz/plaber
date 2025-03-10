@@ -1,6 +1,7 @@
 ---
 - name: BASE BUILD FIREWALL
   hosts: fw
+  gather_facts: true
   become: true
   become_user: root
   max_fail_percentage: 0

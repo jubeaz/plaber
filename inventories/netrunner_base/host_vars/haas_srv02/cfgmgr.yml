@@ -1,0 +1,20 @@
+plbr_cfgmgr_mssql_server: eli
+plbr_cfgmgr_site_code: 'HS1'
+plbr_cfgmgr_network_access_account: "hagen"
+plbr_cfgmgr_push_account: "howler"
+plbr_cfgmgr_clients: ['fenris', 'architect',bran,eli]
+plbr_cfgmgr_pxe_pass: "qKjhz__Qyd_YLTu4"
+plbr_cfgmgr_account_da: "mbellamy"
+plbr_cfgmgr_pxe_location: "LDAP://CN=Computers,DC=haas,DC=local"
+plbr_cfgmgr_pxe_admin_pass: "NuvqREtyaT_k9E5C"
+plbr_cfgmgr_domain_admins: ["HAAS\\U_cfgmgr_ADMINS"]
+plbr_cfgmgr_users: {}
+plbr_cfgmgr_discovery_group: "U_cfgmgr_MANAGED"
+
+###########
+# DEFINED A GROUP VAR on domain
+# https://www.microsoft.com/fr-fr/evalcenter/download-microsoft-endpoint-configuration-manager
+# cfgmgr_installation_media_url: "https://go.microsoft.com/fwlink/p/?LinkID=2195628&clcid=0x40c&culture=fr-fr&country=fr"
+# cfgmgr_installation_media_name: "MCM_Configmgr_2403.exe"
+# cfgmgr_installation_cpp_redist: vcredist140
+# cfgmgr_installation_sqlserver_odbcdriver: sqlserver-odbcdriver-18

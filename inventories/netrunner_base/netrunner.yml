@@ -29,22 +29,27 @@ all:
             dc_wld: {} 
             wld_srv01: {} 
         dc:
+          children:
+            root_dc:
+              hosts:
+                dc_wld: {plbr_dc_level: 0}    
+                dc_haas: {plbr_dc_level: 0} 
+            child_dc:
+              hosts:
+                dc_rsc: {plbr_dc_level: 1}
+            dc_slave:
+              hosts:
           hosts:
-            dc_wld: {plbr_dc_level: 0}    
-            dc_haas: {plbr_dc_level: 0} 
-            dc_rsc: {plbr_dc_level: 1}
-        child_dc:
-          hosts:
-            dc_rsc: {plbr_dc_level: 1}
-        dc_slave:
-          hosts:
+#            dc_wld: {plbr_dc_level: 0}    
+#            dc_haas: {plbr_dc_level: 0} 
+#            dc_rsc: {plbr_dc_level: 1}
         trust:
           hosts:
             dc_wld: {}    
             dc_haas: {}
         domain_server:
           children:
-              sccm:
+              cfgmgr:
                 hosts:
                   haas_srv02: {}          
               adcs:
@@ -66,7 +71,7 @@ all:
 #                  haas_srv01: {}      
                   haas_srv01: {}      
           hosts:
-        sccm_console:
+        cfgmgr_console:
           hosts: 
 #            haas_ws01: {}    
         mssql_ssms:

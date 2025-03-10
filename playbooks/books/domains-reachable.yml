@@ -2,6 +2,7 @@
 - name: Add Ansible Controller routes to networks (NAT DISABLED)
   hosts: firewalls
   tags: mandatory
+  gather_facts: true
   become: true
   max_fail_percentage: 0
   become_user: root

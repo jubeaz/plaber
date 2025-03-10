@@ -1,81 +1,78 @@
 ---
-- name: Ensure domains are reachable
+- name: ENSURE DOMAINS ARE REACHABLE
   import_playbook: books/domains-reachable.yml
 
 # ##################################
 # Start Extended inventory computing
 # ##################################
-- name: Compute extended inventory (local)
+- name: COMPUTE EXTENDED INVENTORY (LOCAL)
   import_playbook: books/compute-properties_local.yml
 
-- name: Compute extended inventory (domain)
+- name: COMPUTE EXTENDED INVENTORY (DOMAIN)
   import_playbook: books/compute-properties_domain.yml
 
-- name: Compute extended inventory (forest)
+- name: COMPUTE EXTENDED INVENTORY (FOREST)
   import_playbook: books/compute-properties_forest.yml
   when: groups["child_dc"] | length > 0
 
-- name: Compute extended inventory (trust)
+- name: COMPUTE EXTENDED INVENTORY (TRUST)
   import_playbook: books/compute-properties_trust.yml
   when: groups["trust"] | length > 0
 
-- name: Compute extended inventory (trust)
+- name: COMPUTE EXTENDED INVENTORY (MSSQL)
   import_playbook: books/compute-properties_mssql.yml
   when: groups["mssql"] | length > 0
 # ################################
 # End Extended inventory computing
 # ################################
 
-- name: Computer build before domain building
+- name: COMPUTER COMPLIANCE SETUP
   import_playbook: books/computers-build.yml
 
-- name: Build domains
+- name: BUILD FORESTS
   import_playbook: books/domain-build.yml
 
-- name: Add Organizational Units
+- name: DOMAINS ORGANIZATIONAL UNITS
   import_playbook: books/domain-ous.yml
 
-- name: Joint computers to the domain
+- name: MEMBER JOIN
   import_playbook: books/members-join.yml
 
-- name: Build domains trusts
-  import_playbook: books/domain-trusts.yml
+- name: TRUST BUILD
+  import_playbook: books/trust-build.yml
 
-- name: Setup domain LAPS
+- name: LAPS SETUP
   import_playbook: books/domain-laps-setup.yml
 
-- name: Build PKI
+- name: MEMBER ADCS
   import_playbook: books/domain-adcs_build.yml
 
-- name: Add domain data
+- name: DOMAIN DATA
   import_playbook: books/domain-data.yml
 
-- name: Add domain ACLS
+- name: DOMAIN ACLS
   import_playbook: books/domain-acl.yml
 
 # - name: Compute extended inventory
 #   import_playbook: books/compute-global-mappings.yml
 
-- name: Deploy LAPS and GMSA
+- name: MEMBER LAPS / GMSA
   import_playbook: books/members-laps-gmsa.yml
 
-- name: Add local data on computers
+- name: COMPUTER LOCAL GROUPS / USERS ...
   import_playbook: books/computers-local-groups-users-rights.yml
 
-- name: Compute security features
+- name: COMPUTER SECURITY
   import_playbook: books/computers-security.yml
 
-- name: Configure IIS servers
+- name: MEMBER IIS
   import_playbook: books/members-iis.yml
 
-- name: Compute webdav
+- name: MEMBER WEBDAV
   import_playbook: books/members-webdav.yml
 
-- name: Install mssql servers
-  import_playbook: books/members-mssql_install.yml
+- name: MEMBER MSSQL
+  import_playbook: books/members-mssql.yml
 
-- name: Config mssql
-  import_playbook: books/members-mssql_config.yml
-
-- name: Add user data
+- name: MEMBER USER DATA
   import_playbook: books/members-user_data.yml

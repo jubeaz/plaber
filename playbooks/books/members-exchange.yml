@@ -1,42 +1,38 @@
-- name: "Exchange Setup"
+- name: Exchange Prerequisites
   hosts: dc
   tags: xchg_prerequisites
   max_fail_percentage: 0
+  gather_facts: false
   tasks:
     - name: Active Directory Prerequisits
       ansible.builtin.include_role:
-        name: "windows_domain_exchange_extend_schema"
-      vars:
-        wd_xchg_es_corp_name: "{{ exchange_corp_name }}"
-        wd_xchg_es_multi_domain_forest: "{{ multi_domain_forest }}"
-      when: exchange_corp_name is defined
+        name: "windows_domain_xchg_extend_schema"
+      when: plbr_exchange_corp_name is defined
 
 
-- name: "Exchange Setup"
+- name: Exchange Setup
   hosts: exchange
   tags: xchg_build
   max_fail_percentage: 0
+  gather_facts: false
   tasks:
     - name: Install Exchange Mailbox role
       ansible.builtin.include_role:
-        name: "windows_domain_exchange_install_mailbox"
-      vars:
-        wd_xchg_im_corp_name: "{{ hostvars[domain_dc_ansible_inventory_key].exchange_corp_name }}"
+        name: "windows_domain_xchg_install_mailbox"
 
-- name: "Exchange Setup"
+- name: Exchange Config
   hosts: exchange
   tags: xchg_config
+  gather_facts: false
   max_fail_percentage: 0
   tasks:
     - name: Configure Exchange
       ansible.builtin.include_role:
-        name: "windows_domain_exchange_cfg"
+        name: "windows_domain_xchg_cfg"
       vars:
-        wd_xchg_cfg_corp_name: "{{ hostvars[domain_dc_ansible_inventory_key].exchange_corp_name }}"
-        wd_xchg_cfg_action: "{{ item }}"
+        windows_domain_xchg_cfg_action: "{{ item }}"
       with_items:
         - dns
         - connector
         - mailbox
         - security
-  

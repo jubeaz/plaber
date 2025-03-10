@@ -7,15 +7,17 @@
     - name: Disable NAT adapter
       ansible.builtin.include_role:
         name: windows_cfg_manage_net_adapter
-    - name: Add conditionnal forwarder
+
+    - name: Add DNS conditionnal forwarder to trust domain
       ansible.builtin.include_role:
-        name: windows_domain_dns_conditional_forwarder
+        name: windows_domain_dns_cond_forwarder
+      vars:
+        windows_domain_dns_cond_forwarder_master_server: "{{ plbr_domain_trust_remote_dc_ip }}"
+        windows_domain_dns_cond_forwarder_zone: "{{ plbr_domain_trust_remote_domain_name }}"
+        windows_domain_dns_cond_forwarder_replication: "forest"
+        windows_domain_dns_cond_forwarder_domain_name: "{{ plbr_domain_name }}"
+        windows_domain_dns_cond_forwarder_domain_password: "{{ plbr_domain_password }}"
   vars:
-    wd_dns_forwarder_domain_password: "{{ plbr_domain_password }}"
-    wd_dns_forwarder_domain_name: "{{ plbr_domain_name }}"
-    wd_dns_forwarder_zone_name: "{{ plbr_domain_trust_remote_domain_name }}"
-    wd_dns_forwarder_master_server: "{{ plbr_domain_trust_remote_dc_ip }}"
-    wd_dns_forwarder_replication: "forest"
     w_cfg_net_adapter_two_adapters: "{{ plbr_two_adapters }}"
     w_cfg_net_adapter_adapter: "{{ plbr_pub_adapter }}"
     w_cfg_net_adapter_action: "disable"
@@ -44,18 +46,22 @@
     - name: Enable NAT adapter
       ansible.builtin.include_role:
         name: windows_cfg_manage_net_adapter
-    - name: Add conditionnal forwarder to children
-      ansible.builtin.include_role:
-        name: windows_domain_dc_dns_conditional_forwarder
-      when: plbr_domain_trust_transitive_domains is defined
 
+    - name: Add conditionnal forwarder to all foreign forest domains
+      ansible.builtin.include_role:
+        name: windows_domain_dns_cond_forwarder
+      vars:
+        windows_domain_dns_cond_forwarder_master_server: "{{ item[0] }}"
+        windows_domain_dns_cond_forwarder_zone: "{{ item[1] }}"
+        windows_domain_dns_cond_forwarder_replication: "forest"
+        windows_domain_dns_cond_forwarder_domain_name: "{{ plbr_domain_name }}"
+        windows_domain_dns_cond_forwarder_domain_password: "{{ plbr_domain_password }}"
+      loop: "{{ plbr_domain_trust_transitive_domains }}"
+      when: plbr_domain_trust_transitive_domains is defined
   vars:
     w_cfg_net_adapter_two_adapters: "{{ plbr_two_adapters }}"
     w_cfg_net_adapter_adapter: "{{ plbr_pub_adapter }}"
     w_cfg_net_adapter_action: "enable"
-    wd_dns_dc_forwarder_replication: "forest"
-    wd_dns_dc_forwarder_forward_info: "{{ plbr_domain_trust_transitive_domains  }}"
-
 
 - name: TRUSTS DEBUG
   hosts: trust

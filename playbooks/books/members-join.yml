@@ -8,9 +8,18 @@
     - name: Join servers
       ansible.builtin.include_role:
         name: windows_domain_join_server
+      when: not ansible_windows_domain_member
+
     - name: Install features
       ansible.builtin.include_role:
         name: windows_domain_member_features
+      when: not ansible_windows_domain_member
+
+    - name: Register ansible_windows_domain_member for cache
+      ansible.builtin.set_fact:
+        ansible_windows_domain_member: true
+        cacheable: true
+      when: not ansible_windows_domain_member
   vars:
     wd_join_srv_domain_adapter: "{{ plbr_domain_adapter }}"
     wd_join_srv_two_adapters: "{{ plbr_two_adapters }}"
@@ -30,9 +39,18 @@
     - name: Join servers
       ansible.builtin.include_role:
         name: windows_domain_join_workstation
+      when: not ansible_windows_domain_member
+
     - name: Install capabilities
       ansible.builtin.include_role:
         name: windows_domain_member_capabilities
+      when: not ansible_windows_domain_member
+
+    - name: Register ansible_windows_domain_member for cache
+      ansible.builtin.set_fact:
+        ansible_windows_domain_member: true
+        cacheable: true
+      when: not ansible_windows_domain_member
   vars:
     wd_join_wks_domain_adapter: "{{ plbr_domain_adapter }}"
     wd_join_wks_two_adapters: "{{ plbr_two_adapters }}"

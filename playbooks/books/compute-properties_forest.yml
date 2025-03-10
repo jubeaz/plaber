@@ -1,15 +1,12 @@
 ---
-- name: Compute FOREST info on each DC
-  hosts: dc
+
+
+- name: FOREST SET FACTS (CHILD DC)
+  hosts: child_dc
   tags: mandatory
   max_fail_percentage: 0
   gather_facts: false
   tasks:
-    - name: Register default value for multi_domain_forest on DC
-      ansible.builtin.set_fact:
-        plbr_multi_domain_forest: false
-        cacheable: true
-
     - name: Register parent domain infos on chid DC
       ansible.builtin.set_fact:
         plbr_multi_domain_forest: true
@@ -19,13 +16,25 @@
         plbr_domain_parent_dc_ip: "{{ hostvars[plbr_parent_domain_dc_inventory_key].plbr_domain_ip }}"
         plbr_domain_parent_domain_name: "{{ hostvars[plbr_parent_domain_dc_inventory_key].plbr_domain_name }}"
         cacheable: true
-      when: plbr_dc_level != 0
+#      when: plbr_dc_level != 0
+
+- name: FOREST SET FACTS (ROOT DC)
+  hosts: root_dc
+  tags: mandatory
+  max_fail_percentage: 0
+  gather_facts: false
+  tasks:
+    - name: Register default value for multi_domain_forest on DC
+      ansible.builtin.set_fact:
+        plbr_multi_domain_forest: false
+        plbr_child_domains: "{{ [] }}"
+        cacheable: true
 
     - name: Register child domain info on parent DC
       no_log: true
       ansible.builtin.set_fact:
-        plbr_child_domains: "{{ plbr_child_domains | default([]) + [[item.key, item.value.plbr_hostname, item.value.plbr_domain_name, item.value.plbr_domain_ip]] }}"
-#        cacheable: true
+        plbr_child_domains: "{{ plbr_child_domains + [[item.key, item.value.plbr_hostname, item.value.plbr_domain_name, item.value.plbr_domain_ip]] }}"
+        cacheable: true
       with_dict: "{{ hostvars }}"
       when: item.value.plbr_domain_parent_domain_name is defined and plbr_domain_name == item.value.plbr_domain_parent_domain_name
 
@@ -34,4 +43,4 @@
       ansible.builtin.set_fact:
         plbr_multi_domain_forest: true
         cacheable: true
-      when: plbr_child_domains is defined
+      when: ( plbr_child_domains | length ) > 0

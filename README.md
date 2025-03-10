@@ -150,7 +150,7 @@ build the lab (common)
 ```
 Then build the lab (specific):
 ```bash
-/usr/bin/ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/1-build-sccm.yml
+/usr/bin/ansible-playbook -i ./inventories/<lab_name|netrunner>/<lab_name|netrunner>.yml ./playbooks/1-build-CFGMGR.yml
 ```
 
 
@@ -159,7 +159,7 @@ Then build the lab (specific):
 ## Start all vms
 
 ```bash
-for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vboxmanage startvm $b --type headless; done
+for b in $(cat Vagrantfile  | grep nrunner_ | grep -v '#' | cut -d'"' -f 2); do vboxmanage startvm $b --type headless; done
 ```
 
 ## perfom actions (winrm, rdp) on domains computers (from ansible controller)
@@ -351,7 +351,7 @@ need to reset DNS user role `windows_domain/member_dns`
 
 https://learn.microsoft.com/en-us/exchange/troubleshoot/exchange-server-welcome
 
-exchange incompatible sccm ?
+exchange incompatible CFGMGR ?
 https://learn.microsoft.com/en-us/exchange/troubleshoot/client-connectivity/owa-stops-working-after-update
 
 #### Schema update
@@ -365,20 +365,20 @@ fatal: [haas_srv02]: FAILED! => {"changed": true, "cmd": "repadmin /syncall haas
 
 installation process is not detecting the end but 
 
-### sccm
+### Configuration Manager
 
 #### Publication on forest domains
 
-`Grant GenericAll on the System Management Container to "{{ sccm_server }}"`
-in `windows_domain_sccm_install_extend_adschema/tasks/main.yml`
+`Grant GenericAll on the System Management Container to "{{ cfgmgr_server }}"`
+in `windows_domain_cfgmgr_install_extend_adschema/tasks/main.yml`
 
 ```powershell
-        #$SCCMServer= "haas\bran"
-        $parts = $SCCMServer.Split('\')
+        #$CFGMGRServer= "haas\bran"
+        $parts = $CFGMGRServer.Split('\')
         $s = (Get-ADDomain $parts[0]).DNSRoot
-        $sccmIdentity = Get-ADComputer -Identity $parts[1] -Server $s
+        $CFGMGRIdentity = Get-ADComputer -Identity $parts[1] -Server $s
         $inheritanceType = [System.DirectoryServices.ActiveDirectorySecurityInheritance] "All"
-        $ace = New-Object System.DirectoryServices.ActiveDirectoryAccessRule $sccmIdentity.SID, "GenericAll", "Allow", $inheritanceType
+        $ace = New-Object System.DirectoryServices.ActiveDirectoryAccessRule $CFGMGRIdentity.SID, "GenericAll", "Allow", $inheritanceType
 
         $domains = Get-ADForest | Select-Object -ExpandProperty Domains   
         foreach ($domain in $domains) {   
@@ -412,7 +412,7 @@ https://learn.microsoft.com/fr-fr/mem/configmgr/core/servers/deploy/install/inst
 C:\setup\cd.retail.LN\SMSSETUP\BIN\I386\consolesetup.exe /q "TargetDir=%ProgramFiles%\ConfigMgr Console" DefaultSiteServerName=bran.haas.local
 
 
-https://www.prajwaldesai.com/install-sql-server-2022-for-sccm-configmgr/
+https://www.prajwaldesai.com/install-sql-server-2022-for-CFGMGR-configmgr/
 
 
 
@@ -439,7 +439,7 @@ https://www.prajwaldesai.com/install-sql-server-2022-for-sccm-configmgr/
 * sidhistory
     * relax trust
     * add sidhistory to some accounts
-* mecm 
+* CFGMGR 
     * mssql GMSA mode (tester en ajoutant `"HAAS\BRAN$"` dans le groupe `L_GMSA_ICHI`)
 
 

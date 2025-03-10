@@ -1,5 +1,5 @@
 ---
-- name: Compute domain info on all domain computers
+- name: DOMAIN SET FACTS
   hosts: domain
   tags: mandatory
   gather_facts: false
