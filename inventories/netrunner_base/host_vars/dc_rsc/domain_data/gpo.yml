@@ -13,7 +13,48 @@
 # https://admx.help/?Category=security-compliance-toolkit
 
 plbr_gpo_local: {
+  "local.CertificateAutoEnroll": {
+    gpo_ous: {
+#        "HQ": {
+#          name: "Asa",
+#          path: "DC=research,DC=haas,DC=local",
+#          enforced: true,
+#          enabled: true,
+#          state: "present"
+#        }
+      },
+    gpo_desc: "local.CertificateAutoEnroll", # https://www.gradenegger.eu/en/troubleshooting-for-automatic-certificate-application-auto-enrollment-via-rpc-dcom/
+    gpo_registry: {  
+      "AEPolicy"  : { 
+        "path" : "HKLM\\Software\\Policies\\Microsoft\\Cryptography\\AutoEnrollment", 
+        'type': "dword", 
+        'value': 7,
+        'state': "present"
+      },
+      "AEEventLogLevel"  : { 
+        "path" : "HKLM\\SOFTWARE\\Microsoft\\Cryptography\\AutoEnrollment", 
+        'type': "dword", 
+        'value': 0,
+        'state': "present"
+      },   
+      "LogLevel"  : { 
+        "path" : "HKLM\\SOFTWARE\\Microsoft\\Cryptography\\AutoEnrollment", 
+        'type': "dword", 
+        'value': 4,
+        'state': "present"
+      },   
+      "CallFailureLogginLevel"  : { 
+        "path" : "HKLM\\SOFTWARE\\Microsoft\\Ole", 
+        'type': "dword", 
+        'value': 1,
+        'state': "present"
+      }   
+    },
+    gpo_domain: true,
+    gpo_domain_enforced: true,
+    gpo_domain_enabled: true,
+    gpo_domain_state: "present"
+  }
 }
 
-
-plbr_gpo:  "{{ plbr_gpo_global | combine(plbr_gpo_local) }}"
+#

@@ -56,8 +56,8 @@
 # - name: Compute extended inventory
 #   import_playbook: books/compute-global-mappings.yml
 
-- name: MEMBER LAPS / GMSA
-  import_playbook: books/members-laps-gmsa.yml
+- name: MEMBER DOMAIN SETUP
+  import_playbook: books/members-domain-setup.yml
 
 - name: COMPUTER LOCAL GROUPS / USERS ...
   import_playbook: books/computers-local-groups-users-rights.yml

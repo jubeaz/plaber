@@ -28,7 +28,7 @@
         plbr_domain_trust_transitive_domains: "{{ plbr_domain_trust_transitive_domains | default([]) + [[item.value.plbr_domain_ip, item.value.plbr_domain_name]] }}"
 #        cacheable: true
       with_dict: "{{ hostvars }}"
-# is a DC and not the domain itself and not the trusted domain and not a subdomain of itself an 
+# is a DC and not the domain itself and not the trusted domain and not a subdomain of itself an
       when: item.value.plbr_multi_domain_forest is defined
         and item.value.plbr_domain_name != plbr_domain_name
         and item.value.plbr_domain_name != plbr_domain_trust_remote_domain_name

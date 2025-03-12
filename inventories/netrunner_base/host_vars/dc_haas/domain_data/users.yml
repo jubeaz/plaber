@@ -148,6 +148,18 @@ plbr_domain_users_regular: {
 #    },
 #
 # #########################################
+# WAC
+# #########################################
+    "waco" : {
+        "firstname"       : "waco",
+        "surname"         : "waco",
+        "password"        : "jubeaz", 
+        "city"            : "-",
+        "description"     : "WAC Admin",
+        "groups"          : [], # only built-in
+        "path"            : "CN=Users,DC=haas,DC=local"
+    },
+# #########################################
 # MECM
 # #########################################
     "mbellamy" : {

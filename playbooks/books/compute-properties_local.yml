@@ -60,7 +60,7 @@
         cacheable: true
       when: inventory_hostname in groups['dc']
 
-    - name: Compute fake computers
+    - name: Compute DC specific
       when: inventory_hostname in groups['dc']
       block:
         - name: Init missing computers
@@ -80,6 +80,11 @@
         - name: Debug plbr_domain_computers
           ansible.builtin.debug:
             var: plbr_domain_computers
+
+        - name: Register plbr_gpo
+          ansible.builtin.set_fact:
+            plbr_gpo: "{{ plbr_gpo_global | combine(plbr_gpo_local) }}"
+            cacheable: true
 
 
 #    - name: Compute windows config role variables

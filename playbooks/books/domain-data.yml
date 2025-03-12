@@ -55,7 +55,7 @@
     wd_cfg_group_groups: "{{ plbr_domain_groups }}"
     wd_cfg_group_add_foreign: "{{ ('trust' in groups and groups['trust'] | length > 0) or ('child_dc' in groups and groups['child_dc'] | length > 0) }}"
 
-- name: DOMAIN ADD GROUP MEMBERS (bBUILTIN GROUPS)
+- name: DOMAIN ADD GROUP MEMBERS (BUILTIN GROUPS)
   hosts: dc
   max_fail_percentage: 0
   gather_facts: false
@@ -165,19 +165,19 @@
   tasks:
     - name: Install GPO
       ansible.builtin.include_role:
-        name: "windows_domain_cfg_gpo"
+        name: "windows_domain_gpo_cfg"
       vars:
-        windows_domain_cfg_gpo_domain_ldap_name: "{{ plbr_domain_ldap_name }}"
-        windows_domain_cfg_gpo_domain_name: "{{ plbr_domain_name }}"
-        windows_domain_cfg_gpo_domain_password: "{{ plbr_domain_password }}"
-        windows_domain_cfg_gpo_ous: "{{ g.value.gpo_ous }}"
-        windows_domain_cfg_gpo_name: "{{ g.key }}"
-        windows_domain_cfg_gpo_desc: "{{ g.value.gpo_desc }}"
-        windows_domain_cfg_gpo_registry: "{{ g.value.gpo_registry }}"
-        windows_domain_cfg_gpo_domain: "{{ g.value.gpo_domain }}"
-        windows_domain_cfg_gpo_domain_enforced: "{{ g.value.gpo_domain_enforced }}"
-        windows_domain_cfg_gpo_domain_enabled: "{{ g.value.gpo_domain_enabled }}"
-        windows_domain_cfg_gpo_domain_state: "{{ g.value.gpo_domain_state }}"
+        windows_domain_gpo_cfg_domain_ldap_name: "{{ plbr_domain_ldap_name }}"
+        windows_domain_gpo_cfg_domain_name: "{{ plbr_domain_name }}"
+        windows_domain_gpo_cfg_domain_password: "{{ plbr_domain_password }}"
+        windows_domain_gpo_cfg_ous: "{{ g.value.gpo_ous }}"
+        windows_domain_gpo_cfg_name: "{{ g.key }}"
+        windows_domain_gpo_cfg_desc: "{{ g.value.gpo_desc }}"
+        windows_domain_gpo_cfg_registry: "{{ g.value.gpo_registry }}"
+        windows_domain_gpo_cfg_domain: "{{ g.value.gpo_domain }}"
+        windows_domain_gpo_cfg_domain_enforced: "{{ g.value.gpo_domain_enforced }}"
+        windows_domain_gpo_cfg_domain_enabled: "{{ g.value.gpo_domain_enabled }}"
+        windows_domain_gpo_cfg_domain_state: "{{ g.value.gpo_domain_state }}"
       loop: "{{ plbr_gpo | dict2items }}"
       loop_control:
         loop_var: g

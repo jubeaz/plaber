@@ -20,5 +20,6 @@
         plbr_domain_gmsa: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_gmsa }}"
         plbr_domain_laps_path: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_laps_path }}"
         plbr_domain_path: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_real_computers[plbr_hostname].path }}"
+        plbr_adcs_server_key: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_adcs_server_key }}"
         cacheable: true
       when: inventory_hostname not in groups['dc']

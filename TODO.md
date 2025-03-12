@@ -1,16 +1,56 @@
 
-# to check
 
-## WAC 
+# WAC 
 
+## Download
 `https://go.microsoft.com/fwlink/?linkid=2220149&clcid=0x40c&culture=fr-fr&country=fr`
+
+## setup 
+```
+Select installation mode
+      Custom setup
+
+Login Authentication/Authorization Selection
+      Windows Authentication (NTLM or Kerberos)
+
+Network access
+      Remote access. Use machine name or FQDN to access Windows Admin Center on other devices.
+
+Port Numbers
+      External Port:      443
+      Internal Port Range Start (Inclusive):      6601
+      Internal Port Range End (Exclusive):      6610
+
+Select TLS certificate
+      Use the pre-installed TLS certificate
+            5c6fa5a9c1a52a3c0a14fb2ee35fa65c6e14e406
+
+Fully qualified domain name
+      eli.haas.local
+
+Trusted Hosts 
+      Allow access to any computer
+
+WinRM over HTTPS
+      WinRM over HTTPS
+
+Automatic updates
+      Notify me of available updates without downloading or installing them
+
+Send diagnostic data to Microsoft
+      Required diagnostic data
+
+Log File
+      C:\Users\ADMINI~1.HAA\AppData\Local\Temp\2\Setup Log 2025-03-12 #002.txt
+```
+
 
 ## Expiration date
  https://github.com/clong/DetectionLab/blob/master/Vagrant/scripts/fix-windows-expiration.ps1
 
 ## bg info
  
- # Exchange
+# Exchange
 https://github.com/jborean93/exchange-test-environment/tree/master
 
 https://www.it-connect.fr/installation-pas-a-pas-de-microsoft-exchange-2019-sur-windows-server-2022/
@@ -42,6 +82,20 @@ New-SendConnector -Name "Internal Send Connector" -Usage "Internal" -AddressSpac
 
 Configurer Outlook : Configurez les clients Outlook pour se connecter au serveur Exchange en utilisant les paramètres internes.
 
+
+# Trust
+
+* relax trust
+* add sidhistory to some accounts
+
+# Public web site 
+* work on public interface to simulate a public website
+* do something with this box
+* make a dmz with a public linux box and filter from public to domain only allow linux box
+* reorganize inventory:
+    - linux:
+        - firewall:
+        - otherlinux:
 
 
 

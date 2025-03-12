@@ -56,4 +56,4 @@ plbr_gpo_local: {
 }
 
 
-plbr_gpo:  "{{ plbr_gpo_global | combine(plbr_gpo_local) }}"
+#plbr_gpo:  "{{ plbr_gpo_global | combine(plbr_gpo_local) }}"
