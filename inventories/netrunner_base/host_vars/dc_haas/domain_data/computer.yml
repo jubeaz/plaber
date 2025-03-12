@@ -1,5 +1,6 @@
 plbr_domain_real_computers: {
     "eli": {
+        "inventory_key":             "haas_srv01",
         "name":             "eli",
         "dns_hostname":     "eli.haas.local",
         "description":      "mssql",
@@ -11,6 +12,7 @@ plbr_domain_real_computers: {
         "sensitive"       : false
     },
     "bran": {
+        "inventory_key":             "haas_srv02",
         "name":             "bran",
         "dns_hostname":     "bran.haas.local",
         "description":      "cfgmgr iis wsus",
@@ -21,7 +23,20 @@ plbr_domain_real_computers: {
         "proto_transition": false,  # KCD default false
         "sensitive"       : false
     },
+    "pulse": {
+        "inventory_key":             "haas_srv03",
+        "name":             "pulse",
+        "dns_hostname":     "pulse.haas.local",
+        "description":      "exchange",
+        "path":             "OU=Servers,OU=IT,OU=HQ,DC=haas,DC=local",            
+        "delegates"       : [], # RBCD / must be DN msDS-AllowedToActOnBehalfOfOtherIdentity
+        "delegation_type" : false, # "KCD", "KUD", false
+        "constrained"     : [], # KCD / SPN list / msDS-AllowedToDelegateTo
+        "proto_transition": false,  # KCD default false
+        "sensitive"       : false
+    },
     "hypoxia": {
+        "inventory_key":             "haas_ws012",
         "name":             "hypoxia",
         "dns_hostname":     "hypoxia.haas.local",
         "description":      "workstation",

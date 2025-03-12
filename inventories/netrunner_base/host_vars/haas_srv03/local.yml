@@ -1,0 +1,12 @@
+plbr_local_users: {
+    "LA_jubeaz" : {
+        "password"        : "Zaebuj12345+-", 
+        }
+}
+
+
+plbr_local_groups: {
+    "Administrators" : [".\\LA_jubeaz", "haas.local\\L_LOCAL_ADMINS", "haas.local\\L_LOCAL_ADMINS_PULSE"],
+    "Remote Management Users": [".\\LA_jubeaz","haas.local\\L_LOCAL_ADMINS", "haas.local\\L_LOCAL_ADMINS_PULSE", "haas.local\\lowpriv"],
+    "Remote Desktop Users" : [".\\LA_jubeaz","haas.local\\L_LOCAL_ADMINS", "haas.local\\L_LOCAL_ADMINS_PULSE", "haas.local\\lowpriv"],
+}

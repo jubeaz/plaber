@@ -7,24 +7,29 @@
 # ##################################
 # Start Extended inventory computing
 # ##################################
-- name: Compute extended inventory (local)
+- name: COMPUTE EXTENDED INVENTORY (LOCAL)
   import_playbook: books/compute-properties_local.yml
-- name: Compute extended inventory (domain)
+
+- name: COMPUTE EXTENDED INVENTORY (DOMAIN)
   import_playbook: books/compute-properties_domain.yml
 
-- name: Compute extended inventory (forest)
+- name: COMPUTE EXTENDED INVENTORY (FOREST)
   import_playbook: books/compute-properties_forest.yml
   when: groups["child_dc"] | length > 0
 
-- name: Compute extended inventory (trust)
+- name: COMPUTE EXTENDED INVENTORY (TRUST)
   import_playbook: books/compute-properties_trust.yml
   when: groups["trust"] | length > 0
+
+- name: COMPUTE EXTENDED INVENTORY (MSSQL)
+  import_playbook: books/compute-properties_mssql.yml
+  when: groups["mssql"] | length > 0
 # ################################
 # End Extended inventory computing
 # ################################
 
 - name: test 1
-  import_playbook: test_books/_test_dns.yml
+  import_playbook: test_books/_test_mssql.yml
 
 #- nadns exchange
 #  import_playbook: test_books/_test_exchange.yml

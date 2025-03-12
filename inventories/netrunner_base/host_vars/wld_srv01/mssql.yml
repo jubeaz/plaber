@@ -31,13 +31,15 @@ plbr_mssql_executeasuser: {
 #    }
   }
 plbr_mssql_linked_servers: {
-#  "fenris" : {
-#    "data_src": "bran.haas.local",
+#  "haas_srv01" : {
+#    "server": "eli",
+#    "data_src": "eli.haas.local",
 #    "users_mapping": [
 #      {"local_login": "WEYLAND\\acorrea","remote_login": "sa", "remote_password": "ftrum_Ya5d7DCQQN"}
 #      ]
 #  }
-  "fenris" : {
+  "haas_srv01" : {
+    "server": "eli",
     "data_src": "eli.haas.local",
     "users_mapping": [
       {"local_login": "sa","remote_login": "link_account", "remote_password": "nQAhqFRaBJ9XxgC6WYT_tM"}

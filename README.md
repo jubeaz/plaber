@@ -234,7 +234,8 @@ for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vvboxmanage sn
 
 172.16.2.1      haas01.haas.local dc.haas.local haas.local
 172.16.2.10     eli.haas.local eli 
-172.16.2.11     bran.haas.local bran 
+172.16.2.11     bran.haas.local bran
+172.16.2.12     pulse.haas.local pulse 
 172.16.2.20     hypoxia.haas.local hypoxia 
 
 172.16.3.1      rsc01.research.haas.local dc.research.haas.local research.haas.local

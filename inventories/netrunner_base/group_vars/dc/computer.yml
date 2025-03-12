@@ -1,9 +1,10 @@
 
 #domain_computers: "{{domain_fake_computers | ansible.builtin.combine(domain_real_computers)}}"
-plbr_domain_computers: "{{plbr_domain_fake_computers}}"
+#plbr_domain_computers: "{{plbr_domain_fake_computers}}"
 
 plbr_domain_real_computers: {
 #    "fenris": {
+#        "inventory_key":             "",
 #        "name":             "fenris",
 #        "dns_hostname":     "fenris.haas.local",
 #        "description":      "mssql",

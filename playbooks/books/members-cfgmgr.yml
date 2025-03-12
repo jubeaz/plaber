@@ -1,42 +1,42 @@
-# - name: "CONFIGURATION MANAGER PREREQUISITES"
-#   hosts: dc
-#   tags: prerequisites
-#   max_fail_percentage: 0
-#   gather_facts: false
-#   tasks:
-#     - name: Install DHCP
-#       ansible.builtin.include_role:
-#         name: "windows_domain_dhcp"
-#       when: plbr_dhcp is defined
-#     - name: Extend AD schema for CFGMGR
-#       ansible.builtin.include_role:
-#         name: "windows_domain_cfgmgr_build_extend_adschema"
-#       when: plbr_cfgmgr_server | length > 0
-#   vars:
-#     windows_domain_dhcp_domain_name: "{{ plbr_domain_name }}"
-#     windows_domain_dhcp_dc_name: "{{ plbr_domain_dc_name }}"
-#     windows_domain_dhcp_domain_password: "{{ plbr_domain_password }}"
-#     windows_domain_dhcp_dns_ip: "{{ plbr_domain_ip }}"
-#     ip_root: "{{  '.'.join(plbr_domain_ip.split('.')[:3]) }}"
-#     windows_domain_dhcp_ip_from: "{{ ip_root }}.{{ plbr_dhcp[0] }}"
-#     windows_domain_dhcp_ip_to: "{{ ip_root }}.{{ plbr_dhcp[1] }}"
-#     windows_domain_dhcp_ip_mask: "{{ plbr_dhcp[2] }}"
-#     windows_domain_dhcp_lease_duration: "{{ plbr_dhcp[3] }}"
-# 
-# - name: "CONFIGURATION MANAGER INSTALL"
-#   hosts: cfgmgr
-#   tags: build
-#   max_fail_percentage: 0
-#   roles:
-#     - { role: 'windows_domain_cfgmgr_build_iis', tags: 'cfgmgr_iis'}
-#     - { role: 'windows_domain_cfgmgr_build_adk', tags: 'cfgmgr_adk'}
-#     - { role: 'windows_domain_wsus_build', tags: 'cfgmgr_wsus'}
-#     - { role: 'windows_domain_cfgmgr_build_cfgmgr', tags: 'cfgmgr_cfgmgr'}
-#   vars:
-#     wd_wsus_build_mssql_server: "{{ plbr_cfgmgr_mssql_server }}"
-#     wd_wsus_build_domain_name: "{{ plbr_domain_name }}"
-#     wd_wsus_build_domain_password: "{{ plbr_domain_password }}"
-#     install_type: "server"
+- name: "CONFIGURATION MANAGER PREREQUISITES"
+  hosts: dc
+  tags: prerequisites
+  max_fail_percentage: 0
+  gather_facts: false
+  tasks:
+    - name: Install DHCP
+      ansible.builtin.include_role:
+        name: "windows_domain_dhcp"
+      when: plbr_dhcp is defined
+    - name: Extend AD schema for CFGMGR
+      ansible.builtin.include_role:
+        name: "windows_domain_cfgmgr_build_extend_adschema"
+      when: plbr_cfgmgr_server | length > 0
+  vars:
+    windows_domain_dhcp_domain_name: "{{ plbr_domain_name }}"
+    windows_domain_dhcp_dc_name: "{{ plbr_domain_dc_name }}"
+    windows_domain_dhcp_domain_password: "{{ plbr_domain_password }}"
+    windows_domain_dhcp_dns_ip: "{{ plbr_domain_ip }}"
+    ip_root: "{{  '.'.join(plbr_domain_ip.split('.')[:3]) }}"
+    windows_domain_dhcp_ip_from: "{{ ip_root }}.{{ plbr_dhcp[0] }}"
+    windows_domain_dhcp_ip_to: "{{ ip_root }}.{{ plbr_dhcp[1] }}"
+    windows_domain_dhcp_ip_mask: "{{ plbr_dhcp[2] }}"
+    windows_domain_dhcp_lease_duration: "{{ plbr_dhcp[3] }}"
+
+- name: "CONFIGURATION MANAGER INSTALL"
+  hosts: cfgmgr
+  tags: build
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain_cfgmgr_build_iis', tags: 'cfgmgr_iis'}
+    - { role: 'windows_domain_cfgmgr_build_adk', tags: 'cfgmgr_adk'}
+    - { role: 'windows_domain_wsus_build', tags: 'cfgmgr_wsus'}
+    - { role: 'windows_domain_cfgmgr_build_cfgmgr', tags: 'cfgmgr_cfgmgr'}
+  vars:
+    wd_wsus_build_mssql_server: "{{ plbr_cfgmgr_mssql_server }}"
+    wd_wsus_build_domain_name: "{{ plbr_domain_name }}"
+    wd_wsus_build_domain_password: "{{ plbr_domain_password }}"
+    install_type: "server"
 
 
 - name: "CONFIGURATION MANAGER CONFIGURATION"
@@ -68,36 +68,36 @@
     }
 
 
-##- name: "CFGMGR PXE setup"
-##  hosts: CFGMGR
-##  tags: config
-##  roles:
-##    - { role: 'windows_domain_cfgmgr_pxe', tags: 'cfgmgr_pxe' }
-##  vars:
-##    naa_user: "{{domain_name}}\\{{cfgmgr_network_access_account}}"
-##    naa_pass: "{{hostvars[domain_dc_ansible_inventory_key].domain_users_regular[cfgmgr_network_access_account].password}}"
-##
-###- name: "CFGMGR config"
-###  hosts: CFGMGR
-###  tags: config
-###  max_fail_percentage: 0
-###  roles:
-###    - { role: 'windows_domain/CFGMGR/config/client_install', tags: 'cfgmgr_client_install'}
+- name: "CFGMGR PXE setup"
+  hosts: CFGMGR
+  tags: config
+  roles:
+    - { role: 'windows_domain_cfgmgr_pxe', tags: 'cfgmgr_pxe' }
+  vars:
+    naa_user: "{{domain_name}}\\{{cfgmgr_network_access_account}}"
+    naa_pass: "{{hostvars[domain_dc_ansible_inventory_key].domain_users_regular[cfgmgr_network_access_account].password}}"
 
-#
-##- name: "CFGMGR console install"
-##  hosts: cfgmgr_console
-##  tags: build
-##  max_fail_percentage: 0
-##  roles:
-##    - { role: 'windows_domain_cfgmgr_install_cfgmgr', tags: 'cfgmgr_cfgmgr', install_type: "console"}
-#
-## - name: "CFGMGR config"
-##   hosts: CFGMGR
-##   tags: build
-##   max_fail_percentage: 0
-##   tasks:
-##     - name: Reboot
-##       ansible.windows.win_reboot:
-##         reboot_timeout: 600
-##         post_reboot_delay: 30
+- name: "CFGMGR config"
+  hosts: CFGMGR
+  tags: config
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain/CFGMGR/config/client_install', tags: 'cfgmgr_client_install'}
+
+
+- name: "CFGMGR console install"
+  hosts: cfgmgr_console
+  tags: build
+  max_fail_percentage: 0
+  roles:
+    - { role: 'windows_domain_cfgmgr_install_cfgmgr', tags: 'cfgmgr_cfgmgr', install_type: "console"}
+
+- name: "CFGMGR config"
+  hosts: CFGMGR
+  tags: build
+  max_fail_percentage: 0
+  tasks:
+    - name: Reboot
+      ansible.windows.win_reboot:
+        reboot_timeout: 600
+        post_reboot_delay: 30

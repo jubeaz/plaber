@@ -30,26 +30,37 @@ plbr_mssql_executeasuser: {
 #        }
 }
 plbr_mssql_linked_servers: {
-#    "archer" : {
+#    "wld_srv01" : {
+#        "server": "archer",
 #        "data_src": "archer.weyland.local",
 #        "users_mapping": [
 #            {"local_login": "HAAS\\mhendrik","remote_login": "WEYLAND\\anson", "remote_password": "z77w_TeCUCD_wLrD"}
 #        ]
 #    },
-#    "fenris" : {
+#    "rsc_srv01" : {
+#        "server": "fenris",
 #        "data_src": "fenris.research.haas.local",
 #        "users_mapping": [
 #            {"local_login": "HAAS\\mhendrik","remote_login": "RESEARCH\\adm_arose", "remote_password": "az66_TBekvT_wLLd"}
 #        ]
 #    }
-    "archer" : {
+    "wld_srv01" : {
+        "server": "archer",
         "data_src": "archer.weyland.local",
         "users_mapping": [
             {"local_login": "sa","remote_login": "link_account", "remote_password": "xTmjUz7k8DJg2_HYq6Ph3V"}
         ]
     },
-    "fenris" : {
+    "rsc_srv01" : {
+        "server": "fenris",
         "data_src": "fenris.research.haas.local",
+        "users_mapping": [
+            {"local_login": "sa","remote_login": "link_account", "remote_password": "nQAhqFRaBJ9XxgC6WYT_tM"}
+        ]
+    },
+    "rsc_srv03" : {
+        "server": "toto",
+        "data_src": "toto.research.haas.local",
         "users_mapping": [
             {"local_login": "sa","remote_login": "link_account", "remote_password": "nQAhqFRaBJ9XxgC6WYT_tM"}
         ]

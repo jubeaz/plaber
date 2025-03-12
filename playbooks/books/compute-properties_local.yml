@@ -54,6 +54,34 @@
         cacheable: true
       when: not hostvars['fw'].disable_nat
 
+    - name: Register plbr_domain_computers
+      ansible.builtin.set_fact:
+        plbr_domain_computers: "{{ plbr_domain_fake_computers | ansible.builtin.combine(plbr_domain_real_computers) }}"
+        cacheable: true
+      when: inventory_hostname in groups['dc']
+
+    - name: Compute fake computers
+      when: inventory_hostname in groups['dc']
+      block:
+        - name: Init missing computers
+          ansible.builtin.set_fact:
+            missing: "{{ {} }}"
+        - name: Compute missing computers
+          ansible.builtin.set_fact:
+            missing: "{{ missing | ansible.builtin.combine({item.key: item.value}) }}"
+          with_dict: "{{ plbr_domain_real_computers }}"
+          when: item.value.inventory_key not in hostvars
+
+        - name: Register plbr_domain_computers
+          ansible.builtin.set_fact:
+            plbr_domain_computers: "{{ plbr_domain_fake_computers | ansible.builtin.combine(missing) }}"
+            cacheable: true
+
+        - name: Debug plbr_domain_computers
+          ansible.builtin.debug:
+            var: plbr_domain_computers
+
+
 #    - name: Compute windows config role variables
 #      ansible.builtin.set_fact:
 #        w_cfg_base_winrm_allow_ip: "{{ w_cfg_base_winrm_allow_ip | default([]) }} + {{ plbr_ansible_controller_ip }}"

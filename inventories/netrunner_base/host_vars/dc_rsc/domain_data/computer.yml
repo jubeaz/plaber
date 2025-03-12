@@ -1,5 +1,6 @@
 plbr_domain_real_computers: {
     "fenris": {
+        "inventory_key":             "rsc_srv01",
         "name":             "fenris",
         "dns_hostname":     "fenris.research.haas.local",
         "description":      "mssql",
@@ -11,6 +12,7 @@ plbr_domain_real_computers: {
         "sensitive"       : false
     },
     "architect": {
+        "inventory_key":             "rsc_ws01",
         "name":             "architect",
         "dns_hostname":     "architect.research.haas.local",
         "description":      "ws",

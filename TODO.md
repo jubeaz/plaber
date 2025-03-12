@@ -1,5 +1,10 @@
 
 # to check
+
+## WAC 
+
+`https://go.microsoft.com/fwlink/?linkid=2220149&clcid=0x40c&culture=fr-fr&country=fr`
+
 ## Expiration date
  https://github.com/clong/DetectionLab/blob/master/Vagrant/scripts/fix-windows-expiration.ps1
 

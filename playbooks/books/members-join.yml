@@ -8,7 +8,7 @@
     - name: Join servers
       ansible.builtin.include_role:
         name: windows_domain_join_server
-      when: not ansible_windows_domain_member
+#      when: not ansible_windows_domain_member
 
     - name: Install features
       ansible.builtin.include_role:
@@ -39,7 +39,7 @@
     - name: Join servers
       ansible.builtin.include_role:
         name: windows_domain_join_workstation
-      when: not ansible_windows_domain_member
+#      when: not ansible_windows_domain_member
 
     - name: Install capabilities
       ansible.builtin.include_role:

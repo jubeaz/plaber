@@ -25,8 +25,8 @@ Vagrant.configure("2") do |config|
 
   boxes = [
     { 
-      # deployment_type: "routed", # "routed" will exploit bridge interface anything else else will rely on NAT
-      deployment_type: "nat", # "routed" will exploit bridge interface anything else else will rely on NAT
+      # deployment_type: "nat", # "routed" will exploit bridge interface anything else else will rely on NAT
+      deployment_type: "routed", # "routed" will exploit bridge interface anything else else will rely on NAT
       bname: "nrunner_fw", 
     	nets: [
     		{
@@ -49,32 +49,32 @@ Vagrant.configure("2") do |config|
       ram: 1*1024,
       cpu: 1
     },
-#    { 
-#      # only internal
-#      bname: "nrunner_wld_dc", 
-#      ip: "172.16.1.1", 
-#  	  net: net_defs[:weyland], 
-#      #box: "gusztavvargadr/windows-server-core",
-#      box: "gusztavvargadr/windows-server",
-#      #box_version: "2102.0.2409",  
-#      os: "windows", 
-#      ram: 2*1024,
-#      #ram: 4*1024,
-#      cpu: 2
-#    },
-#    { 
-#      # internal and public
-#      bname: "nrunner_wld_srv01", 
-#      ip: "172.16.1.10", 
-#  	  net: net_defs[:weyland], 
-#      #box: "gusztavvargadr/windows-server-core",
-#      box: "gusztavvargadr/windows-server",
-#      #box_version: "2102.0.2409",  
-#      os: "windows", 
-#      #ram: 2*1024,
-#      ram: 4*1024,
-#      cpu: 2
-#    },
+    { 
+      # only internal
+      bname: "nrunner_wld_dc", 
+      ip: "172.16.1.1", 
+  	  net: net_defs[:weyland], 
+      #box: "gusztavvargadr/windows-server-core",
+      box: "gusztavvargadr/windows-server",
+      #box_version: "2102.0.2409",  
+      os: "windows", 
+      ram: 2*1024,
+      #ram: 4*1024,
+      cpu: 2
+    },
+    { 
+      # internal and public
+      bname: "nrunner_wld_srv01", 
+      ip: "172.16.1.10", 
+  	  net: net_defs[:weyland], 
+      #box: "gusztavvargadr/windows-server-core",
+      box: "gusztavvargadr/windows-server",
+      #box_version: "2102.0.2409",  
+      os: "windows", 
+      #ram: 2*1024,
+      ram: 4*1024,
+      cpu: 2
+    },
     { 
       # only internal
       bname: "nrunner_haas_dc", 
@@ -101,10 +101,24 @@ Vagrant.configure("2") do |config|
       ram: 4*1024,
       cpu: 2
     },
+#    { 
+#      # only internal
+#      bname: "nrunner_haas_srv02", 
+#      ip: "172.16.2.11", 
+#  	  net: net_defs[:haas], 
+#      #box: "gusztavvargadr/windows-server-core",
+#      #ram: 2*1024,
+#      box: "gusztavvargadr/windows-server",
+#      #box_version: "2102.0.2409",  
+#      os: "windows", 
+#      #ram: 2*1024,
+#      ram: 4*1024,
+#      cpu: 2
+#    },
     { 
       # only internal
-      bname: "nrunner_haas_srv02", 
-      ip: "172.16.2.11", 
+      bname: "nrunner_haas_srv03", 
+      ip: "172.16.2.12", 
   	  net: net_defs[:haas], 
       #box: "gusztavvargadr/windows-server-core",
       #ram: 2*1024,
@@ -119,31 +133,6 @@ Vagrant.configure("2") do |config|
 #      # only internal
 #      bname: "nrunner_haas_ws01", 
 #      ip: "172.16.2.20", 
-#  	  net: net_defs[:haas], 
-#      box: "gusztavvargadr/windows-11", 
-#      #box_version: "2202.0.2409 ", 
-#      os: "windows", 
-#      #ram: 2*1024,
-#      ram: 4*1024,
-#      cpu: 2
-#    },
-#    { 
-#      # only internal
-#      bname: "nrunner_rsc_dc", 
-#      ip: "172.16.3.1", 
-#  	  net: net_defs[:research], 
-#      #box: "gusztavvargadr/windows-server-core",
-#      box: "gusztavvargadr/windows-server",
-#      #box_version: "2102.0.2409",  
-#      os: "windows", 
-#      #ram: 2*1024,
-#      ram: 2*1024,
-#      cpu: 2
-#    },
-#    { 
-#      # only internal
-#      bname: "nrunner_rsc_ws01", 
-#      ip: "172.16.3.20", 
 #  	  net: net_defs[:research], 
 #      box: "gusztavvargadr/windows-11", 
 #      #box_version: "2202.0.2409 ", 
@@ -152,19 +141,44 @@ Vagrant.configure("2") do |config|
 #      ram: 4*1024,
 #      cpu: 2
 #    },
-#    { 
-#      # only internal
-#      bname: "nrunner_rsc_srv01", 
-#      ip: "172.16.3.10", 
-#  	  net: net_defs[:research], 
-#      #box: "gusztavvargadr/windows-server-core",
-#      box: "gusztavvargadr/windows-server",
-#      #box_version: "2102.0.2409",  
-#      os: "windows", 
-#      #ram: 2*1024,
-#      ram: 4*1024,
-#      cpu: 2
-#    }
+    { 
+      # only internal
+      bname: "nrunner_rsc_dc", 
+      ip: "172.16.3.1", 
+  	  net: net_defs[:research], 
+      #box: "gusztavvargadr/windows-server-core",
+      box: "gusztavvargadr/windows-server",
+      #box_version: "2102.0.2409",  
+      os: "windows", 
+      #ram: 2*1024,
+      ram: 2*1024,
+      cpu: 2
+    },
+    { 
+      # only internal
+      bname: "nrunner_rsc_srv01", 
+      ip: "172.16.3.10", 
+  	  net: net_defs[:research], 
+      #box: "gusztavvargadr/windows-server-core",
+      box: "gusztavvargadr/windows-server",
+      #box_version: "2102.0.2409",  
+      os: "windows", 
+      #ram: 2*1024,
+      ram: 4*1024,
+      cpu: 2
+    },
+    { 
+      # only internal
+      bname: "nrunner_rsc_ws01", 
+      ip: "172.16.3.20", 
+  	  net: net_defs[:research], 
+      box: "gusztavvargadr/windows-11", 
+      #box_version: "2202.0.2409 ", 
+      os: "windows", 
+      #ram: 2*1024,
+      ram: 4*1024,
+      cpu: 2
+    }
   ]
 
   # disable rdp forwarded port inherited from gusztavvargadr box
@@ -216,8 +230,10 @@ Vagrant.configure("2") do |config|
       if box[:os] == "windows"
         target.vm.guest = :windows
         target.vm.communicator = "winrm"
-        # Ethernet 1 is always NAT
-        # alway provision an INTERNAL network on Ethernet 2
+        #config.vm.communicator = 'winrm'
+        #config.winssh.shell = 'powershell'
+      
+        #  alway provision an INTERNAL network on Ethernet 2
         n_info = box[:net]
         target.vm.network :private_network, ip: box[:ip], virtualbox__intnet: n_info[:name]
         target.vm.provision :shell, :path => "../../scripts/all_in_one.ps1", privileged: false, args: ["-IFName", "Ethernet 2", "-IP", box[:ip], "-Mask", n_info[:mask], "-Gateway", n_info[:gw]]
@@ -230,7 +246,6 @@ Vagrant.configure("2") do |config|
       end
       # Arch specific
       if box[:os] == "arch"
-        # eth0  is always NAT
         # Provision a BRIDGED interface on eth1	
         n_info_p = net_defs[:bridge]
         target.vm.network :public_network, bridge: n_info_p[:name], ip: box[:ip_p]
@@ -247,8 +262,7 @@ Vagrant.configure("2") do |config|
       # Linux specific
       if box[:os] == "linux"
         target.vm.communicator = "ssh"
-        # eth0  is always NAT
-        # alway provision an INTERAL network on eth1
+        #  alway provision an internal network on Ethernet 2
         n_info = box[:net]
         target.vm.network :private_network, ip: box[:ip], virtualbox__intnet: n_info[:name]
         target.vm.provision :shell, :path => "../../scripts/fix_ip_ubuntu.sh", privileged: true, args: [n_info[:gw]]

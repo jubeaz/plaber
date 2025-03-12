@@ -1,5 +1,6 @@
 plbr_domain_real_computers: {
     "archer": {
+        "inventory_key":             "wld_srv01",
         "name":             "archer",
         "dns_hostname":     "archer.weyland.local",
         "path":             "OU=Servers,OU=IT,OU=Argus,DC=weyland,DC=local",          

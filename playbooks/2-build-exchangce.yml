@@ -24,7 +24,6 @@
   import_playbook: books/compute-properties_mssql.yml
   when: groups["mssql"] | length > 0
 
-
 - name: COMPUTE EXTENDED INVENTORY (EXCHANGE)
   import_playbook: books/compute-properties_exchange.yml
 # ################################

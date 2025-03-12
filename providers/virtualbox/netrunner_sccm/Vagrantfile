@@ -117,9 +117,23 @@ Vagrant.configure("2") do |config|
     },
 #    { 
 #      # only internal
+#      bname: "nrunner_haas_srv03", 
+#      ip: "172.16.2.12", 
+#  	  net: net_defs[:haas], 
+#      #box: "gusztavvargadr/windows-server-core",
+#      #ram: 2*1024,
+#      box: "gusztavvargadr/windows-server",
+#      #box_version: "2102.0.2409",  
+#      os: "windows", 
+#      #ram: 2*1024,
+#      ram: 4*1024,
+#      cpu: 2
+#    },
+#    { 
+#      # only internal
 #      bname: "nrunner_haas_ws01", 
 #      ip: "172.16.2.20", 
-#  	  net: net_defs[:haas], 
+#  	  net: net_defs[:research], 
 #      box: "gusztavvargadr/windows-11", 
 #      #box_version: "2202.0.2409 ", 
 #      os: "windows", 
@@ -142,11 +156,12 @@ Vagrant.configure("2") do |config|
     },
     { 
       # only internal
-      bname: "nrunner_rsc_ws01", 
-      ip: "172.16.3.20", 
+      bname: "nrunner_rsc_srv01", 
+      ip: "172.16.3.10", 
   	  net: net_defs[:research], 
-      box: "gusztavvargadr/windows-11", 
-      #box_version: "2202.0.2409 ", 
+      #box: "gusztavvargadr/windows-server-core",
+      box: "gusztavvargadr/windows-server",
+      #box_version: "2102.0.2409",  
       os: "windows", 
       #ram: 2*1024,
       ram: 4*1024,
@@ -154,12 +169,11 @@ Vagrant.configure("2") do |config|
     },
     { 
       # only internal
-      bname: "nrunner_rsc_srv01", 
-      ip: "172.16.3.10", 
+      bname: "nrunner_rsc_ws01", 
+      ip: "172.16.3.20", 
   	  net: net_defs[:research], 
-      #box: "gusztavvargadr/windows-server-core",
-      box: "gusztavvargadr/windows-server",
-      #box_version: "2102.0.2409",  
+      box: "gusztavvargadr/windows-11", 
+      #box_version: "2202.0.2409 ", 
       os: "windows", 
       #ram: 2*1024,
       ram: 4*1024,

@@ -26,10 +26,10 @@
     - name: Donwload files
       ansible.builtin.include_role:
         name: "windows_domain_download_files"
-      loop: "{{ user_downloads | dict2items }}"
+      loop: "{{ plbr_user_downloads | dict2items }}"
       loop_control:
         loop_var: u
-      when: user_downloads is defined
+      when: plbr_user_downloads is defined
       vars:
         windows_domain_download_files_downloads: "{{ u.value }}"
         windows_domain_download_files_user: "{{ u.key }}"

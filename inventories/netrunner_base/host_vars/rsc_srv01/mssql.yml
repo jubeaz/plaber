@@ -21,13 +21,15 @@ plbr_mssql_executeaslogin: {
 plbr_mssql_executeasuser: {
 }
 plbr_mssql_linked_servers: {
-#    "bran" : {
-#        "data_src": "bran.haas.local",
+#  "haas_srv01" : {
+#        "server": "eli",
+#        "data_src": "eli.haas.local",
 #        "users_mapping": [
 #            {"local_login": "RESEARCH\\adm_arose","remote_login": "HAAS\\rknight", "remote_password": "5jqkKJJjmqup_o_E"}
 #            ]
 #        }
-    "bran" : {
+    "haas_srv01" : {
+        "server": "eli",
         "data_src": "eli.haas.local",
         "users_mapping": [
             {"local_login": "sa","remote_login": "link_account", "remote_password": "rEKA2mcGJte5f_9z7PZQ6p"}
