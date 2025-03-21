@@ -13,7 +13,8 @@
         cfgmgr_mssql_server: "{{ plbr_cfgmgr_mssql_server }}"
         cfgmgr_domain_name: "{{ plbr_domain_name }}"
         cfgmgr_domain_password: "{{ plbr_domain_password }}"
-        cfgmgr_server_cn: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_cfgmgr_server }}"
+        cfgmgr_server_cn: "{{ plbr_cfgmgr_server_cn }}"
+        cfgmgr_server_domain: "{{ plbr_cfgmgr_server_domain }}"
         cfgmgr_server_fqdn: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_cfgmgr_server }}.{{ plbr_domain_name }}"
         cfgmgr_site_code: "{{ plbr_cfgmgr_site_code }}"
         cfgmgr_network_access_account: "{{ plbr_cfgmgr_network_access_account }}"
@@ -42,7 +43,23 @@
       ansible.builtin.set_fact:
         cfgmgr_domain_name: "{{ plbr_domain_name }}"
         cfgmgr_domain_password: "{{ plbr_domain_password }}"
-        cfgmgr_server_cn: "{{ plbr_cfgmgr_server }}"
+        cfgmgr_server_cn: "{{ plbr_cfgmgr_server_cn }}"
         cfgmgr_installation_media_url: "{{ plbr_cfgmgr_installation_media_url }}"
         cfgmgr_installation_media_name: "{{ plbr_cfgmgr_installation_media_name }}"
       when: plbr_cfgmgr_server | length > 0
+
+- name: CONFIGURATION MANAGER SET FACTS (CONSOLE)
+  hosts: cfgmgr_console
+  max_fail_percentage: 0
+  gather_facts: false
+  tasks:
+    - name: Register CM roles facts
+      ansible.builtin.set_fact:
+        cfgmgr_installation_media_url: "{{ plbr_cfgmgr_installation_media_url }}"
+        cfgmgr_installation_media_name: "{{ plbr_cfgmgr_installation_media_name }}"
+        cfgmgr_installation_cpp_redist: "{{ plbr_cfgmgr_installation_cpp_redist }}"
+        cfgmgr_installation_sqlserver_odbcdriver: "{{ plbr_cfgmgr_installation_sqlserver_odbcdriver }}"
+        cfgmgr_domain_name: "{{ plbr_domain_name }}"
+        cfgmgr_domain_password: "{{ plbr_domain_password }}"
+        cfgmgr_server_cn: "{{ plbr_cfgmgr_server_cn }}"
+        cfgmgr_server_domain: "{{ plbr_cfgmgr_server_domain }}"

@@ -1,6 +1,38 @@
 
 # To fix
 
+# CFGMGR
+
+# PXE task sequence
+```powershell
+          $domainName="haas.local"
+          $sccmFQDN="bran.haas.local"
+          $domainAccount="haas.local\\hagen"
+          $domainPassword='haGen_Pa$$word'
+          $ou="LDAP://CN=Computers,DC=haas,DC=local"
+          $siteCode="HS1"
+          $shareServer="bran"
+          $adminPass="NuvqREtyaT_k9E5C"
+```
+```
+TASK [windows_domain_cfgmgr_pxe : Create Task sequence] **************************************************************
+An exception occurred during task execution. To see the full traceback, use -vvv. The error was:    at System.Management.Automation.CommandProcessor.ProcessRecord()
+fatal: [haas_srv02]: FAILED! => {"changed": false, "msg": "Unhandled exception while executing module: The following exception occurred while retrieving members: \"Cannot process argument because the value of argument \"member\" is null. Change the value of argument \"member\" to a non-null value.\""}
+```
+
+# working but reporting not working
+some play produce error but once run again one can see they actually worked
+For exemple:
+```
+TASK [windows_domain_cfgmgr_cfg_users : Create CM Administrative User] ***********************************************
+An exception occurred during task execution. To see the full traceback, use -vvv. The error was:    at System.Management.Automation.CommandProcessor.ProcessRecord()
+failed: [haas_srv02] (item=HAAS\U_cfgmgr_ADMINS) => {"ansible_loop_var": "item", "changed": false, "item": "HAAS\\U_cfgmgr_ADMINS", "msg": "Unhandled exception while executing module: The following exception occurred while retrieving members: \"Cannot process argument because the value of argument \"member\" is null. Change the value of argument \"member\" to a non-null value.\""}
+```
+
+# Exchange
+
+setup.exe /mode:recoverserver /iacceptexchangeserverlicense
+
 # Vagrant
 
 ## Memory limit

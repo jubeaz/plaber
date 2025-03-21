@@ -70,6 +70,7 @@ all:
           hosts:
         cfgmgr_console:
           hosts: 
+            rsc_ws01: {}
 #            haas_ws01: {}    
         mssql_ssms:
           hosts: 

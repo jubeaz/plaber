@@ -64,10 +64,10 @@ plbr_domain_groups : {
         "path" : "CN=Users,DC=research,DC=haas,DC=local",
         "members" : [
         ],
-        "foreign_users": ["HAAS\\howler"],
+        "foreign_users": ["HAAS\\howler", "HAAS\\waco"],
         "foreign_gmsas": [],
         "foreign_computers": [],
-        "foreign_groups": ["HAAS\\waco"]
+        "foreign_groups": []
     },
     "L_LOCAL_ADMINS_FENRIS" : {
         "scope": "domainlocal", # universal, global or domainlocal default domainlocal

@@ -69,7 +69,7 @@
 
 
 - name: "CFGMGR PXE setup"
-  hosts: CFGMGR
+  hosts: cfgmgr
   tags: config
   roles:
     - { role: 'windows_domain_cfgmgr_pxe', tags: 'cfgmgr_pxe' }
@@ -78,11 +78,11 @@
     naa_pass: "{{hostvars[domain_dc_ansible_inventory_key].domain_users_regular[cfgmgr_network_access_account].password}}"
 
 - name: "CFGMGR config"
-  hosts: CFGMGR
+  hosts: cfgmgr
   tags: config
   max_fail_percentage: 0
   roles:
-    - { role: 'windows_domain/CFGMGR/config/client_install', tags: 'cfgmgr_client_install'}
+    - { role: 'windows_domain_cfgmgr_cfg_client_install', tags: 'cfgmgr_client_install'}
 
 
 - name: "CFGMGR console install"
@@ -90,10 +90,10 @@
   tags: build
   max_fail_percentage: 0
   roles:
-    - { role: 'windows_domain_cfgmgr_install_cfgmgr', tags: 'cfgmgr_cfgmgr', install_type: "console"}
+    - { role: 'windows_domain_cfgmgr_build_cfgmgr', tags: 'cfgmgr_cfgmgr', install_type: "console"}
 
 - name: "CFGMGR config"
-  hosts: CFGMGR
+  hosts: cfgmgr
   tags: build
   max_fail_percentage: 0
   tasks:
