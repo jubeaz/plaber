@@ -14,9 +14,9 @@ Vagrant.configure("2") do |config|
   #ENV['VAGRANT_DEFAULT_PROVIDER'] = 'vmware_desktop'
 
   net_defs = { 
-    weyland:  {name: "weyland",  mask: "255.255.255.0", network: "172.16.1.0", gw: "172.16.1.254"},
-  	haas:     {name: "haas",     mask: "255.255.255.0", network: "172.16.2.0", gw: "172.16.2.254"},
-  	research: {name: "research", mask: "255.255.255.0", network: "172.16.3.0", gw: "172.16.3.254"},
+    weyland:  {name: "weyland",  mask: "255.255.255.0", network: "172.17.1.0", gw: "172.17.1.254"},
+  	haas:     {name: "haas",     mask: "255.255.255.0", network: "172.17.2.0", gw: "172.17.2.254"},
+  	research: {name: "research", mask: "255.255.255.0", network: "172.17.3.0", gw: "172.17.3.254"},
     bridge: {name: "br0", mask: "255.255.255.0", network: "192.168.2.0", gw: "192.168.2.1"}
 #    bridge: {name: "br1", mask: "255.255.0.0", network: "192.168.58.0", gw: "192.168.2.1"}
   }
@@ -26,15 +26,15 @@ Vagrant.configure("2") do |config|
       bname: "nrunner_fw", 
     	nets: [
     		{
-    			ip: "172.16.2.254",
+    			ip: "172.17.2.254",
           net: net_defs[:haas], 
     		},
     		{
-    			ip: "172.16.1.254",
+    			ip: "172.17.1.254",
           net: net_defs[:weyland], 
     		},
     		{
-    			ip: "172.16.3.254",
+    			ip: "172.17.3.254",
           net: net_defs[:research], 
     		}
     	],
@@ -48,7 +48,7 @@ Vagrant.configure("2") do |config|
     { 
       # only internal
       bname: "nrunner_wld_dc", 
-      ip: "172.16.1.1", 
+      ip: "172.17.1.1", 
   	  net: net_defs[:weyland], 
       box: "gusztavvargadr/windows-server-core", 
       box_version: "2102.0.2310", 
@@ -59,7 +59,7 @@ Vagrant.configure("2") do |config|
     { 
       # only internal
       bname: "nrunner_wld_srv01", 
-      ip: "172.16.1.10", 
+      ip: "172.17.1.10", 
   	  net: net_defs[:weyland], 
       box: "gusztavvargadr/windows-server", 
       box_version: "2102.0.2310", 
@@ -70,7 +70,7 @@ Vagrant.configure("2") do |config|
     { 
       # only internal
       bname: "nrunner_haas_dc", 
-      ip: "172.16.2.1", 
+      ip: "172.17.2.1", 
   	  net: net_defs[:haas], 
       #box: "gusztavvargadr/windows-server-core",
       #ram: 2048,
@@ -83,7 +83,7 @@ Vagrant.configure("2") do |config|
     { 
       # only internal
       bname: "nrunner_haas_srv01", 
-      ip: "172.16.2.10", 
+      ip: "172.17.2.10", 
   	  net: net_defs[:haas], 
       #box: "gusztavvargadr/windows-server-core",
       #ram: 2048,
@@ -95,7 +95,7 @@ Vagrant.configure("2") do |config|
     { 
       # only internal
       bname: "nrunner_rsc_dc", 
-      ip: "172.16.3.1", 
+      ip: "172.17.3.1", 
   	  net: net_defs[:research], 
       #box: "gusztavvargadr/windows-server-core", 
       box: "gusztavvargadr/windows-server", 
@@ -107,7 +107,7 @@ Vagrant.configure("2") do |config|
     { 
       # only internal
       bname: "nrunner_rsc_ws01", 
-      ip: "172.16.3.20", 
+      ip: "172.17.3.20", 
   	  net: net_defs[:research], 
       box: "gusztavvargadr/windows-10", 
       box_version: "2202.0.2312 ", 
@@ -118,7 +118,7 @@ Vagrant.configure("2") do |config|
     { 
       # only internal
       bname: "nrunner_rsc_srv01", 
-      ip: "172.16.3.10", 
+      ip: "172.17.3.10", 
   	  net: net_defs[:research], 
       #box: "gusztavvargadr/windows-server-core",
       box: "gusztavvargadr/windows-server",
@@ -130,7 +130,7 @@ Vagrant.configure("2") do |config|
       # internal and public
       bname: "nrunner_rsc_lin01", 
       ip_p: "192.168.2.101",
-      ip: "172.16.3.11", 
+      ip: "172.17.3.11", 
   	  net: net_defs[:research], 
       box: "ubuntu/focal64", 
       box_version: "20240519.0.0", 

@@ -12,17 +12,17 @@ sshpass -p vagrant ssh vagrant@192.168.2.100
 
 ### rdp
 ```bash
-xfreerdp /cert:ignore /v:172.16.0.1 /u:vagrant /p:vagrant /h:1024 /w:1640 /drive:share,./ +drives
-evil-winrm -i 172.16.1.1 -u vagrant -p vagrant 
+xfreerdp /cert:ignore /v:172.17.0.1 /u:vagrant /p:vagrant /h:1024 /w:1640 /drive:share,./ +drives
+evil-winrm -i 172.17.1.1 -u vagrant -p vagrant 
 ``
 ``bash
-xfreerdp /cert:ignore /v:172.16.0.20 /u:jubeaz@haas.local /p:'jubeaz' /h:1024 /w:1640 /drive:share,./ +drives
-xfreerdp /cert:ignore /v:172.16.0.1 /u:administrator@haas.local /p:'Jubeaz12345+-' /h:1024 /w:1640 /drive:share,./ +drives
-xfreerdp /cert:ignore /v:172.16.1.1 /u:administrator@weyland.local /p:'Jubeaz12345+-' /h:1024 /w:1640 /drive:share,./ +drives
-xfreerdp /cert:ignore /v:172.16.2.1 /u:administrator@research.weyland.local /p:'Jubeaz12345+-' /h:1024 /w:1640 /drive:share,./ +drives
+xfreerdp /cert:ignore /v:172.17.0.20 /u:jubeaz@haas.local /p:'jubeaz' /h:1024 /w:1640 /drive:share,./ +drives
+xfreerdp /cert:ignore /v:172.17.0.1 /u:administrator@haas.local /p:'Jubeaz12345+-' /h:1024 /w:1640 /drive:share,./ +drives
+xfreerdp /cert:ignore /v:172.17.1.1 /u:administrator@weyland.local /p:'Jubeaz12345+-' /h:1024 /w:1640 /drive:share,./ +drives
+xfreerdp /cert:ignore /v:172.17.2.1 /u:administrator@research.weyland.local /p:'Jubeaz12345+-' /h:1024 /w:1640 /drive:share,./ +drives
 ```
 ```bash
-xfreerdp /cert:ignore /v:172.16.0.12 /u:HAAS\\mhendrik /p:'b_QNoDKoVJTjU3gq' /h:1024 /w:1640 /drive:share,./ +drives
+xfreerdp /cert:ignore /v:172.17.0.12 /u:HAAS\\mhendrik /p:'b_QNoDKoVJTjU3gq' /h:1024 /w:1640 /drive:share,./ +drives
 ```
 
 ### rbcd

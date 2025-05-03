@@ -1,0 +1,21 @@
+hostapd_interface: wlan0
+hostapd_driver: nl80211
+hostapd_ssid: haas
+hostapd_hw_mode: g
+hostapd_channel: 1
+hostapd_macaddr_acl: 0
+hostapd_auth_algs: 3
+hostapd_own_ip_addr: 172.17.2.254
+hostapd_nas_identifier: ap.haas.local
+hostapd_auth_server_addr: 172.17.2.10
+hostapd_auth_server_port: 1812
+hostapd_auth_server_shared_secret: secret
+hostapd_acct_server_addr: 172.17.2.10
+hostapd_acct_server_port: 1813
+hostapd_acct_server_shared_secret: secret
+hostapd_ieee80211w: 0
+hostapd_wpa_key_mgmt: WPA-EAP
+hostapd_wpa_pairwise: TKIP CCMP
+hostapd_rsn_pairwise: CCMP
+hostapd_wpa: 3
+hostapd_challenge: challenge1234

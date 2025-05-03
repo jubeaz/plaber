@@ -29,7 +29,10 @@
 # ################################
 
 - name: test 1
-  import_playbook: test_books/_test_mssql.yml
+  import_playbook: books/members-nps.yml
+
+#- name: test 1
+#  import_playbook: test_books/_test_mssql.yml
 
 #- nadns exchange
 #  import_playbook: test_books/_test_exchange.yml

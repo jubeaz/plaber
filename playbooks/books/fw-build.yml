@@ -13,8 +13,44 @@
     - { role: time-sync }
     - { role: gen-locale}
     - { role: opensshd}
-
+    - { role: wifi_ap}
   tasks:
+    - name: Create hostapd.conf
+      ansible.builtin.template:
+        src: ../../files/fw/hostapd.conf.j2
+        dest: /etc/hostapd/hostapd.conf
+        owner: root
+        group: root
+        mode: '0644'
+    - name: Create hostapd.eap_user
+      ansible.builtin.template:
+        src: ../../files/fw/hostapd.eap_user.j2
+        dest: /etc/hostapd/hostapd.eap_user
+        owner: root
+        group: root
+        mode: '0644'
+    - name: Copy other hostapd files
+      ansible.builtin.copy:
+        src: "../../files/fw/{{ item }}"
+        dest: "/etc/hostapd/{{ item }}"
+        owner: root
+        group: root
+        mode: '0644'
+      loop:
+        - hostapd.accept
+        - hostapd.deny
+        - hostapd.dh.pem
+        - hostapd.server.pem
+        - hostapd.ca.pem
+    - name: Copy hostapd server private key
+      ansible.builtin.copy:
+        src: "../../files/fw/{{ item }}"
+        dest: "/etc/hostapd/{{ item }}"
+        owner: root
+        group: root
+        mode: '0600'
+      loop:
+        - hostapd.server.prv
     - name: Disable NAT interface
       ansible.builtin.blockinfile:
         path: /etc/systemd/network/80-dhcp.network
@@ -61,7 +97,7 @@
 #        interface: "{{item}}"
 #      with_items: "{{domains_interfaces}}"
 
-## ufw route allow in on eth1 out on eth2 to 172.16.0.0/24 port 80 proto tcp
+## ufw route allow in on eth1 out on eth2 to 172.17.0.0/24 port 80 proto tcp
 #    - name: Debug
 #      debug:
 #        msg: "ufw route allow in on {{public_interface}} out on {{interface}} to  {{info[interface].ipv4.network}}/{{info[interface].ipv4.prefix}}"

@@ -39,7 +39,7 @@
 #      "localip": ["any"], 
 #      "localport": [1433],  
 #      "protocol": "tcp", # any or value
-#      "remoteip": ["172.16.0.10", "172.16.0.20"],  
+#      "remoteip": ["172.17.0.10", "172.17.0.20"],  
 #      "remoteport": ["any"] 
 #      #"group": "ansible" # default ansible
 #    },
@@ -52,7 +52,7 @@
 #      "localip": ["any"], 
 #      "localport": [1433],  
 #      "protocol": "udp", # any or value
-#      "remoteip": ["172.16.0.10", "172.16.0.20"],  
+#      "remoteip": ["172.17.0.10", "172.17.0.20"],  
 #      "remoteport": ["any"] 
 #      #"group": "ansible" # default ansible
 #    }

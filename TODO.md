@@ -1,5 +1,45 @@
 
 
+# Wifi
+
+* Configure PSK version
+* Enterprise V2 on a new linux vm in order to provide access to the network  
+
+## Enterprise V2
+
+chose between
+```
+               [ Windows NPS Server ]
+                         ↑
+                      RADIUS
+                         ↑
+[ Wi-Fi Clients ] ← WLAN → [ Linux host: hostapd + DHCP ]
+                         ↓
+                    LAN or bridge to network
+```
+and
+```
+      [ Windows AD + NPS + DHCP Server ]
+                ↑        ↑
+            RADIUS   DHCP Requests
+                ↑        ↑
+        [ Linux host running hostapd ]
+                ↑
+        [ Wi-Fi Clients (802.1X) ]
+```
+
+## configure other elements
+https://docs.khroners.fr/books/windows-server/page/configuration-radius-nps-pour-lauthentification-8021x-via-eap-tls
+
+configure hostapd-mana:
+* WPS
+* PMF 802.11w 
+* ...
+
+```bash
+rm -f res.log && wpa_supplicant -d -K  -i wlan0  -c files/fw/wpa_supplicant_haas.conf -f res.log
+```
+
 # WAC 
 
 ## Download

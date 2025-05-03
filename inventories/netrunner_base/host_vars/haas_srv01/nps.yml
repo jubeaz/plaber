@@ -1,0 +1,22 @@
+nps_clients: {
+  ap.haas.local: {
+    address: 172.17.2.254,
+    name: ap.haas.local,
+    psk: secret,
+    auth_requiered: false
+  }
+}
+
+
+nps_group_sid_replace: {
+  nps_eap_tls_group_sid: L_NPS_EAP_TLS,
+  nps_peap_mschapv2_group_sid: L_NPS_PEAP_MSCHAPV2,
+  nps_eap_mschapv2_group_sid: L_NPS_EAP_MSCHAPV2,
+  nps_unsecure_group_sid: L_NPS_UNSECURE,
+  nps_all_group_sid: L_NPS_ALL
+}
+
+nps_client_name: ap.haas.local
+nps_client_ip: 172.17.2.254
+nps_client_secret: secret
+nps_client_signature_requiered: 0

@@ -74,5 +74,8 @@
 - name: MEMBER MSSQL
   import_playbook: books/members-mssql.yml
 
+- name: MEMBER NPS
+  import_playbook: books/members-nps.yml
+
 - name: MEMBER USER DATA
   import_playbook: books/members-user_data.yml

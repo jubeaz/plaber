@@ -45,43 +45,6 @@
     - { role: 'windows_domain_gpo_update', tags: 'gpo-update'}
 
 
-- name: GET BACK TLS SERVER TEMPLATE OID
-  hosts: adcs
-  max_fail_percentage: 0
-  gather_facts: false
-  tasks:
-    - name: Block
-      when: plbr_tls_server_certificate_template_name is defined and plbr_tls_server_certificate_template_name != ""
-      block:
-#        - name: Print TSL Server Template Name
-#          ansible.builtin.debug:
-#            var: plbr_tls_server_certificate_template_name
-
-        - name: Get TSL Server Template OID
-          ansible.windows.win_powershell:
-            script: |
-              [CmdletBinding()]
-              param (
-                  [String]
-                  $TemplateName
-              )
-              $Ansible.Failed = $false
-              $Ansible.Changed = $false
-
-              $template = Get-CATemplate | where {$_.name -match $TemplateName}
-              $Ansible.Result = $template.OID
-            parameters:
-              TemplateName: "{{ plbr_tls_server_certificate_template_name }}"
-          register: template_oid_result
-
-        - name: Register plbr_tls_server_certificate_template_oid
-          ansible.builtin.set_fact:
-            plbr_tls_server_certificate_template_oid: "{{ template_oid_result.result }}"
-            cacheable: true
-
-#        - name: Print plbr_tls_server_certificate_template_oid
-#          ansible.builtin.debug:
-#            var: plbr_tls_server_certificate_template_oid
 
 - name: CONFIGURE WINRMS
   hosts: domain

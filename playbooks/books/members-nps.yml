@@ -1,0 +1,20 @@
+- name: NPS Setup
+  hosts: nps
+  tags: nps_build
+  max_fail_percentage: 0
+  gather_facts: false
+  tasks:
+    - name: Install NPS Role
+      ansible.builtin.include_role:
+        name: "windows_domain_nps_build_nps"
+#    - name: Install NPS Role
+#      ansible.builtin.include_role:
+#        name: "windows_domain_nps_cfg_nas"
+    - name: Configure NPS
+      ansible.builtin.include_role:
+        name: "windows_domain_nps_cfg_load"
+  vars:
+    nps_domain_name: "{{ plbr_domain_name }}"
+    nps_domain_password: "{{ plbr_domain_password }}"
+    nps_config_replace: "{{ nps_group_sid_replace }}"
+    nps_certificate_template_oid: "{{ plbr_tls_server_certificate_template_oid }}"

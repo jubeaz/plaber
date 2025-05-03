@@ -5,9 +5,9 @@
 
 * haas.local:
     * Computers: 
-        * dc_haas (haas01 / 172.16.2.1): 
+        * dc_haas (haas01 / 172.17.2.1): 
             * adds
-        * srv01 (bran.haas.local / 172.16.2.10):
+        * srv01 (bran.haas.local / 172.17.2.10):
             * mssql (haas.local\drafter)
             * mssql_reporting
             * users:
@@ -41,9 +41,9 @@
         * rubeaz (/ jubeaz)
 * weyland.local
     * Computers: 
-        * dc_wld (wld01 / 172.16.1.1): 
+        * dc_wld (wld01 / 172.17.1.1): 
             * adds
-        * srv01 (archer.weyland.local / 172.16.1.10)
+        * srv01 (archer.weyland.local / 172.17.1.10)
             * mssql (NT AUTHORITY\NETWORK SERVICE)
             * users:
                 * LA_jubeaz / Zaebuj12345+-

@@ -229,18 +229,18 @@ for b in $(cat Vagrantfile  | grep nrunner_ | cut -d'"' -f 2); do vvboxmanage sn
 ### Netrunner 
 ##############################
 192.168.2.100   lab_fw
-172.16.1.1      wld01.weyland.local dc.weyland.local weyland.local
-172.16.1.10     archer.weyland.local archer
+172.17.1.1      wld01.weyland.local dc.weyland.local weyland.local
+172.17.1.10     archer.weyland.local archer
 
-172.16.2.1      haas01.haas.local dc.haas.local haas.local
-172.16.2.10     eli.haas.local eli 
-172.16.2.11     bran.haas.local bran
-172.16.2.12     pulse.haas.local pulse 
-172.16.2.20     hypoxia.haas.local hypoxia 
+172.17.2.1      haas01.haas.local dc.haas.local haas.local
+172.17.2.10     eli.haas.local eli 
+172.17.2.11     bran.haas.local bran
+172.17.2.12     pulse.haas.local pulse 
+172.17.2.20     hypoxia.haas.local hypoxia 
 
-172.16.3.1      rsc01.research.haas.local dc.research.haas.local research.haas.local
-172.16.3.10     fenris.research.haas.local fenris 
-172.16.3.20     architect.research.haas.local architect
+172.17.3.1      rsc01.research.haas.local dc.research.haas.local research.haas.local
+172.17.3.10     fenris.research.haas.local fenris 
+172.17.3.20     architect.research.haas.local architect
 ```
 
 

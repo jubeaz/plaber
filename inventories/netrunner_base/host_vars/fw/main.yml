@@ -34,3 +34,9 @@ pacman_arch_packages: [
   "vim",
   "openssh"
 ]
+# ######################
+# AUR vars
+# ######################
+pacman_aur_directory: /usr/src/aur
+pacman_aur_owner: vagrant
+pacman_aur_group: root
