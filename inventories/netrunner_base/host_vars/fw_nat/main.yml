@@ -1,6 +1,6 @@
 #ansible_connection: ssh 
-#ansible_user: vagrant
-#ansible_password: vagrant
+ansible_user: jubeaz
+ansible_password: jubeaz
 #ansible_sudo_pass: vagrant
 #ansible_python_interpreter: /usr/bin/python3
 
@@ -34,3 +34,16 @@ pacman_arch_packages: [
   "vim",
   "openssh"
 ]
+
+# ######################
+# AUR vars
+# ######################
+pacman_upgrade_ingore_list_str: ""
+pacman_aur_directory: /usr/src/aur
+pacman_aur_owner: jubeaz
+pacman_aur_group: jubeaz
+pacman_extra_args: ""
+# pacman_extra_args: "--ignore {{ pacman_upgrade_ingore_list_str }}"
+aur_directory: "{{ pacman_aur_directory }}"
+aur_owner: "{{ pacman_aur_owner }}"
+aur_group: "{{ pacman_aur_group }}"
