@@ -6,10 +6,10 @@
   become_user: root
   max_fail_percentage: 0
   roles:
-    - { role: mlocate }
+    - { role: plocate }
     - { role: pacman, when: "ansible_distribution == 'Archlinux'" }
     - { role: reflector, when: "ansible_distribution == 'Archlinux'" }
-    - { role: update-pkgs }
+    - { role: pacman_upgrade }
     - { role: time-sync }
     - { role: gen-locale}
     - { role: opensshd}
