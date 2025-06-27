@@ -103,7 +103,7 @@ for b in $(cat Vagrantfile  | grep nrunner_ | grep -v '#' | cut -d'"' -f 2 | gre
 ```
 
 ```bash
-for b in $(cat Vagrantfile  | grep nrunner_ | grep -v '#' | cut -d'"' -f 2 | grep -v fw); do echo $b ; vboxmanage showvminfo $b |grep 'Cable connected: off' ; done
+fdoneor b in $(cat Vagrantfile  | grep nrunner_ | grep -v '#' | cut -d'"' -f 2 | grep -v fw); do echo $b ; vboxmanage showvminfo $b |grep 'Cable connected: off' ; 
 ```
 
 * restart all vms

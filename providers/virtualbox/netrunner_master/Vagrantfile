@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
     weyland:  {name: "weyland",  mask: "255.255.255.0", network: "172.17.1.0", gw: "172.17.1.254"},
   	haas:     {name: "haas",     mask: "255.255.255.0", network: "172.17.2.0", gw: "172.17.2.254"},
   	research: {name: "research", mask: "255.255.255.0", network: "172.17.3.0", gw: "172.17.3.254"},
-    bridge: {name: "br0", mask: "255.255.255.0", network: "192.168.30.0", gw: "192.168.30.254"}
+    bridge: {name: "br0", mask: "255.255.255.0", network: "192.168.10.0", gw: "192.168.10.254"}
 #    bridge: {name: "br1", mask: "255.255.0.0", network: "192.168.58.0", gw: "192.168.2.1"}
   }
 
@@ -42,7 +42,7 @@ Vagrant.configure("2") do |config|
           net: net_defs[:research], 
     		}
     	],
-      ip_p: "192.168.30.100",
+      ip_p: "192.168.10.100",
       # box: "archlinux/archlinux", 
       # box_version: "20241001.267073", 
       box: "jubeaz-efi-archlinux-2025.05.28-x86_64",
