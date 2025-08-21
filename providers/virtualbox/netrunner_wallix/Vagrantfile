@@ -52,32 +52,32 @@ Vagrant.configure("2") do |config|
       ram: 1*1024,
       cpu: 1
     },
-    { 
-      # only internal
-      bname: "nrunner_wld_dc", 
-      ip: "172.17.1.1", 
-  	  net: net_defs[:weyland], 
-      #box: "gusztavvargadr/windows-server-core",
-      box: "gusztavvargadr/windows-server",
-      #box_version: "2102.0.2409",  
-      os: "windows", 
-      ram: 2*1024,
-      #ram: 4*1024,
-      cpu: 2
-    },
-    { 
-      # internal and public
-      bname: "nrunner_wld_srv01", 
-      ip: "172.17.1.10", 
-  	  net: net_defs[:weyland], 
-      #box: "gusztavvargadr/windows-server-core",
-      box: "gusztavvargadr/windows-server",
-      #box_version: "2102.0.2409",  
-      os: "windows", 
-      #ram: 2*1024,
-      ram: 4*1024,
-      cpu: 2
-    },
+#    { 
+#      # only internal
+#      bname: "nrunner_wld_dc", 
+#      ip: "172.17.1.1", 
+#  	  net: net_defs[:weyland], 
+#      #box: "gusztavvargadr/windows-server-core",
+#      box: "gusztavvargadr/windows-server",
+#      #box_version: "2102.0.2409",  
+#      os: "windows", 
+#      ram: 2*1024,
+#      #ram: 4*1024,
+#      cpu: 2
+#    },
+#    { 
+#      # internal and public
+#      bname: "nrunner_wld_srv01", 
+#      ip: "172.17.1.10", 
+#  	  net: net_defs[:weyland], 
+#      #box: "gusztavvargadr/windows-server-core",
+#      box: "gusztavvargadr/windows-server",
+#      #box_version: "2102.0.2409",  
+#      os: "windows", 
+#      #ram: 2*1024,
+#      ram: 4*1024,
+#      cpu: 2
+#    },
     { 
       # only internal
       bname: "nrunner_haas_dc", 
@@ -113,18 +113,56 @@ Vagrant.configure("2") do |config|
       #ram: 2*1024,
       box: "gusztavvargadr/windows-server",
       #box_version: "2102.0.2409",  
-      os: "windows",
+      os: "windows", 
+      #ram: 2*1024,
+      ram: 4*1024,
+      cpu: 2
+    },
+    { 
+      # only internal
+      bname: "nrunner_haas_srv03", 
+      ip: "172.17.2.12", 
+  	  net: net_defs[:haas], 
+      #box: "gusztavvargadr/windows-server-core",
+      #ram: 2*1024,
+      box: "gusztavvargadr/windows-server",
+      #box_version: "2102.0.2409",  
+      os: "windows", 
+      #ram: 2*1024,
+      ram: 4*1024,
+      cpu: 2
+    },
+    { 
+      # only internal
+      bname: "nrunner_haas_ws01", 
+      ip: "172.17.2.20", 
+  	  net: net_defs[:research], 
+      box: "gusztavvargadr/windows-11", 
+      #box_version: "2202.0.2409 ", 
+      os: "windows", 
       #ram: 2*1024,
       ram: 4*1024,
       cpu: 2
     },
 #    { 
 #      # only internal
-#      bname: "nrunner_haas_srv03", 
-#      ip: "172.17.2.12", 
-#  	  net: net_defs[:haas], 
+#      bname: "nrunner_rsc_dc", 
+#      ip: "172.17.3.1", 
+#  	  net: net_defs[:research], 
 #      #box: "gusztavvargadr/windows-server-core",
+#      box: "gusztavvargadr/windows-server",
+#      #box_version: "2102.0.2409",  
+#      os: "windows", 
 #      #ram: 2*1024,
+#      ram: 2*1024,
+#      cpu: 2
+#    },
+#    { 
+#      # only internal
+#      bname: "nrunner_rsc_srv01", 
+#      ip: "172.17.3.10", 
+#  	  net: net_defs[:research], 
+#      #box: "gusztavvargadr/windows-server-core",
 #      box: "gusztavvargadr/windows-server",
 #      #box_version: "2102.0.2409",  
 #      os: "windows", 
@@ -134,8 +172,8 @@ Vagrant.configure("2") do |config|
 #    },
 #    { 
 #      # only internal
-#      bname: "nrunner_haas_ws01", 
-#      ip: "172.17.2.20", 
+#      bname: "nrunner_rsc_ws01", 
+#      ip: "172.17.3.20", 
 #  	  net: net_defs[:research], 
 #      box: "gusztavvargadr/windows-11", 
 #      #box_version: "2202.0.2409 ", 
@@ -143,45 +181,7 @@ Vagrant.configure("2") do |config|
 #      #ram: 2*1024,
 #      ram: 4*1024,
 #      cpu: 2
-#    },
-    { 
-      # only internal
-      bname: "nrunner_rsc_dc", 
-      ip: "172.17.3.1", 
-  	  net: net_defs[:research], 
-      #box: "gusztavvargadr/windows-server-core",
-      box: "gusztavvargadr/windows-server",
-      #box_version: "2102.0.2409",  
-      os: "windows", 
-      #ram: 2*1024,
-      ram: 2*1024,
-      cpu: 2
-    },
-    { 
-      # only internal
-      bname: "nrunner_rsc_srv01", 
-      ip: "172.17.3.10", 
-  	  net: net_defs[:research], 
-      #box: "gusztavvargadr/windows-server-core",
-      box: "gusztavvargadr/windows-server",
-      #box_version: "2102.0.2409",  
-      os: "windows", 
-      #ram: 2*1024,
-      ram: 4*1024,
-      cpu: 2
-    },
-    { 
-      # only internal
-      bname: "nrunner_rsc_ws01", 
-      ip: "172.17.3.20", 
-  	  net: net_defs[:research], 
-      box: "gusztavvargadr/windows-11", 
-      #box_version: "2202.0.2409 ", 
-      os: "windows", 
-      #ram: 2*1024,
-      ram: 4*1024,
-      cpu: 2
-    }
+#    }
   ]
 
   # disable rdp forwarded port inherited from gusztavvargadr box
@@ -199,9 +199,6 @@ Vagrant.configure("2") do |config|
   config.winrm.retry_delay = 10
   config.winrm.transport = "plaintext"
   config.winrm.basic_auth_only = true
-  config.ssh.insert_key = false
-  config.ssh.username = "vagrant"
-  config.ssh.password = "vagran"
 
   boxes.each do |box|
     config.vm.define box[:bname] do |target|
@@ -213,6 +210,7 @@ Vagrant.configure("2") do |config|
         target.ssh.password = box[:password] 
       end
       target.ssh.insert_key = false  # prevent Vagrant from overriding the authorized_keys
+
       target.vm.provider "virtualbox" do |v|
         v.memory = box[:ram]
         v.name = box[:bname]
@@ -263,15 +261,14 @@ Vagrant.configure("2") do |config|
         n_info_p = net_defs[:bridge]
         target.vm.network :public_network, bridge: n_info_p[:name], ip: box[:ip_p]
         target.vm.communicator = "ssh"
-
         # Provision INTERNAL interfaces
         box[:nets].each do |bn|
           n_info = bn[:net]
           puts "  Provision Network #{n_info[:name]} with IP #{bn[:ip]}"
           target.vm.network :private_network, ip: bn[:ip], virtualbox__intnet: n_info[:name]
         end
-        target.vm.provision :shell, :path => "../../scripts/arch_python.sh", privileged: true, args: ["France"]
         target.vm.provision :shell, :path => "../../scripts/fix_ip.sh", privileged: true, args: [box[:deployment_type], n_info_p[:gw]]
+        target.vm.provision :shell, :path => "../../scripts/arch_python.sh", privileged: true, args: [n_info_p[:gw]]
       end
       # Linux specific
       if box[:os] == "linux"
