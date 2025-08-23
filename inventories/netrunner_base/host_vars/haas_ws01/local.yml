@@ -5,9 +5,9 @@ plbr_local_users: {
 }
 
 plbr_local_groups: {
-    "Administrators" : [".\\LA_jubeaz", "HAAS\\L_LOCAL_ADMINS", "HAAS\\L_LOCAL_ADMINS_ARCHITECT"],
-    "Remote Management Users": [".\\LA_jubeaz","HAAS\\L_LOCAL_ADMINS", "HAAS\\L_LOCAL_ADMINS_ARCHITECT", "HAAS\\lowpriv"],
-    "Remote Desktop Users" : [".\\LA_jubeaz","HAAS\\L_LOCAL_ADMINS", "HAAS\\L_LOCAL_ADMINS_ARCHITECT", "HAAS\\lowpriv"]
+    "Administrators" : [".\\LA_jubeaz", "HAAS\\L_LOCAL_ADMINS", "HAAS\\L_LOCAL_ADMINS_HYPOXIA"],
+    "Remote Management Users": [".\\LA_jubeaz","HAAS\\L_LOCAL_ADMINS", "HAAS\\L_LOCAL_ADMINS_HYPOXIA", "HAAS\\lowpriv"],
+    "Remote Desktop Users" : [".\\LA_jubeaz","HAAS\\L_LOCAL_ADMINS", "HAAS\\L_LOCAL_ADMINS_HYPOXIA", "HAAS\\lowpriv"]
 }
 
 
@@ -31,7 +31,7 @@ plbr_extra_features: [
 plbr_softwares: [  "git", "visualstudio2022community", "notepadplusplus", "python", "libreoffice","7zip"]
 
 plbr_user_repos: {
-    rubeaz: [
+    jubeaz: [
         ["Mimikatz", "https://github.com/gentilkiwi/mimikatz.git"],
         ["Rubeus", "https://github.com/GhostPack/Rubeus"],
         [HardeningKitty, https://github.com/scipag/HardeningKitty.git]
@@ -39,7 +39,7 @@ plbr_user_repos: {
 }
 
 plbr_user_downloads: {
-    rubeaz: [
+    jubeaz: [
         ["GRMWDK_EN_7600_1.ISO", "https://download.microsoft.com/download/4/A/2/4A25C7D5-EFBE-4182-B6A9-AE6850409A78/GRMWDK_EN_7600_1.ISO"]
     ]
 }

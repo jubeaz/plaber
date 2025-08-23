@@ -1,0 +1,68 @@
+#plbr_mssql_instance_name: "{{hostname}}"
+plbr_mssql_sa_password: "52DT_MFkqdCyuEH3Shprm"
+#plbr_mssql_svcaccount_method: 'local' # domain, gmsa, local
+#plbr_mssql_svcaccount_local: NetworkService #  "NetworkService, System, LocalService"'
+#plbr_mssql_svcaccount_key: '' # for domain or gmsa mssql_svcaccount_method
+plbr_mssql_svcaccount_method: 'domain' # domain, gmsa, local
+plbr_mssql_svcaccount_key: "drafter" # default : 'NT AUTHORITY\\NETWORK SERVICE'
+
+plbr_mssql_sysadmins: ["HAAS\\G_SYSADMIN_BRAN"]
+
+plbr_mssql_domain_accounts: ["HAAS\\G_SQL_ACCOUNTS_BRAN"]
+
+plbr_mssql_local_accounts: {
+    "link_account": "rEKA2mcGJte5f_9z7PZQ6p"
+}
+
+plbr_mssql_executeaslogin: {
+#    "HAAS\\rknight" : "sa"
+}
+plbr_mssql_executeasuser: {
+#    "master_dbo": {
+#        "user": "HAAS\\mhendrik",
+#        "db"  : "master",
+#        "impersonate" : "dbo"
+#        },
+#    "dbms_dbo": {
+#        "user": "HAAS\\mhendrik",
+#        "db"  : "msdb",
+#        "impersonate" : "dbo"
+#        }
+}
+plbr_mssql_linked_servers: {
+#    "wld_srv01" : {
+#        "server": "archer",
+#        "data_src": "archer.weyland.local",
+#        "users_mapping": [
+#            {"local_login": "HAAS\\mhendrik","remote_login": "WEYLAND\\anson", "remote_password": "z77w_TeCUCD_wLrD"}
+#        ]
+#    },
+#    "rsc_srv01" : {
+#        "server": "fenris",
+#        "data_src": "fenris.research.haas.local",
+#        "users_mapping": [
+#            {"local_login": "HAAS\\mhendrik","remote_login": "RESEARCH\\adm_arose", "remote_password": "az66_TBekvT_wLLd"}
+#        ]
+#    }
+#    "wld_srv01" : {
+#        "server": "archer",
+#        "data_src": "archer.weyland.local",
+#        "users_mapping": [
+#            {"local_login": "sa","remote_login": "link_account", "remote_password": "xTmjUz7k8DJg2_HYq6Ph3V"}
+#        ]
+#    },
+#    "rsc_srv01" : {
+#        "server": "fenris",
+#        "data_src": "fenris.research.haas.local",
+#        "users_mapping": [
+#            {"local_login": "sa","remote_login": "link_account", "remote_password": "nQAhqFRaBJ9XxgC6WYT_tM"}
+#        ]
+#    },
+#    "rsc_srv03" : {
+#        "server": "toto",
+#        "data_src": "toto.research.haas.local",
+#        "users_mapping": [
+#            {"local_login": "sa","remote_login": "link_account", "remote_password": "nQAhqFRaBJ9XxgC6WYT_tM"}
+#        ]
+#    }
+}

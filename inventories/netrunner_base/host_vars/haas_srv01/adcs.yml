@@ -4,15 +4,22 @@ plbr_ca_vulns: ["ESC6"]
 plbr_web_enrollment: true # ESC8
 plbr_ca_common_name: "internal-ca"
 
+#plbr_acls_adcs_templates: {
+#  # 'FullControl', 'Read', 'Write', 'Enroll', 'Autoenroll'.
+#  "F_L_CERT_MGR_esc1" : {"for": "L_CERT_MGR", "to": "ESC1", "right": "FullControl", "inheritance": "None"},
+#  "R_HaasComputers_TLSServer" : {"for": "HAAS\\Domain computers", "to": "TLSServer", "right": "Read", "inheritance": "None"},
+#  "E_HaasComputers_TLSServer" : {"for": "HAAS\\Domain computers", "to": "TLSServer", "right": "Enroll", "inheritance": "None"},
+#  "A_HaasComputers_TLSServer" : {"for": "HAAS\\Domain computers", "to": "TLSServer", "right": "Autoenroll", "inheritance": "None"},
+#  "R_ResearchComputers_TLSServer" : {"for": "RESEARCH\\Domain computers", "to": "TLSServer", "right": "Read", "inheritance": "None"},
+#  "E_ResearchComputers_TLSServer" : {"for": "RESEARCH\\Domain computers", "to": "TLSServer", "right": "Enroll", "inheritance": "None"},
+#  "A_ResearchComputers_TLSServer" : {"for": "RESEARCH\\Domain computers", "to": "TLSServer", "right": "Autoenroll", "inheritance": "None"}
+#}
 plbr_acls_adcs_templates: {
   # 'FullControl', 'Read', 'Write', 'Enroll', 'Autoenroll'.
   "F_L_CERT_MGR_esc1" : {"for": "L_CERT_MGR", "to": "ESC1", "right": "FullControl", "inheritance": "None"},
-  "R_HaasComputers_TLSServer" : {"for": "HAAS\\Domain computers", "to": "TLSServer", "right": "Read", "inheritance": "None"},
-  "E_HaasComputers_TLSServer" : {"for": "HAAS\\Domain computers", "to": "TLSServer", "right": "Enroll", "inheritance": "None"},
-  "A_HaasComputers_TLSServer" : {"for": "HAAS\\Domain computers", "to": "TLSServer", "right": "Autoenroll", "inheritance": "None"},
-  "R_ResearchComputers_TLSServer" : {"for": "RESEARCH\\Domain computers", "to": "TLSServer", "right": "Read", "inheritance": "None"},
-  "E_ResearchComputers_TLSServer" : {"for": "RESEARCH\\Domain computers", "to": "TLSServer", "right": "Enroll", "inheritance": "None"},
-  "A_ResearchComputers_TLSServer" : {"for": "RESEARCH\\Domain computers", "to": "TLSServer", "right": "Autoenroll", "inheritance": "None"}
+  "R_L_CERT_TMPLT_MachineServerAuthentication" : {"for": "HAAS\\L_CERT_TMPLT_MachineServerAuthentication", "to": "TLSServer", "right": "Read", "inheritance": "None"},
+  "E_L_CERT_TMPLT_MachineServerAuthentication" : {"for": "HAAS\\L_CERT_TMPLT_MachineServerAuthentication", "to": "TLSServer", "right": "Enroll", "inheritance": "None"},
+  "A_L_CERT_TMPLT_MachineServerAuthentication" : {"for": "HAAS\\L_CERT_TMPLT_MachineServerAuthentication", "to": "TLSServer", "right": "Autoenroll", "inheritance": "None"}
 }
 
 plbr_acls_adcs_authority: {

@@ -136,7 +136,7 @@ Vagrant.configure("2") do |config|
       # only internal
       bname: "nrunner_haas_ws01", 
       ip: "172.17.2.20", 
-  	  net: net_defs[:research], 
+  	  net: net_defs[:haas], 
       box: "gusztavvargadr/windows-11", 
       #box_version: "2202.0.2409 ", 
       os: "windows", 

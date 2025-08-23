@@ -59,6 +59,7 @@ all:
               mssql:
                 hosts:
                   haas_srv01: {}     
+                  haas_srv02: {}     
                   rsc_srv01: {}     
                   wld_srv01: {} 
               mssql_reporting:
@@ -93,7 +94,7 @@ all:
     haas_srv01:           {ansible_host: eli.haas.local, plbr_domain_ip: 172.17.2.10, ansible_connection: winrm}
     haas_srv02:           {ansible_host: bran.haas.local, plbr_domain_ip: 172.17.2.11, ansible_connection: winrm}
     haas_srv03:           {ansible_host: pulse.haas.local, plbr_domain_ip: 172.17.2.12, ansible_connection: winrm}
-    haas_ws01:             {ansible_host: hypoxia.research.haas.local, plbr_domain_ip: 172.17.2.20, ansible_connection: winrm}
+    haas_ws01:             {ansible_host: hypoxia.haas.local, plbr_domain_ip: 172.17.2.20, ansible_connection: winrm}
     dc_rsc:               {ansible_host: rsc01.research.haas.local, plbr_domain_ip: 172.17.3.1, ansible_connection: winrm}
     rsc_srv01:            {ansible_host: fenris.research.haas.local, plbr_domain_ip: 172.17.3.10, ansible_connection: winrm}
     rsc_ws01:             {ansible_host: architect.research.haas.local, plbr_domain_ip: 172.17.3.20, ansible_connection: winrm}
