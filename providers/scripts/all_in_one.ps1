@@ -526,6 +526,8 @@ Function Set-FixedIP{
 	}
 }
 
+
+Get-NetConnectionProfile | Set-NetConnectionProfile -NetworkCategory Private
 Set-FixedIP -IFName $IFName -IP $IP -Mask $Mask -Gateway $Gateway
 Enable-PowerAction
 Enable-RemotingForAnsible
