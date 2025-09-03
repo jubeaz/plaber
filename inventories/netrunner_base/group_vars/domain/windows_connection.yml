@@ -6,8 +6,8 @@ ansible_winrm_server_cert_validation: ignore
 ansible_winrm_connection_timeout: 500
 #ansible_winrm_transport: CredSSP
 ansible_port:  5985
-ansible_user: vagrant
-ansible_password: vagrant
+ansible_user: jubeaz
+ansible_password: jubeaz
 #ansible_connection: psrp
 ansible_psrp_auth: negotiate
 ansible_psrp_protocol: http

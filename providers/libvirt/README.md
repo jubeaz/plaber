@@ -1,3 +1,6 @@
+# Ref
+* [V0.12.2](https://vagrant-libvirt.github.io/vagrant-libvirt/version/0.12.2/configuration.html)
+
 # public interface and ufw
 
 https://kevin.thecorams.net/posts/2020/08/libvirt-bridging/
@@ -6,6 +9,12 @@ https://kevin.thecorams.net/posts/2020/08/libvirt-bridging/
 ```
 -I FORWARD -m physdev --physdev-is-bridged -j ACCEPT
 ```
+
+
+## SPICE
+
+* https://wiki.archlinux.org/title/QEMU#SPICE
+* https://www.spice-space.org/
 
 # static IP on isolated
 

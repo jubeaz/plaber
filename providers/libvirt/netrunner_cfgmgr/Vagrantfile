@@ -61,7 +61,8 @@ Vagrant.configure("2") do |config|
       password: "jubeaz",
       os: "arch", 
       ram: 1*1024,
-      cpu: 1
+      cpu: 1,
+      firmware: "bios"
     },
     { 
       # only internal
@@ -69,12 +70,14 @@ Vagrant.configure("2") do |config|
       bname: "nrunner_wld_dc", 
   	  net: net_defs[:weyland], 
       relative_ip: "1", 
-      box_img: "qemu-jubeaz-bios-windows-2022",
+      #box_img: "qemu-jubeaz-uefi-windows-2022",
+      box_img: "qemu-jubeaz-uefi-windows-2022",
       username: "jubeaz",
       password: "jubeaz",
       os: "windows", 
       ram: 2*1024,
-      cpu: 2
+      cpu: 2,
+      firmware: "uefi"
     },
     { 
       # internal and public
@@ -82,13 +85,14 @@ Vagrant.configure("2") do |config|
       bname: "nrunner_wld_srv01", 
       relative_ip: "10", 
   	  net: net_defs[:weyland], 
-      box_img: "qemu-jubeaz-bios-windows-2022",
+      box_img: "qemu-jubeaz-uefi-windows-2022",
       username: "jubeaz",
       password: "jubeaz",
       os: "windows", 
       #ram: 2*1024,
       ram: 4*1024,
-      cpu: 2
+      cpu: 2,
+      firmware: "uefi"
     },
     { 
       # only internal
@@ -96,13 +100,14 @@ Vagrant.configure("2") do |config|
       bname: "nrunner_haas_dc", 
       relative_ip: "1", 
   	  net: net_defs[:haas], 
-      box_img: "qemu-jubeaz-bios-windows-2022",
+      box_img: "qemu-jubeaz-uefi-windows-2022",
       username: "jubeaz",
       password: "jubeaz",
       os: "windows", 
       ram: 2*1024,
       # ram: 4*1024,
-      cpu: 2
+      cpu: 2,
+      firmware: "uefi"
     },
     { 
       # only internal
@@ -110,13 +115,14 @@ Vagrant.configure("2") do |config|
       bname: "nrunner_haas_srv01", 
       relative_ip: "10", 
   	  net: net_defs[:haas], 
-      box_img: "qemu-jubeaz-bios-windows-2022",
+      box_img: "qemu-jubeaz-uefi-windows-2022",
       username: "jubeaz",
       password: "jubeaz",
       os: "windows", 
       # ram: 2*1024,
       ram: 4*1024,
-      cpu: 2
+      cpu: 2,
+      firmware: "uefi"
     },
 #    { 
 #      # only internal
@@ -124,13 +130,14 @@ Vagrant.configure("2") do |config|
 #      bname: "nrunner_haas_srv02", 
 #      relative_ip: "11", 
 #  	   net: net_defs[:haas], 
-#      box_img: "qemu-jubeaz-bios-windows-2022",
+#      box_img: "qemu-jubeaz-uefi-windows-2022",
 #      username: "jubeaz",
 #      password: "jubeaz",
 #      os: "windows", 
 #      #ram: 2*1024,
 #      ram: 4*1024,
-#      cpu: 2
+#      cpu: 2,
+#      firmware: "uefi"
 #    },
     { 
       # only internal
@@ -138,13 +145,14 @@ Vagrant.configure("2") do |config|
       bname: "nrunner_haas_srv03", 
       relative_ip: "12", 
   	  net: net_defs[:haas], 
-      box_img: "qemu-jubeaz-bios-windows-2022",
+      box_img: "qemu-jubeaz-uefi-windows-2022",
       username: "jubeaz",
       password: "jubeaz",
       os: "windows", 
       #ram: 2*1024,
       ram: 4*1024,
-      cpu: 2
+      cpu: 2,
+      firmware: "uefi"
     },
 #    { 
 #      # only internal
@@ -158,7 +166,8 @@ Vagrant.configure("2") do |config|
 #      os: "windows", 
 #      #ram: 2*1024,
 #      ram: 4*1024,
-#      cpu: 2
+#      cpu: 2,
+#      firmware: "uefi"
 #    },
     { 
       # only internal
@@ -166,12 +175,13 @@ Vagrant.configure("2") do |config|
       bname: "nrunner_rsc_dc", 
       relative_ip: "1", 
   	  net: net_defs[:research], 
-      box_img: "qemu-jubeaz-bios-windows-2022",
+      box_img: "qemu-jubeaz-uefi-windows-2022",
       username: "jubeaz",
       password: "jubeaz",
       os: "windows", 
       ram: 2*1024,
-      cpu: 2
+      cpu: 2,
+      firmware: "uefi"
     },
     { 
       # only internal
@@ -185,7 +195,8 @@ Vagrant.configure("2") do |config|
       os: "windows", 
       #ram: 2*1024,
       ram: 4*1024,
-      cpu: 2
+      cpu: 2,
+      firmware: "uefi"
     },
     { 
       # only internal
@@ -193,13 +204,14 @@ Vagrant.configure("2") do |config|
       bname: "nrunner_rsc_ws01", 
       relative_ip: "20", 
   	  net: net_defs[:research], 
-      box_img: "qemu-jubeaz-bios-windows-2022",
+      box_img: "qemu-jubeaz-uefi-windows-2022",
       username: "jubeaz",
       password: "jubeaz",
       os: "windows", 
       #ram: 2*1024,
       ram: 4*1024,
-      cpu: 2
+      cpu: 2,
+      firmware: "uefi"
     }
   ]
 
@@ -241,6 +253,39 @@ Vagrant.configure("2") do |config|
 
   box_defs.each do |box_def|
     config.vm.define box_def[:bname] do |box|
+      box.vm.provider "libvirt" do |box_provider|
+        #box_provider.graphics_type = "vnc"
+        box_provider.default_prefix = "plaber_"
+        box_provider.memory = box_def[:ram]
+        box_provider.cpus = box_def[:cpu]
+        box_provider.keymap = "fr"
+        box_provider.input type:"tablet", bus: "usb" # solve mouse capture of VNC
+        if box_def[:firmware] == "uefi"
+          # https://vagrant-libvirt.github.io/vagrant-libvirt/examples.html#secure-encryption-virtualization-sev
+          #box_provider.loader = "/usr/share/OVMF/x64/OVMF_CODE.secboot.4m.fd"
+          box_provider.loader = "/usr/share/OVMF/x64/OVMF_CODE.4m.fd"
+          box_provider.nvram = "/usr/share/OVMF/x64/OVMF_VARS.4m.fd"
+          box_provider.machine_type = 'q35'
+          ## Requires swtpm and swtpm-tools
+          # box_provider.tpm_model = "tpm-crb"
+          # box_provider.tpm_type = "emulator"
+          # box_provider.tpm_version = "2.0"
+          ## box_provider.tpm_path =
+          box_provider.video_vram = 16384
+          box_provider.graphics_type = "spice"
+          box_provider.video_type = "virtio"
+
+          #box_provider.launchsecurity :type => 'sev', :cbitpos => 47, :reducedPhysBits => 1, :policy => "0x0003"
+          #box_provider.memtune :type => "hard_limit", :value => 2500000 # Note here the value in kB (not in Mb)
+#          #box_provider.customize ["modifyvm", :id, '--audio-driver', 'alsa', '--audio-controller', 'hda', '--audio-enabled', 'on']
+#          #box_provider.customize ["modifyvm", :id, '--vram', '128']
+#          box_provider.customize ["modifyvm", :id, '--nested-hw-virt', 'on']
+#          box_provider.customize ["modifyvm", :id, '--firmware', 'efi64']
+#          box_provider.customize ["modifynvram", :id, 'inituefivarstore']
+#          box_provider.customize ["modifynvram", :id, 'enrollorclpk']
+#          box_provider.customize ["modifynvram", :id, 'enrollmssignatures']
+        end
+      end
       if box_def.has_key?(:username)
         box.ssh.username = box_def[:username] 
         box.winrm.username = box_def[:username]
@@ -250,22 +295,6 @@ Vagrant.configure("2") do |config|
         box.winrm.password = box_def[:password]
       end
       box.ssh.insert_key = false  # prevent Vagrant from overriding the authorized_keys
-      box.vm.provider "libvirt" do |box_provider|
-        box_provider.default_prefix = "plaber"
-        box_provider.memory = box_def[:ram]
-        box_provider.cpus = box_def[:cpu]
-        box_provider.keymap = "fr"
-        box_provider.input :type => "tablet", :bus => "usb" # solve mouse capture of VNC
-#        if box_def[:os] == "windows_uefi"
-#          #box_provider.customize ["modifyvm", :id, '--audio-driver', 'alsa', '--audio-controller', 'hda', '--audio-enabled', 'on']
-#          #box_provider.customize ["modifyvm", :id, '--vram', '128']
-#          box_provider.customize ["modifyvm", :id, '--nested-hw-virt', 'on']
-#          box_provider.customize ["modifyvm", :id, '--firmware', 'efi64']
-#          box_provider.customize ["modifynvram", :id, 'inituefivarstore']
-#          box_provider.customize ["modifynvram", :id, 'enrollorclpk']
-#          box_provider.customize ["modifynvram", :id, 'enrollmssignatures']
-#        end  
-      end
       # Download image
       box.vm.box_download_insecure = box_def[:box_img]
       box.vm.box = box_def[:box_img]
@@ -328,7 +357,6 @@ Vagrant.configure("2") do |config|
       end
       # Windows specific
       if box_def[:os] == "windows"
-
         box.vm.guest = :windows
         # bypass winrm problems
         box.vm.communicator = "winssh"
