@@ -161,7 +161,7 @@ Vagrant.configure("2") do |config|
       role: "member",
       bname: "nrunner_haas_ws01", 
       relative_ip: "20", 
-  	   net: net_defs[:research], 
+  	   net: net_defs[:haas], 
       box_img: "qemu-jubeaz-bios-windows-11",
       username: "jubeaz",
       password: "jubeaz",
@@ -171,7 +171,7 @@ Vagrant.configure("2") do |config|
       cpu: 2,
       firmware: "uefi"
     },
-    { 
+#    { 
 #      # only internal
 #      role: "member",
 #      bname: "nrunner_rsc_dc", 
@@ -215,6 +215,21 @@ Vagrant.configure("2") do |config|
 #      cpu: 2,
 #      firmware: "uefi"
 #    }
+    { 
+      # only internal
+      role: "member",
+      bname: "bastion", 
+      relative_ip: "20", 
+  	   net: net_defs[:haas], 
+      box_img: "bastion-12.0.14",
+      username: "jubeaz",
+      password: "jubeaz",
+      os: "linux", 
+      #ram: 2*1024,
+      ram: 4*1024,
+      cpu: 2,
+      firmware: "bios"
+    }
   ]
 
   # no autoupdate if vagrant-vbguest is installed
