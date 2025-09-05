@@ -1,9 +1,11 @@
 # vagrant plugin install vagrant-libvirt
+require 'fileutils'
 
 Vagrant.configure("2") do |config|
   # Uncomment this depending on the provider you want to use
   ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
   storage_pool_name = "vms"
+  efi_path='/var/lib/libvirt/images/efi'
   bridge = {
     dev: "br0",
     name: "virbr_plaber",
@@ -250,8 +252,10 @@ Vagrant.configure("2") do |config|
     libvirt.management_network_mode = "none"
     libvirt.storage_pool_name = storage_pool_name
   end
+  FileUtils.cp("../../ovmf/usr/share/OVMF/OVMF_CODE_4M.ms.fd", "#{efi_path}/OVMF_CODE_4M.ms.fd")
 
   box_defs.each do |box_def|
+    ileUtils.cp("../../ovmf/usr/share/OVMF/OVMF_VARS_4M.ms.fd", "#{efi_path}/#{box_def[:bname]}_OVMF_VARS.4M.ms.fd")
     config.vm.define box_def[:bname] do |box|
       box.vm.provider "libvirt" do |box_provider|
         #box_provider.graphics_type = "vnc"
@@ -261,16 +265,17 @@ Vagrant.configure("2") do |config|
         box_provider.keymap = "fr"
         box_provider.input type:"tablet", bus: "usb" # solve mouse capture of VNC
         if box_def[:firmware] == "uefi"
-          # https://vagrant-libvirt.github.io/vagrant-libvirt/examples.html#secure-encryption-virtualization-sev
           #box_provider.loader = "/usr/share/OVMF/x64/OVMF_CODE.secboot.4m.fd"
-          box_provider.loader = "/usr/share/OVMF/x64/OVMF_CODE.4m.fd"
-          box_provider.nvram = "/usr/share/OVMF/x64/OVMF_VARS.4m.fd"
+          #box_provider.loader = "/usr/share/OVMF/x64/OVMF_CODE.4m.fd"
+          #box_provider.nvram = "/usr/share/OVMF/x64/OVMF_VARS.4m.fd"
+          box_provider.nvram = "#{efi_path}/#{box_def[:bname]}_OVMF_VARS.4M.ms.fd"
+          box_provider.loader = "#{efi_path}/OVMF_CODE_4M.ms.fd"
           box_provider.machine_type = 'q35'
           ## Requires swtpm and swtpm-tools
-          # box_provider.tpm_model = "tpm-crb"
-          # box_provider.tpm_type = "emulator"
-          # box_provider.tpm_version = "2.0"
-          ## box_provider.tpm_path =
+          box_provider.tpm_model = "tpm-crb"
+          box_provider.tpm_type = "emulator"
+          box_provider.tpm_version = "2.0"
+          # box_provider.tpm_path =
           box_provider.video_vram = 16384
           box_provider.graphics_type = "spice"
           box_provider.video_type = "virtio"

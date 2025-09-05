@@ -3,4 +3,5 @@ tags
 downloaded_roles/
 .cache/
 .ansible/
-
+providers/ovmf/*
+!providers/ovmf/.gitkeep
