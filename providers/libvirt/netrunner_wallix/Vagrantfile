@@ -162,7 +162,7 @@ Vagrant.configure("2") do |config|
       bname: "nrunner_haas_ws01", 
       relative_ip: "20", 
   	   net: net_defs[:haas], 
-      box_img: "qemu-jubeaz-bios-windows-11",
+      box_img: "qemu-jubeaz-uefi-windows-2022",
       username: "jubeaz",
       password: "jubeaz",
       os: "windows", 
@@ -221,7 +221,7 @@ Vagrant.configure("2") do |config|
       bname: "bastion", 
       relative_ip: "20", 
   	   net: net_defs[:haas], 
-      box_img: "bastion-12.0.14",
+      box_img: "bastion-12.0.14", # create_vm.sh bastion-openstack.qcow2 bastion-12.0.14.qcow2
       username: "jubeaz",
       password: "jubeaz",
       os: "linux", 
@@ -374,6 +374,10 @@ Vagrant.configure("2") do |config|
             libvirt__network_name: n_info[:name],
             ip: "#{n_info[:network]}.#{bn[:relative_ip]}"
         end
+      end
+      # Windows specific
+      if box_def[:bname] == "bastion"
+        box.vm.communicator = "none"
       end
       # Windows specific
       if box_def[:os] == "windows"
