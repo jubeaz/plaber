@@ -377,7 +377,7 @@ Vagrant.configure("2") do |config|
       end
       # Windows specific
       if box_def[:bname] == "bastion"
-        box.vm.communicator = "none"
+        box.vm.communicator = :none
       end
       # Windows specific
       if box_def[:os] == "windows"
