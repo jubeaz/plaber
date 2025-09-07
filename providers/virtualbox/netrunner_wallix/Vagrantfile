@@ -55,7 +55,7 @@ Vagrant.configure("2") do |config|
 #    { 
 #      # only internal
 #      bname: "nrunner_wld_dc", 
-#      ip: "172.17.1.1", 
+#      ip: "172.17.1.2", 
 #  	  net: net_defs[:weyland], 
 #      #box: "gusztavvargadr/windows-server-core",
 #      box: "gusztavvargadr/windows-server",
@@ -81,7 +81,7 @@ Vagrant.configure("2") do |config|
     { 
       # only internal
       bname: "nrunner_haas_dc", 
-      ip: "172.17.2.1", 
+      ip: "172.17.2.2", 
   	  net: net_defs[:haas], 
       #box: "gusztavvargadr/windows-server-core",
       box: "gusztavvargadr/windows-server",
@@ -147,7 +147,7 @@ Vagrant.configure("2") do |config|
 #    { 
 #      # only internal
 #      bname: "nrunner_rsc_dc", 
-#      ip: "172.17.3.1", 
+#      ip: "172.17.3.2", 
 #  	  net: net_defs[:research], 
 #      #box: "gusztavvargadr/windows-server-core",
 #      box: "gusztavvargadr/windows-server",

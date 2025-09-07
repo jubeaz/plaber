@@ -71,7 +71,7 @@ Vagrant.configure("2") do |config|
       role: "member",
       bname: "nrunner_wld_dc", 
   	  net: net_defs[:weyland], 
-      relative_ip: "1", 
+      relative_ip: "2", 
       #box_img: "qemu-jubeaz-uefi-windows-2022",
       box_img: "qemu-jubeaz-uefi-windows-2022",
       username: "jubeaz",
@@ -100,7 +100,7 @@ Vagrant.configure("2") do |config|
       # only internal
       role: "member",
       bname: "nrunner_haas_dc", 
-      relative_ip: "1", 
+      relative_ip: "2", 
   	  net: net_defs[:haas], 
       box_img: "qemu-jubeaz-uefi-windows-2022",
       username: "jubeaz",
@@ -175,7 +175,7 @@ Vagrant.configure("2") do |config|
       # only internal
       role: "member",
       bname: "nrunner_rsc_dc", 
-      relative_ip: "1", 
+      relative_ip: "2", 
   	  net: net_defs[:research], 
       box_img: "qemu-jubeaz-uefi-windows-2022",
       username: "jubeaz",
@@ -380,10 +380,12 @@ Vagrant.configure("2") do |config|
         config.winssh.shell = 'powershell'
         #config.vm.communicator = 'winrm'
         n_info = box_def[:net]
+        box.vm.provision :shell, :path => "../../scripts/flush-interface.ps1", privileged: false, args: ["-IFName", "Ethernet 2"]
         box.vm.provision :shell, :path => "../../scripts/EnableWinRM.ps1", privileged: false
         box.vm.provision :shell, :path => "../../scripts/default_gw.ps1", privileged: false, args: ["-IFName", "Ethernet 2","-Gateway", n_info[:gw]]
         if box_def.has_key?(:ip_p)
           #n_info_p = net_defs[:bridge]
+          box.vm.provision :shell, :path => "../../scripts/flush-interface.ps1", privileged: false, args: ["-IFName", "Ethernet 3"]
           box.vm.provision :shell, :path => "../../scripts/fix_ip.ps1", privileged: false, args: ["-IFName", "Ethernet 3", "-IP", box_def[:ip_p], "-Mask", bridge[:mask]]
         end
       end

@@ -4,6 +4,7 @@ require 'fileutils'
 Vagrant.configure("2") do |config|
   # Uncomment this depending on the provider you want to use
   ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
+  management_network_prefix = "192.168.121"
   storage_pool_name = "vms"
   efi_path='/var/lib/libvirt/images/efi'
   owner = 'jubeaz'
@@ -13,7 +14,7 @@ Vagrant.configure("2") do |config|
     dev: "br0",
     name: "virbr_plaber",
     mask: "255.255.255.0",
-    network: "192.168.10.0",
+    network: "192.168.10",
     gw: "192.168.10.254"
   }
 #   bridge: {name: "br1", mask: "255.255.0.0", network: "192.168.58.0", gw: "192.168.2.1"}
@@ -74,7 +75,7 @@ Vagrant.configure("2") do |config|
 #      role: "member",
 #      bname: "nrunner_wld_dc", 
 #  	  net: net_defs[:weyland], 
-#      relative_ip: "1", 
+#      relative_ip: "2", 
 #      #box_img: "qemu-jubeaz-uefi-windows-2022",
 #      box_img: "qemu-jubeaz-uefi-windows-2022",
 #      username: "jubeaz",
@@ -103,7 +104,7 @@ Vagrant.configure("2") do |config|
       # only internal
       role: "member",
       bname: "nrunner_haas_dc", 
-      relative_ip: "1", 
+      relative_ip: "2", 
   	  net: net_defs[:haas], 
       box_img: "qemu-jubeaz-uefi-windows-2022",
       username: "jubeaz",
@@ -178,7 +179,7 @@ Vagrant.configure("2") do |config|
 #      # only internal
 #      role: "member",
 #      bname: "nrunner_rsc_dc", 
-#      relative_ip: "1", 
+#      relative_ip: "2", 
 #  	  net: net_defs[:research], 
 #      box_img: "qemu-jubeaz-uefi-windows-2022",
 #      username: "jubeaz",
@@ -278,7 +279,7 @@ Vagrant.configure("2") do |config|
     #libvirt.storage_pool_path = '/home/user/.local/share/libvirt/images'
     ## Management network device, default is below
     #libvirt.management_network_device = 'virbr0'
-    #libvirt.management_network_address = "192.168.121.0"
+    libvirt.management_network_address = "#{management_network_prefix}.0/24"
     libvirt.management_network_name = "plaber_mgnt"
     libvirt.management_network_mode = "none"
     libvirt.storage_pool_name = storage_pool_name
@@ -291,7 +292,7 @@ Vagrant.configure("2") do |config|
         box_provider.default_prefix = "plaber_"
         box_provider.memory = box_def[:ram]
         box_provider.cpus = box_def[:cpu]
-        box_provider.keymap = "fr"
+        box_provider.keymap = "fr-fr"
         box_provider.input type:"tablet", bus: "usb" # solve mouse capture of VNC
         if box_def[:firmware] == "uefi"
           unless File.exist?("#{efi_path}/OVMF_CODE_4M.ms.fd")
@@ -397,12 +398,17 @@ Vagrant.configure("2") do |config|
         box.vm.communicator = "winssh"
         config.winssh.shell = 'powershell'
         #config.vm.communicator = 'winrm'
+        box.vm.provision :shell, :path => "../../scripts/rename-interface.ps1", privileged: false, args: ["-IFName", "mgt", "-NetPrefix", management_network_prefix]
         n_info = box_def[:net]
+        box.vm.provision :shell, :path => "../../scripts/rename-interface.ps1", privileged: false, args: ["-IFName", "lab", "-NetPrefix", n_info[:network]]
+        box.vm.provision :shell, :path => "../../scripts/flush-interface.ps1", privileged: false, args: ["-IFName", "lab"]
         box.vm.provision :shell, :path => "../../scripts/EnableWinRM.ps1", privileged: false
-        box.vm.provision :shell, :path => "../../scripts/default_gw.ps1", privileged: false, args: ["-IFName", "Ethernet 2","-Gateway", n_info[:gw]]
+        box.vm.provision :shell, :path => "../../scripts/default_gw.ps1", privileged: false, args: ["-IFName", "lab","-Gateway", n_info[:gw]]
         if box_def.has_key?(:ip_p)
           #n_info_p = net_defs[:bridge]
-          box.vm.provision :shell, :path => "../../scripts/fix_ip.ps1", privileged: false, args: ["-IFName", "Ethernet 3", "-IP", box_def[:ip_p], "-Mask", bridge[:mask]]
+          box.vm.provision :shell, :path => "../../scripts/rename-interface.ps1", privileged: false, args: ["-IFName", "internet", "-NetPrefix", bridge[:network]]
+          box.vm.provision :shell, :path => "../../scripts/flush-interface.ps1", privileged: false, args: ["-IFName", "lab"]
+          box.vm.provision :shell, :path => "../../scripts/fix_ip.ps1", privileged: false, args: ["-IFName", "internet", "-IP", box_def[:ip_p], "-Mask", bridge[:mask]]
         end
       end
       # Arch specific

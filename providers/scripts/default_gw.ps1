@@ -4,3 +4,5 @@
 param ([String] $Gateway, [string]$IFName)
  	#route add 0.0.0.0 mask 0.0.0.0 $Gateway
 	New-NetRoute -InterfaceAlias $IFName -DestinationPrefix "0.0.0.0/0" -NextHop $Gateway
+	Disable-NetAdapter -Name $IFName -Confirm:$false
+	Enable-NetAdapter -Name $IFName -Confirm:$false
