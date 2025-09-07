@@ -1,5 +1,5 @@
 param ([string]$IFName)
-    Write-HostVerbose "Disable-NetAdapter $IFName"
+    Write-Verbose "Disable-NetAdapter $IFName"
 	Disable-NetAdapter -Name $IFName -Confirm:$false
-    Write-HostVerbose "Enable-NetAdapter $IFName"
+    Write-Verbose "Enable-NetAdapter $IFName"
 	Enable-NetAdapter -Name $IFName -Confirm:$false
