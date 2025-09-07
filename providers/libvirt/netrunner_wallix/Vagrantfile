@@ -398,15 +398,15 @@ Vagrant.configure("2") do |config|
         box.vm.communicator = "winssh"
         config.winssh.shell = 'powershell'
         #config.vm.communicator = 'winrm'
-        box.vm.provision :shell, :path => "../../scripts/rename-interface.ps1", privileged: false, args: ["-IFName", "mgt", "-NetPrefix", management_network_prefix]
+        box.vm.provision :shell, :path => "../../scripts/rename-interface.ps1", privileged: false, args: ["-IFName", "mgt", "-NetPrefix", "#{management_network_prefix}*"]
         n_info = box_def[:net]
-        box.vm.provision :shell, :path => "../../scripts/rename-interface.ps1", privileged: false, args: ["-IFName", "lab", "-NetPrefix", n_info[:network]]
+        box.vm.provision :shell, :path => "../../scripts/rename-interface.ps1", privileged: false, args: ["-IFName", "lab", "-NetPrefix", "#{n_info[:network]}*"]
         box.vm.provision :shell, :path => "../../scripts/flush-interface.ps1", privileged: false, args: ["-IFName", "lab"]
         box.vm.provision :shell, :path => "../../scripts/EnableWinRM.ps1", privileged: false
         box.vm.provision :shell, :path => "../../scripts/default_gw.ps1", privileged: false, args: ["-IFName", "lab","-Gateway", n_info[:gw]]
         if box_def.has_key?(:ip_p)
           #n_info_p = net_defs[:bridge]
-          box.vm.provision :shell, :path => "../../scripts/rename-interface.ps1", privileged: false, args: ["-IFName", "internet", "-NetPrefix", bridge[:network]]
+          box.vm.provision :shell, :path => "../../scripts/rename-interface.ps1", privileged: false, args: ["-IFName", "internet", "-NetPrefix", "#{bridge[:network]}*"]
           box.vm.provision :shell, :path => "../../scripts/flush-interface.ps1", privileged: false, args: ["-IFName", "lab"]
           box.vm.provision :shell, :path => "../../scripts/fix_ip.ps1", privileged: false, args: ["-IFName", "internet", "-IP", box_def[:ip_p], "-Mask", bridge[:mask]]
         end
