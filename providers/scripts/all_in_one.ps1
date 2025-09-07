@@ -518,10 +518,10 @@ Function Set-FixedIP{
         }
         if ($gw -ne $false){
 		    Write-HostVerbose "netsh.exe interface ipv4 set address name=$IFName static $IP $Mask $Gateway" 
-		    netsh.exe interface ipv4 set address name=$IFName static $IP $Mask $Gateway 
+		    netsh.exe interface ipv4 set address name="$IFName" static $IP $Mask $Gateway 
 	    } else {
 		Write-HostVerbose "netsh.exe interface ipv4 set address name=$IFName static $IP $Mask"
-		netsh.exe interface ipv4 set address name=$IFName static $IP $Mask
+		netsh.exe interface ipv4 set address name="$IFName" static $IP $Mask
 	    }
 	}
 }

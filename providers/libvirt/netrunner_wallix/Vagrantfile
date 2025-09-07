@@ -6,6 +6,9 @@ Vagrant.configure("2") do |config|
   ENV['VAGRANT_DEFAULT_PROVIDER'] = 'libvirt'
   storage_pool_name = "vms"
   efi_path='/var/lib/libvirt/images/efi'
+  owner = 'jubeaz'
+  group = 'libvirt-qemu'
+  permissions = 0666  # This is octal for 664
   bridge = {
     dev: "br0",
     name: "virbr_plaber",
@@ -170,7 +173,7 @@ Vagrant.configure("2") do |config|
       ram: 4*1024,
       cpu: 2,
       firmware: "uefi"
-    },
+    }
 #    { 
 #      # only internal
 #      role: "member",
@@ -215,22 +218,35 @@ Vagrant.configure("2") do |config|
 #      cpu: 2,
 #      firmware: "uefi"
 #    }
-    { 
-      # only internal
-      role: "member",
-      bname: "bastion", 
-      relative_ip: "20", 
-  	   net: net_defs[:haas], 
-      box_img: "bastion-12.0.14", # create_vm.sh bastion-openstack.qcow2 bastion-12.0.14.qcow2
-      username: "jubeaz",
-      password: "jubeaz",
-      os: "linux", 
-      #ram: 2*1024,
-      ram: 4*1024,
-      cpu: 2,
-      firmware: "bios"
-    }
+#    { 
+#      # only internal
+#      role: "member",
+#      bname: "bastion", 
+#      relative_ip: "20", 
+#  	   net: net_defs[:haas], 
+#      box_img: "bastion-12.0.14", # create_vm.sh bastion-openstack.qcow2 bastion-12.0.14.qcow2
+#      username: "jubeaz",
+#      password: "jubeaz",
+#      os: "linux", 
+#      #ram: 2*1024,
+#      ram: 4*1024,
+#      cpu: 2,
+#      firmware: "bios"
+#    }
   ]
+# NVRAM_PATH="#{config.vm.provider(:libvirt).nvram}"
+  config.trigger.after :destroy do |trigger|
+    trigger.name = "Delete nvram"
+    trigger.warn = "Deleting NVRAM file of #{config.vm.box}"
+#    trigger.run = { inline: <<-SHELL
+#        VM_NAME="#{config.vm.box}"
+#        NVRAM_PATH=$(virsh dumpxml $VM_NAME | grep "nvram" | sed 's/.*nvram="\([^"]*\)".*/\1/')
+#        echo "Deleting NVRAM file at: $NVRAM_PATH"
+#        # Remove the NVRAM file
+#        #rm -f $NVRAM_PATH
+#      SHELL
+#    }
+  end
 
   # no autoupdate if vagrant-vbguest is installed
   if Vagrant.has_plugin?("vagrant-vbguest") then
@@ -267,10 +283,8 @@ Vagrant.configure("2") do |config|
     libvirt.management_network_mode = "none"
     libvirt.storage_pool_name = storage_pool_name
   end
-  FileUtils.cp("../../ovmf/usr/share/OVMF/OVMF_CODE_4M.ms.fd", "#{efi_path}/OVMF_CODE_4M.ms.fd")
 
   box_defs.each do |box_def|
-    FileUtils.cp("../../ovmf/usr/share/OVMF/OVMF_VARS_4M.ms.fd", "#{efi_path}/#{box_def[:bname]}_OVMF_VARS.4M.ms.fd")
     config.vm.define box_def[:bname] do |box|
       box.vm.provider "libvirt" do |box_provider|
         #box_provider.graphics_type = "vnc"
@@ -280,9 +294,14 @@ Vagrant.configure("2") do |config|
         box_provider.keymap = "fr"
         box_provider.input type:"tablet", bus: "usb" # solve mouse capture of VNC
         if box_def[:firmware] == "uefi"
-          #box_provider.loader = "/usr/share/OVMF/x64/OVMF_CODE.secboot.4m.fd"
-          #box_provider.loader = "/usr/share/OVMF/x64/OVMF_CODE.4m.fd"
-          #box_provider.nvram = "/usr/share/OVMF/x64/OVMF_VARS.4m.fd"
+          unless File.exist?("#{efi_path}/OVMF_CODE_4M.ms.fd")
+            FileUtils.cp("../../ovmf/usr/share/OVMF/OVMF_CODE_4M.ms.fd", "#{efi_path}/OVMF_CODE_4M.ms.fd")
+            FileUtils.chmod(permissions, "#{efi_path}/OVMF_CODE_4M.ms.fd")
+          end
+          unless File.exist?("#{efi_path}/#{box_def[:bname]}_OVMF_VARS.4M.ms.fd")
+            FileUtils.cp("../../ovmf/usr/share/OVMF/OVMF_VARS_4M.ms.fd", "#{efi_path}/#{box_def[:bname]}_OVMF_VARS.4M.ms.fd")
+            FileUtils.chmod(permissions, "#{efi_path}/#{box_def[:bname]}_OVMF_VARS.4M.ms.fd")
+          end
           box_provider.nvram = "#{efi_path}/#{box_def[:bname]}_OVMF_VARS.4M.ms.fd"
           box_provider.loader = "#{efi_path}/OVMF_CODE_4M.ms.fd"
           box_provider.machine_type = 'q35'
@@ -326,21 +345,17 @@ Vagrant.configure("2") do |config|
       ## Network provisionning
       if box_def[:role] == "member"
         n_info = box_def[:net]
-        #  Provision INTERNAL on Ethernet 3 / eth1
+        #  Provision INTERNAL on Ethernet / eth1
         box.vm.network :private_network, 
-          #type: "dhcp",
-          #libvirt__iface_name: "virbr_#{n_info[:name]}",
+          #libvirt__guest_ipv6: "no",
           libvirt__forward_mode: "none",
-          libvirt__network_address: "#{n_info[:network]}.0",
+          #libvirt__network_address: "#{n_info[:network]}.0",
           libvirt__netmask: n_info[:mask],
-          #libvirt__dhcp_start: "#{n_info[:network]}.1",
-          #libvirt__dhcp_stop: "#{n_info[:network]}.253",
-          libvirt__dhcp_enabled: false,
+          #libvirt__dhcp_enabled: false,
           libvirt__network_name: n_info[:name],
           ip: "#{n_info[:network]}.#{box_def[:relative_ip]}"
-        #  Provision a BRIDGED interface if needed on Ethernet 4 / / eth2
+        #  Provision a BRIDGED interface if needed on Ethernet 2 / eth2
         if box_def.has_key?(:ip_p)
-          #n_info_p = net_defs[:bridge]
           box.vm.network :public_network, 
             dev: bridge[:dev],
             mode: "bridge",
@@ -351,7 +366,6 @@ Vagrant.configure("2") do |config|
       end
       if box_def[:role] == "firewall"
         #  Provision a BRIDGED interface on eth1 
-        #n_info_p = net_defs[:bridge]
         box.vm.network :public_network, 
           dev: bridge[:dev],
           mode: "bridge",
@@ -363,14 +377,11 @@ Vagrant.configure("2") do |config|
           n_info = bn[:net]
           puts "  Provision Network #{n_info[:name]} with IP #{n_info[:network]}.0"
           box.vm.network :private_network, 
-            #type: "dhcp",
-            #libvirt__iface_name: "virbr_#{n_info[:name]}",
+            #libvirt__guest_ipv6: "no",
             libvirt__forward_mode: "none",
-            libvirt__network_address: "#{n_info[:network]}.0",
+            #libvirt__network_address: "#{n_info[:network]}.0",
             libvirt__netmask: n_info[:mask],
-            #libvirt__dhcp_start: "#{n_info[:network]}.1",
-            #libvirt__dhcp_stop: "#{n_info[:network]}.253",
-            libvirt__dhcp_enabled: false,
+            #libvirt__dhcp_enabled: false,
             libvirt__network_name: n_info[:name],
             ip: "#{n_info[:network]}.#{bn[:relative_ip]}"
         end
@@ -387,10 +398,11 @@ Vagrant.configure("2") do |config|
         config.winssh.shell = 'powershell'
         #config.vm.communicator = 'winrm'
         n_info = box_def[:net]
-        box.vm.provision :shell, :path => "../../scripts/all_in_one.ps1", privileged: false, args: ["-IFName", "Ethernet 3", "-IP", "#{n_info[:network]}.#{box_def[:relative_ip]}", "-Mask", n_info[:mask], "-Gateway", n_info[:gw]]
+        box.vm.provision :shell, :path => "../../scripts/EnableWinRM.ps1", privileged: false
+        box.vm.provision :shell, :path => "../../scripts/default_gw.ps1", privileged: false, args: ["-IFName", "Ethernet 2","-Gateway", n_info[:gw]]
         if box_def.has_key?(:ip_p)
           #n_info_p = net_defs[:bridge]
-          box.vm.provision :shell, :path => "../../scripts/fix_ip.ps1", privileged: false, args: ["-IFName", "Ethernet 4", "-IP", box_def[:ip_p], "-Mask", bridge[:mask]]
+          box.vm.provision :shell, :path => "../../scripts/fix_ip.ps1", privileged: false, args: ["-IFName", "Ethernet 3", "-IP", box_def[:ip_p], "-Mask", bridge[:mask]]
         end
       end
       # Arch specific

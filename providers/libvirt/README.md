@@ -4,6 +4,9 @@
 # run
 ```bash
 VAGRANT_LOG=debug vagrant up 2>&1 | tee vagrant_debug.log
+
+vagrant destroy --force && rm -rf .vagrant && rm /var/lib/libvirt/images/efi/*
+
 ```
 
 # secure boot
