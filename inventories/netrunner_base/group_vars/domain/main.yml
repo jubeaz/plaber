@@ -11,9 +11,11 @@ plbr_https_proxy: http://x.x.x.x:xxxx
 
 
 plbr_two_adapters: "{{ true if public_ip is defined else false}}"
+### VIRTUALBOX
 #plbr_nat_adapter: Ethernet
 #plbr_domain_adapter: Ethernet 2
 #plbr_pub_adapter: Ethernet 3
-plbr_nat_adapter: Ethernet 2
-plbr_domain_adapter: Ethernet 3
-plbr_pub_adapter: Ethernet 4
+## LIBVIRT
+plbr_nat_adapter: mgt
+plbr_domain_adapter: lab
+plbr_pub_adapter: internet

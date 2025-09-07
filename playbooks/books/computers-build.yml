@@ -5,6 +5,13 @@
   tags: 'build_computers'
   gather_facts: false
   tasks:
+    - name: Disable Management Interface
+      ansible.builtin.include_role:
+        name: windows_cfg_manage_net_adapter
+      vars:
+        w_cfg_net_adapter_two_adapters: true
+        w_cfg_net_adapter_adapter: "{{ plbr_nat_adapter }}"
+        w_cfg_net_adapter_action: "disable"
     - name: Base setup
       ansible.builtin.include_role:
         name: "windows_cfg_base"

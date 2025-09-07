@@ -1,0 +1,35 @@
+- name: ENSURE DOMAINS ARE REACHABLE
+  import_playbook: books/domains-reachable.yml
+
+# ##################################
+# Start Extended inventory computing
+# ##################################
+- name: COMPUTE EXTENDED INVENTORY (LOCAL)
+  import_playbook: books/compute-properties_local.yml
+
+- name: COMPUTE EXTENDED INVENTORY (DOMAIN)
+  import_playbook: books/compute-properties_domain.yml
+
+- name: COMPUTE EXTENDED INVENTORY (FOREST)
+  import_playbook: books/compute-properties_forest.yml
+  when: groups["child_dc"] | length > 0
+
+- name: COMPUTE EXTENDED INVENTORY (TRUST)
+  import_playbook: books/compute-properties_trust.yml
+  when: groups["trust"] | length > 0
+
+- name: COMPUTE EXTENDED INVENTORY (MSSQL)
+  import_playbook: books/compute-properties_mssql.yml
+  when: groups["mssql"] | length > 0
+# ################################
+# End Extended inventory computing
+# ################################
+
+
+- name: COMPUTE EXTENDED INVENTORY (bastion)
+  import_playbook: books/compute-bastion-targets.yml
+
+- name: Build bastion
+  import_playbook: books/bastion-build.yml
+
+
