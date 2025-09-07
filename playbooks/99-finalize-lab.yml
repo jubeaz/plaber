@@ -1,0 +1,14 @@
+---
+- name: ENSURE DOMAINS ARE REACHABLE
+  import_playbook: books/domains-reachable.yml
+
+# ##################################
+# Start Extended inventory computing
+# ##################################
+
+# ################################
+# End Extended inventory computing
+# ################################
+
+- name: COMPUTER COMPLIANCE SETUP
+  import_playbook: books/finalize.yml

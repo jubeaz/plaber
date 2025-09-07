@@ -1,0 +1,14 @@
+---
+- name: FINALIZE DOMAIN COMPUTERS
+  hosts: domain
+  max_fail_percentage: 0
+  tags: 'build_computers'
+  gather_facts: false
+  tasks:
+    - name: Enable Management Interface
+      ansible.builtin.include_role:
+        name: windows_cfg_manage_net_adapter
+      vars:
+        w_cfg_net_adapter_two_adapters: true
+        w_cfg_net_adapter_adapter: "{{ plbr_nat_adapter }}"
+        w_cfg_net_adapter_action: "enable"
