@@ -12,12 +12,131 @@
         wallix_bastion_auth_user: "{{ api_user }}"
         wallix_bastion_auth_password: "{{ api_password }}"
 
+#    - name: Create users
+#      ansible.builtin.include_role:
+#        name: wallix_bastion_user
+#      vars:
+#        wallix_bastion_user_url: "{{ bastion_url }}"
+#        wallix_bastion_user_cookie: "{{ wallix_bastion_auth_cookie }}"
+#        wallix_bastion_user_name: "{{ item.key }}"
+#        wallix_bastion_user_data: "{{ item.value }}"
+#      with_dict: "{{ plbr_users }}"
+
+#    - name: Create user groups
+#      ansible.builtin.include_role:
+#        name: wallix_bastion_usergroup
+#      vars:
+#        wallix_bastion_usergroup_url: "{{ bastion_url }}"
+#        wallix_bastion_usergroup_cookie: "{{ wallix_bastion_auth_cookie }}"
+#        wallix_bastion_usergroup_name: "{{ item.key }}"
+#        wallix_bastion_usergroup_data: "{{ item.value }}"
+#      with_dict: "{{ plbr_usergroups }}"
+
+
+#    - name: Create devices
+#      ansible.builtin.include_role:
+#        name: wallix_bastion_devices
+#      vars:
+#        wallix_bastion_device_url: "{{ bastion_url }}"
+#        wallix_bastion_device_cookie: "{{ wallix_bastion_auth_cookie }}"
+#        wallix_bastion_device_devices: "{{ plbr_devices }}"
+#        wallix_bastion_device_action: "create"
+#        #wallix_bastion_device_action: "view"
+
     - name: Create devices
       ansible.builtin.include_role:
-        name: wallix_bastion_device
+        name: wallix_bastion_devices
       vars:
         wallix_bastion_device_url: "{{ bastion_url }}"
         wallix_bastion_device_cookie: "{{ wallix_bastion_auth_cookie }}"
         wallix_bastion_device_devices: "{{ plbr_devices }}"
+        wallix_bastion_device_action: "get"
 
-# create device service
+
+    - name: Set back plbr_devices with wallix ids
+      ansible.builtin.set_fact:
+        plbr_devices: "{{ wallix_bastion_device_plbr_devices }}"
+
+#    - name: Display plbr_devices
+#      ansible.builtin.debug:
+#        var: plbr_devices
+#
+    - name: Compute builtin admins accounts for devices
+      ansible.builtin.set_fact:
+        plbr_devices_administator: |
+          {{ plbr_devices_administator | default([]) |
+            combine({
+              item.key ~ '_admin': {
+                'account_login': 'administrator',
+                'description': 'builtin',
+                'device_name': item.key,
+                'sevice_name': 'ssh_local_account',
+                'device_id': (wallix_response.json[0].id | default('UNKNOWN')),
+                'password': hostvars[item.value.key].plbr_local_admin_password,
+                'private_key': "",
+                'checkout_policy': "default"
+              }
+            })
+          }}
+      with_dict: "{{ plbr_devices }}"
+#
+#    - name: Display plbr_devices_administator
+#      ansible.builtin.debug:
+#        var: plbr_devices_administator
+
+#    - name: Creating device accounts
+#      ansible.builtin.include_role:
+#        name: wallix_bastion_device_account
+#      vars:
+#        wallix_bastion_device_account_url: "{{ bastion_url }}"
+#        wallix_bastion_device_account_cookie: "{{ wallix_bastion_auth_cookie }}"
+#        wallix_bastion_device_account_name: "{{ item.key }}"
+#        wallix_bastion_device_account_data: "{{ item.value }}"
+#      with_dict: "{{ plbr_devices_administator }}"
+
+
+# target group
+
+#    - name: Create target groups local administrators
+#      ansible.builtin.include_role:
+#        name: wallix_bastion_target_group
+#      vars:
+#        wallix_bastion_target_group_desc: ''
+#        wallix_bastion_target_group_name: 'local_admins'
+#        wallix_bastion_target_group_url: "{{ bastion_url }}"
+#        wallix_bastion_target_group_cookie: "{{ wallix_bastion_auth_cookie }}"
+#        wallix_bastion_target_group_accounts: "{{ plbr_devices_administator }}"
+
+
+## Authorizations
+
+# create group
+#    - name: "Creating User Groups"
+#      ansible.builtin.uri:
+#        url: "{{ bastion_url }}/authorizations"
+#        method: POST
+#        body_format: json
+#        validate_certs: false
+#        status_code:
+#          - 204
+#        headers:
+#          Cookie: "wab_session_id={{ wallix_bastion_auth_cookie.cookies['wab_session_id'] }}"
+#        body: |
+#          {
+#              "user_group": "lab_local_adm",
+#              "target_group": "local_admins",
+#              "authorization_name": "local_admins",
+#              "description": "My authorization",
+#              "subprotocols": [
+#                  "SSH_SHELL_SESSION",
+#                  "SSH_REMOTE_COMMAND",
+#                  "RDP"
+#              ],
+#              "is_critical": false,
+#              "is_recorded": false,
+#              "authorize_password_retrieval": true,
+#              "authorize_sessions": true,
+#              "approval_required": false,
+#              "authorize_session_sharing": true,
+#              "session_sharing_mode": "view_only"
+#          }

@@ -21,3 +21,71 @@ ansible_user: "{{ wabadmin_user }}"
 ansible_password: "{{ wabadmin_password }}"
 ansible_connection: ssh
 ansible_port: 2242
+
+
+device_account_json: >
+  {
+    "account_name": "IN_DEVICE_ACCOUNT_NAME",
+    "account_login": "IN_DEVICE_ACCOUNT_LOGIN",
+    "description": "IN_DEVICE_ACCOUNT_NAME",
+    "credentials": [
+        {
+            "type": "password",
+            "password": "IN_DEVICE_ACCOUNT_PASSWORD"
+        }
+    ],
+    "checkout_policy": "default"
+  }
+
+plbr_users: {
+  "zaebuj": {
+    email: "zaebuj@haas.local",
+    ip_source: "10.0.0.1",
+    preferred_language: "en",
+    profile: "product_administrator",
+    is_disabled: false,
+    user_auths: ["local_password", "local_sshkey"], # local_password, local_sshkey, local_x509
+    password: "Jubeaz12345+-",
+    force_change_pwd: "true",
+    ssh_public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDRnX471jdDOC1BoaQwJa9Uzkf9xOHkfdTbu0xPRSUiyMxE3eLzJBo5vnjT8Hoc+GbP2I9qCC4B43tjNcoby8Fy4jMTKKit0MWCzvUmTPJhKh7QlB6tLh3MGEG7zDrCVlgaH1041Oyp21ZgiCjkqQl/ClTS5vplgyG4ZlFy/lnFrVULr20D1smo9Ihbhol0glkOpiY6+NBSTIScIgtLx7Fo1YS5wQ0pPHIFttbbLQgvEF2NCOpJ6SZTG9/gZp4Uo4sgGJFzxIent/28E7QZXsCeF8SQ+Bq8K4R0v3VMihcZgkFwcr6wmUc9A8/LG1kaD67A+Nrt1X2Jl1BhO41qGJtZ1PNuYxZaBLOuAnP3GiDZ7wFjkPml8BdrACHgCqa8hKB0FuRllfFNSQb9hTTAJtslskKlZKtfV4BahVe6Ceb9r8UHhQRYtZok3iPhpCK09BZbTWv0IQra5QQm/kj0rtUT78kwP4oYcsR+iV3/U9S+QIFgATSucZ4edzP37itcqsX+CP4cZfJNKzSBHIXNlfhSH48egD8svbEeNl2NyKLP8TcMgU+IPW5gqpf999YfhLIEvklxM9RTUkeCrNPb6wzlmMs9YGh7kXvci1UK+dYa/GdLuffyV1YW9xtuASL08DOd8u02+VwwpNVgUUsBmx1mUBQ4/coa5vYoFDJlZMHqPw== jubeaz@somewhere",
+    gpg_public_key: "",
+    certificate_dn: ""
+  },
+  "jubeaz": {
+    email: "jubeaz@haas.local",
+    ip_source: "",
+    preferred_language: "en",
+    profile: "user",
+    is_disabled: false,
+    user_auths: ["local_password"], # local_password, local_sshkey, local_x509
+    password: "Zaebuj12345+-",
+    force_change_pwd: "false",
+    ssh_public_key: "",
+    gpg_public_key: "",
+    certificate_dn: ""
+  }
+}
+
+
+plbr_usergroups: {
+  "product_adm": {
+    description: "product_administrator",
+    timeframes: ["allthetime"],
+    users: ["zaebuj"],
+    profile: "product_administrator",
+    language: "en",
+    email_list: "",
+    restrictions: []
+  },
+  "lab_local_adm": {
+    description: "Access to local admin accounts",
+    timeframes: ["allthetime"],
+    users: ["jubeaz"],
+    profile: "user",
+    language: "en",
+    email_list: "",
+    restrictions: [
+      {action: "kill", rules: "sudo\\s+.*", subprotocol: "SSH_SHELL_SESSION"},
+    ]
+  },
+}
