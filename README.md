@@ -30,7 +30,7 @@ notes:
 
 https://www.bloggingforlogging.com/2018/10/14/windows-host-through-ssh-bastion-on-ansible/
 
-As domain computer are privisionned on a `Internal network` they are not directly accessible. The firewall will be in charge to route the traffic of ansible controller. Therefore, `ansible_psrp` (`sudo pacman -S python-pypsrp`) module is used to connect to windows targets with ansible. 
+As domain computer are provisionned on a `Internal network` they are not directly accessible. The firewall will be in charge to route the traffic of ansible controller. Therefore, `ansible_psrp` (`sudo pacman -S python-pypsrp`) module is used to connect to windows targets with ansible. 
 
 # Impact
 `ansible_host` must be set with it address and kerberos authentication will not be possible anymore

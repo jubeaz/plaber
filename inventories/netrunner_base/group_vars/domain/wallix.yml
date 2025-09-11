@@ -1,13 +1,12 @@
-plbr_wallix_bastion_local_domains: [
-    {
+plbr_wallix_bastion_local_domain: {
         domain_name: "local",
         description: "the first local domain",
         enable_password_change: true,
         password_change_policy: "default",
         password_change_plugin: "Windows"
-    }
-]
-plbr_wallix_bastion_services: [
+}
+
+plbr_wallix_bastion_local_services: [
     {
         service_name: "rdp_local_account",
         protocol: "RDP",
@@ -25,3 +24,7 @@ plbr_wallix_bastion_services: [
         subprotocols: ["SSH_SHELL_SESSION", "SSH_REMOTE_COMMAND", "SSH_SCP_UP", "SSH_SCP_DOWN", "SSH_X11", "SFTP_SESSION"]
     }
 ]
+
+plbr_wallix_bastion_vault_services: []
+
+plbr_wallix_bastion_services: "{{ plbr_wallix_bastion_local_services + plbr_wallix_bastion_vault_services }}"

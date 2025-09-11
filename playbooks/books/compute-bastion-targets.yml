@@ -10,7 +10,7 @@
 #    - name: STOP
 #      ansible.builtin.fail:
 #        msg: "STOP"
-    - name: Register bastion targets
+    - name: Register wallix bastion targets as a fact
       no_log: true
       ansible.builtin.set_fact:
         plbr_devices: |
@@ -19,7 +19,7 @@
                 item.value.plbr_hostname: {
                    'ip': item.value.plbr_domain_ip,
                    'key': item.key,
-                   'local_domains': item.value.plbr_wallix_bastion_local_domains,
+                   'local_domain': item.value.plbr_wallix_bastion_local_domain,
                    'services': item.value.plbr_wallix_bastion_services
                 }
               })
@@ -28,7 +28,7 @@
       when: "'haas_domain' in item.value.group_names"
       with_dict: "{{ hostvars }}"
 
-#    - name: Display plbr_devices
+#    - name: Display wallix bastion targets fact
 #      ansible.builtin.debug:
 #        var: plbr_devices
 
