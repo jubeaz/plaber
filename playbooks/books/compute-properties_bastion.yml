@@ -1,0 +1,96 @@
+- name: BASTION SET FACTS
+  hosts: wallix_bastion
+  tags: mandatory
+  gather_facts: false
+  max_fail_percentage: 0
+  tasks:
+#    - name: Display hostvars in a readable format
+#      ansible.builtin.debug:
+#        var: hostvars['haas_srv01']
+#    - name: STOP
+#      ansible.builtin.fail:
+#        msg: "STOP"
+    - name: Register wallix bastion targets as a fact
+      no_log: true
+      ansible.builtin.set_fact:
+        plbr_devices: |
+          {{ plbr_devices | default([]) |
+              combine({
+                item.value.plbr_hostname: {
+                   'host': item.value.plbr_hostname + '.' + item.value.plbr_domain_name,
+                   'key': item.key,
+                   'local_domain': item.value.plbr_wallix_bastion_local_domain,
+                   'services': item.value.plbr_wallix_bastion_services
+                }
+              })
+          }}
+        cacheable: true
+      when: "'haas_domain' in item.value.group_names"
+      with_dict: "{{ hostvars }}"
+
+#    - name: Display wallix bastion targets fact
+#      ansible.builtin.debug:
+#        var: plbr_devices
+
+#    - name: Display hostvars in a readable format
+#      ansible.builtin.debug:
+#        var: hostvars['bastion']
+
+
+    - name: Register AD external authentication as fact
+      ansible.builtin.set_fact:
+        plbr_ad_external_authentication: {
+          'authentication_name': "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}",
+          'type': "LDAP",
+          'description': "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}",
+          'port': 636,
+          'host': "{{ hostvars[plbr_domain_dc_inventory_key].plbr_hostname }}.{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}",
+          'timeout': 3.0,
+          'is_anonymous_access': false,
+          'login_attribute': "sAMAccountName",
+          'cn_attribute': "sAMAccountName",
+          'login': "{{ plbr_external_authentication_domain_account }}",
+          'password': "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_users_regular[plbr_external_authentication_domain_account].password }}",
+          'ldap_base': "DC={{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name.split('.') | join(',DC=') }}",
+          'is_active_directory': true,
+          'is_ssl': true,
+          'is_starttls': false,
+          'certificate': "",
+          'private_key': "",
+          'ca_certificate': "",
+          'use_primary_auth_domain': false
+        }
+
+    - name: Display wallix bastion AD external authentication fact
+      ansible.builtin.debug:
+        var: plbr_ad_external_authentication
+
+
+    - name: Register AD external authentication as fact
+      ansible.builtin.set_fact:
+        plbr_ad_authentication_domain: {
+          'domain_name': "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}",
+          'type': "AD",
+          'description': "This is the description",
+          'is_default': true,
+          'auth_domain_name': "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_netbios_name }}",
+          'check_x509_san_email': false,
+          'san_domain_name': "",
+          'x509_condition': "",
+          'external_auths': ["{{  plbr_ad_external_authentication.authentication_name }}"],
+          'secondary_auths': [],
+          'group_attribute': "memberOf",
+          'display_name_attribute': "displayName",
+          'email_attribute': "mail",
+          'pubkey_attribute': "",
+          'language_attribute': "preferredLanguage",
+          'default_language': "en",
+          'default_email_domain': "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}",
+          'x509_search_filter': "",
+          'certificate_authority': "",
+          'enable_ca': false
+        }
+
+    - name: Display wallix bastion AD external authentication fact
+      ansible.builtin.debug:
+        var: plbr_ad_authentication_domain

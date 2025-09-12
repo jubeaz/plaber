@@ -19,6 +19,7 @@ bastion_url: "https://{{ ansible_host }}/api"
 
 ansible_user: "{{ wabadmin_user }}"
 ansible_password: "{{ wabadmin_password }}"
+ansible_become_pass: "{{ wabadmin_password }}"
 ansible_connection: ssh
 ansible_port: 2242
 
@@ -89,3 +90,6 @@ plbr_usergroups: {
     ]
   },
 }
+
+plbr_domain_dc_inventory_key: "dc_haas"
+plbr_external_authentication_domain_account: "lowpriv"

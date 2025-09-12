@@ -4,6 +4,18 @@
   gather_facts: false
   max_fail_percentage: 0
   tasks:
+    - name: Set /etc/resolv.conf to domain
+      ansible.builtin.copy:
+        dest: /etc/resolv.conf
+        content: |
+          search {{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}
+          nameserver {{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_ip }}
+          nameserver 8.8.8.8
+        owner: root
+        group: root
+        mode: '0644'
+      become: true
+
     - name: Get Bastion auth cookie
       ansible.builtin.include_role:
         name: wallix_bastion_auth
@@ -12,169 +24,229 @@
         wallix_bastion_auth_user: "{{ api_user }}"
         wallix_bastion_auth_password: "{{ api_password }}"
 
-## USERS
-    - name: Create users
-      ansible.builtin.include_role:
-        name: wallix_bastion_user
-      vars:
-        wallix_bastion_user_url: "{{ bastion_url }}"
-        wallix_bastion_user_cookie: "{{ wallix_bastion_auth_cookie }}"
-        wallix_bastion_user_name: "{{ item.key }}"
-        wallix_bastion_user_data: "{{ item.value }}"
-      with_dict: "{{ plbr_users }}"
-
-## GROUPS
-    - name: Create user groups
-      ansible.builtin.include_role:
-        name: wallix_bastion_usergroup
-      vars:
-        wallix_bastion_usergroup_url: "{{ bastion_url }}"
-        wallix_bastion_usergroup_cookie: "{{ wallix_bastion_auth_cookie }}"
-        wallix_bastion_usergroup_name: "{{ item.key }}"
-        wallix_bastion_usergroup_data: "{{ item.value }}"
-      with_dict: "{{ plbr_usergroups }}"
-
-## DEVICES
-    - name: Create devices
-      ansible.builtin.include_role:
-        name: wallix_bastion_devices
-      vars:
-        wallix_bastion_device_url: "{{ bastion_url }}"
-        wallix_bastion_device_cookie: "{{ wallix_bastion_auth_cookie }}"
-        wallix_bastion_device_devices: "{{ plbr_devices }}"
-        wallix_bastion_device_action: "create"
-
-
-    - name: Get devices
-      ansible.builtin.include_role:
-        name: wallix_bastion_devices
-      vars:
-        wallix_bastion_device_url: "{{ bastion_url }}"
-        wallix_bastion_device_cookie: "{{ wallix_bastion_auth_cookie }}"
-        wallix_bastion_device_devices: "{{ plbr_devices }}"
-        wallix_bastion_device_action: "get"
-
-
-    - name: Update wallix bastion targets fact with wallix ids
-      ansible.builtin.set_fact:
-        plbr_devices: "{{ wallix_bastion_device_plbr_devices }}"
-
-#    - name: Display wallix bastion targets fact
+#    ## Update RDP connection policy to fix 'credssp kerberos authentication failed, ntlm not allowed'
+#    - name: Get Wallix Bastion RDP connection policy
+#      ansible.builtin.uri:
+#        url: "{{ bastion_url }}/connectionpolicies/?q=connection_policy_name=RDP"
+#        method: GET
+#        body_format: json
+#        validate_certs: false
+#        status_code:
+#          - 200
+#        headers:
+#          Cookie: "wab_session_id={{ wallix_bastion_auth_cookie.cookies['wab_session_id'] }}"
+#      register: wallix_response
+#
+#    - name: Display wallix_response
 #      ansible.builtin.debug:
-#        var: plbr_devices
+#        var: wallix_response
+#
+#    - name: Update RDP connection policy to allow nla ntlm fallback
+#      ansible.builtin.uri:
+#        url: "{{ bastion_url }}/connectionpolicies/{{ wallix_response.json[0].id }}"
+#        method: PUT
+#        body_format: json
+#        validate_certs: false
+#        status_code:
+#          - 204
+#        headers:
+#          Cookie: "wab_session_id={{ wallix_bastion_auth_cookie.cookies['wab_session_id'] }}"
+#        body: |
+#          {
+#            "options": {
+#              "rdp": {
+#                "allow_nla_ntlm_fallback": true
+#              }
+#            }
+#          }
+#
 
-### DEVICE ACCOUNTS
-    - name: Register builtin admins accounts for devices as fact
-      ansible.builtin.set_fact:
-        plbr_devices_administator: |
-          {{ plbr_devices_administator | default([]) |
-            combine({
-              item.key ~ '_admin': {
-                'account_login': 'administrator',
-                'description': 'builtin',
-                'device_name': item.key,
-                'domain': hostvars[item.value.key].plbr_wallix_bastion_local_domain,
-                'domain_type': "local",
-                'services': hostvars[item.value.key].plbr_wallix_bastion_local_services,
-                'wallix_device_id': (item.value.wallix_device_id | default('UNKNOWN')),
-                'wallix_local_domain_id': (item.value.wallix_local_domain_id | default('UNKNOWN')),
-                'password': hostvars[item.value.key].plbr_local_admin_password,
-                'private_key': "",
-                'checkout_policy': "default"
-              }
-            })
-          }}
-      with_dict: "{{ plbr_devices }}"
+## EXTERNAL AUTHENTICATION
+#    - name: Create AD external authentication
+#      ansible.builtin.include_role:
+#        name: wallix_bastion_external_authentication
+#      vars:
+#        wallix_bastion_external_authentication_url: "{{ bastion_url }}"
+#        wallix_bastion_external_authentication_cookie: "{{ wallix_bastion_auth_cookie }}"
+#        wallix_bastion_external_authentication_name: "{{ plbr_ad_external_authentication.authentication_name }}"
+#        wallix_bastion_external_authentication_data: "{{ plbr_ad_external_authentication }}"
 
-#    - name: Display builtin admins accounts for devices fact
-#      ansible.builtin.debug:
-#        var: plbr_devices_administator
-
-    - name: Creating device accounts
+## AUTHENTICATION DOMAIN
+    - name: Create AD authentication domain
       ansible.builtin.include_role:
-        name: wallix_bastion_device_account
+        name: wallix_bastion_authentication_domain
       vars:
-        wallix_bastion_device_account_url: "{{ bastion_url }}"
-        wallix_bastion_device_account_cookie: "{{ wallix_bastion_auth_cookie }}"
-        wallix_bastion_device_account_name: "{{ item.key }}"
-        wallix_bastion_device_account_data: "{{ item.value }}"
-      with_dict: "{{ plbr_devices_administator }}"
-
-## TARGET GROUPS
-    - name: Register target group for builtin admins accounts on devices as fact
-      ansible.builtin.set_fact:
-        plbr_lab_local_adm_targetgroup_data: {
-          'description': 'builtin admins on devices',
-          'accounts': "{{ plbr_devices_administator }}",
-          'account_mappings': "",
-          'interactive_logins': "",
-          'scenario_accounts': "",
-          'password_retrieval': "",
-          'restrictions': ""
-        }
-
-#    - name: Display target group for builtin admins accounts on devices fact
-#      ansible.builtin.debug:
-#        var: plbr_lab_local_adm_targetgroup_data
-
-    - name: Create target groups local administrators
-      ansible.builtin.include_role:
-        name: wallix_bastion_target_group
-      vars:
-        wallix_bastion_target_group_url: "{{ bastion_url }}"
-        wallix_bastion_target_group_cookie: "{{ wallix_bastion_auth_cookie }}"
-        wallix_bastion_target_group_name: 'lab_local_adm'
-        wallix_bastion_target_group_data: "{{ plbr_lab_local_adm_targetgroup_data }}"
+        wallix_bastion_authentication_domain_url: "{{ bastion_url }}"
+        wallix_bastion_authentication_domain_cookie: "{{ wallix_bastion_auth_cookie }}"
+        wallix_bastion_authentication_domain_name: "{{ plbr_ad_authentication_domain.auth_domain_name }}"
+        wallix_bastion_authentication_domain_data: "{{ plbr_ad_authentication_domain }}"
 
 
-## Authorizations
-    - name: Register authorizations for builtin admins accounts on devices as fact
-      ansible.builtin.set_fact:
-        plbr_lab_local_adm_authorization_data: {
-          'description': 'lab_local_adm',
-          'user_group': "lab_local_adm",
-          'target_group': "lab_local_adm",
-          "subprotocols": [
-                RAWTCPIP,
-                RDP,
-                RDP_CLIPBOARD_UP,
-                RDP_CLIPBOARD_DOWN,
-                RDP_CLIPBOARD_FILE,
-                RDP_PRINTER,
-                RDP_COM_PORT,
-                RDP_DRIVE,
-                RDP_SMARTCARD,
-                RDP_AUDIO_OUTPUT,
-                RDP_AUDIO_INPUT,
-                RLOGIN,
-                SSH_SHELL_SESSION,
-                SSH_REMOTE_COMMAND,
-                SSH_SCP_UP,
-                SSH_SCP_DOWN,
-                SSH_X11,
-                SFTP_SESSION,
-                SSH_DIRECT_TCPIP,
-                SSH_REVERSE_TCPIP,
-                SSH_AUTH_AGENT,
-                SSH_DIRECT_UNIXSOCK,
-                SSH_REVERSE_UNIXSOCK,
-                TELNET,
-                VNC
-          ],
-          'is_critical': false,
-          'is_recorded': false,
-          'authorize_password_retrieval': true,
-          'authorize_sessions': true,
-          'approval_required': false,
-          'authorize_session_sharing': true,
-          'session_sharing_mode': "view_only"
-        }
+### USERS
+#    - name: Create users
+#      ansible.builtin.include_role:
+#        name: wallix_bastion_user
+#      vars:
+#        wallix_bastion_user_url: "{{ bastion_url }}"
+#        wallix_bastion_user_cookie: "{{ wallix_bastion_auth_cookie }}"
+#        wallix_bastion_user_name: "{{ item.key }}"
+#        wallix_bastion_user_data: "{{ item.value }}"
+#      with_dict: "{{ plbr_users }}"
+#
+### GROUPS
+#    - name: Create user groups
+#      ansible.builtin.include_role:
+#        name: wallix_bastion_usergroup
+#      vars:
+#        wallix_bastion_usergroup_url: "{{ bastion_url }}"
+#        wallix_bastion_usergroup_cookie: "{{ wallix_bastion_auth_cookie }}"
+#        wallix_bastion_usergroup_name: "{{ item.key }}"
+#        wallix_bastion_usergroup_data: "{{ item.value }}"
+#      with_dict: "{{ plbr_usergroups }}"
+#
+### DEVICES
+#    - name: Create devices
+#      ansible.builtin.include_role:
+#        name: wallix_bastion_devices
+#      vars:
+#        wallix_bastion_device_url: "{{ bastion_url }}"
+#        wallix_bastion_device_cookie: "{{ wallix_bastion_auth_cookie }}"
+#        wallix_bastion_device_devices: "{{ plbr_devices }}"
+#        wallix_bastion_device_action: "create"
+#
+#
+#    - name: Get devices
+#      ansible.builtin.include_role:
+#        name: wallix_bastion_devices
+#      vars:
+#        wallix_bastion_device_url: "{{ bastion_url }}"
+#        wallix_bastion_device_cookie: "{{ wallix_bastion_auth_cookie }}"
+#        wallix_bastion_device_devices: "{{ plbr_devices }}"
+#        wallix_bastion_device_action: "get"
+#
+#
+#    - name: Update wallix bastion targets fact with wallix ids
+#      ansible.builtin.set_fact:
+#        plbr_devices: "{{ wallix_bastion_device_plbr_devices }}"
+#
+##    - name: Display wallix bastion targets fact
+##      ansible.builtin.debug:
+##        var: plbr_devices
+#
+#### DEVICE ACCOUNTS
+#    - name: Register builtin admins accounts for devices as fact
+#      ansible.builtin.set_fact:
+#        plbr_devices_administator: |
+#          {{ plbr_devices_administator | default([]) |
+#            combine({
+#              item.key ~ '_admin': {
+#                'account_login': 'administrator',
+#                'description': 'builtin',
+#                'device_name': item.key,
+#                'domain': hostvars[item.value.key].plbr_wallix_bastion_local_domain,
+#                'domain_type': "local",
+#                'services': hostvars[item.value.key].plbr_wallix_bastion_local_services,
+#                'wallix_device_id': (item.value.wallix_device_id | default('UNKNOWN')),
+#                'wallix_local_domain_id': (item.value.wallix_local_domain_id | default('UNKNOWN')),
+#                'password': hostvars[item.value.key].plbr_local_admin_password,
+#                'private_key': "",
+#                'checkout_policy': "default"
+#              }
+#            })
+#          }}
+#      with_dict: "{{ plbr_devices }}"
+#
+##    - name: Display builtin admins accounts for devices fact
+##      ansible.builtin.debug:
+##        var: plbr_devices_administator
+#
+#    - name: Creating device accounts
+#      ansible.builtin.include_role:
+#        name: wallix_bastion_device_account
+#      vars:
+#        wallix_bastion_device_account_url: "{{ bastion_url }}"
+#        wallix_bastion_device_account_cookie: "{{ wallix_bastion_auth_cookie }}"
+#        wallix_bastion_device_account_name: "{{ item.key }}"
+#        wallix_bastion_device_account_data: "{{ item.value }}"
+#      with_dict: "{{ plbr_devices_administator }}"
+#
+### TARGET GROUPS
+#    - name: Register target group for builtin admins accounts on devices as fact
+#      ansible.builtin.set_fact:
+#        plbr_lab_local_adm_targetgroup_data: {
+#          'description': 'builtin admins on devices',
+#          'accounts': "{{ plbr_devices_administator }}",
+#          'account_mappings': "",
+#          'interactive_logins': "",
+#          'scenario_accounts': "",
+#          'password_retrieval': "",
+#          'restrictions': ""
+#        }
+#
+##    - name: Display target group for builtin admins accounts on devices fact
+##      ansible.builtin.debug:
+##        var: plbr_lab_local_adm_targetgroup_data
+#
+#    - name: Create target groups local administrators
+#      ansible.builtin.include_role:
+#        name: wallix_bastion_target_group
+#      vars:
+#        wallix_bastion_target_group_url: "{{ bastion_url }}"
+#        wallix_bastion_target_group_cookie: "{{ wallix_bastion_auth_cookie }}"
+#        wallix_bastion_target_group_name: 'lab_local_adm'
+#        wallix_bastion_target_group_data: "{{ plbr_lab_local_adm_targetgroup_data }}"
+#
+#
+### Authorizations
+#    - name: Register authorizations for builtin admins accounts on devices as fact
+#      ansible.builtin.set_fact:
+#        plbr_lab_local_adm_authorization_data: {
+#          'description': 'lab_local_adm',
+#          'user_group': "lab_local_adm",
+#          'target_group': "lab_local_adm",
+#          "subprotocols": [
+#                RAWTCPIP,
+#                RDP,
+#                RDP_CLIPBOARD_UP,
+#                RDP_CLIPBOARD_DOWN,
+#                RDP_CLIPBOARD_FILE,
+#                RDP_PRINTER,
+#                RDP_COM_PORT,
+#                RDP_DRIVE,
+#                RDP_SMARTCARD,
+#                RDP_AUDIO_OUTPUT,
+#                RDP_AUDIO_INPUT,
+#                RLOGIN,
+#                SSH_SHELL_SESSION,
+#                SSH_REMOTE_COMMAND,
+#                SSH_SCP_UP,
+#                SSH_SCP_DOWN,
+#                SSH_X11,
+#                SFTP_SESSION,
+#                SSH_DIRECT_TCPIP,
+#                SSH_REVERSE_TCPIP,
+#                SSH_AUTH_AGENT,
+#                SSH_DIRECT_UNIXSOCK,
+#                SSH_REVERSE_UNIXSOCK,
+#                TELNET,
+#                VNC
+#          ],
+#          'is_critical': false,
+#          'is_recorded': false,
+#          'authorize_password_retrieval': true,
+#          'authorize_sessions': true,
+#          'approval_required': false,
+#          'authorize_session_sharing': true,
+#          'session_sharing_mode': "view_only"
+#        }
+#
+#    - name: Create local administrators authorization
+#      ansible.builtin.include_role:
+#        name: wallix_bastion_authorization
+#      vars:
+#        wallix_bastion_authorization_url: "{{ bastion_url }}"
+#        wallix_bastion_authorization_cookie: "{{ wallix_bastion_auth_cookie }}"
+#        wallix_bastion_authorization_name: 'lab_local_adm'
+#        wallix_bastion_authorization_data: "{{ plbr_lab_local_adm_authorization_data }}"
+#
 
-    - name: Create local administrators authorization
-      ansible.builtin.include_role:
-        name: wallix_bastion_authorization
-      vars:
-        wallix_bastion_authorization_url: "{{ bastion_url }}"
-        wallix_bastion_authorization_cookie: "{{ wallix_bastion_auth_cookie }}"
-        wallix_bastion_authorization_name: 'lab_local_adm'
-        wallix_bastion_authorization_data: "{{ plbr_lab_local_adm_authorization_data }}"

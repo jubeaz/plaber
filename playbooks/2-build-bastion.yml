@@ -27,7 +27,7 @@
 
 
 - name: COMPUTE EXTENDED INVENTORY (bastion)
-  import_playbook: books/compute-bastion-targets.yml
+  import_playbook: books/compute-properties_bastion.yml
 
 - name: Build bastion
   import_playbook: books/bastion-build.yml
