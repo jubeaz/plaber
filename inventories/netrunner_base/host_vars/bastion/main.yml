@@ -1,3 +1,5 @@
+plbr_hostname: "bastion"
+
 wabadmin_user: wabadmin
 # old: SecureWabAdmin
 wabadmin_password: Wab*Admin*Secure1
@@ -13,13 +15,20 @@ crypt_key: Zaebuj12345+-Zaebuj12345+-
 # hostname: wawa
 # ip: 172.17.2.30
 
-api_user: admin
-api_password: Zaebuj12345+-
-bastion_url: "https://{{ ansible_host }}/api"
+plbr_api_user: "admin"
+plbr_api_password: "Zaebuj12345+-"
+plbr_api_key: {
+  user: 'admin',
+  key: "8QlOMR0nr53XRVKjSEU2DtjapEmAmBPCYrVLgtpZHfM"
+}
 
-ansible_user: "{{ wabadmin_user }}"
-ansible_password: "{{ wabadmin_password }}"
-ansible_become_pass: "{{ wabadmin_password }}"
+#bastion_url: "https://{{ ansible_host }}/api"
+bastion_url: "https://{{ plbr_domain_ip }}/api"
+ansible_user: "root"
+ansible_ssh_private_key_file: ~/.ssh/id_wallix
+#ansible_user: "{{ wabadmin_user }}"
+#ansible_password: "{{ wabadmin_password }}"
+#ansible_become_pass: "{{ wabadmin_password }}"
 ansible_connection: ssh
 ansible_port: 2242
 
@@ -86,10 +95,11 @@ plbr_usergroups: {
     language: "en",
     email_list: "",
     restrictions: [
-      {action: "kill", rules: "sudo\\s+.*", subprotocol: "SSH_SHELL_SESSION"},
+      {action: "kill", rules: 'sudo\\s+.*', subprotocol: "SSH_SHELL_SESSION"},
     ]
   },
 }
 
 plbr_domain_dc_inventory_key: "dc_haas"
+plbr_bastion_directory: ""
 plbr_external_authentication_domain_account: "lowpriv"
