@@ -141,7 +141,7 @@
       ansible.builtin.set_fact:
         plbr_ad_domain: {
           'domain_name': "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}",
-          'domain_real_name': "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}",
+          'domain_real_name': "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name | upper }}",
           'description': "",
           'admin_account': "{{ plbr_domain_admin_user }}",
           'enable_password_change': true,

@@ -1,6 +1,12 @@
 # Ref
 * [V0.12.2](https://vagrant-libvirt.github.io/vagrant-libvirt/version/0.12.2/configuration.html)
 
+
+# install plugins
+```
+vagrant plugin install vagrant-libvirt
+```
+
 # run
 ```bash
 VAGRANT_LOG=debug vagrant up 2>&1 | tee vagrant_debug.log

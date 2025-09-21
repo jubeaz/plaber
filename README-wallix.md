@@ -47,11 +47,137 @@ plbr_api_key: {
 * `xfreerdp /cert:ignore /u:jubeaz /p:Zaebuj12345+-   /v:bastion.haas.local /dynamic-resolution /drive:share,./ +drives`
 * `sshpass -p Zaebuj12345+- ssh jubeaz@bastion.haas.local`
 
+# Application
 
+https://172.17.2.30/webhelp/en/administration_guide/dita_doc/ditamaps-en/guide-admin/applications/configure_the_jump_server.html
+
+You must provide the user with the right to launch the application. This can be done by providing access to unlisted programs or by adding the application to the authorized programs.
+
+When using the session probe mode, it is necessary to publish the command prompt (`cmd.exe`) as the RemoteApp program.
+
+
+##  access to unlisted programs
+
+Computer Configuration\Policies\Administrative Templates\Windows Components\Remote Desktop Services\Connections\Allow remote start of unlisted programs.
+
+## configuring the server as RDS (workgroup)
+https://woshub.com/install-remote-desktop-services-rdsh-workgroup-without-domain/
+set fqdn https://ryanmangansitblog.wordpress.com/2013/10/30/deploying-a-rdsh-server-in-a-workgroup-rds-2012-r2/
+https://glennopedia.com/2016/04/07/how-to-properly-deploy-remote-desktop-services-in-a-workgroup/
+Add-WindowsFeature RDS-RD-Server -Restart
+
+https://glennopedia.com/2016/04/07/how-to-properly-deploy-remote-desktop-services-in-a-workgroup/
+
+
+### install features
+```powershell
+Import-Module ServerManager
+
+Add-WindowsFeature -Name RDS-Licensing, RDS-RD-Server -IncludeManagementTools
+
+Restart-Computer
+```
+
+### register without licences (webbrowser)
+
+### Configure the Remote Desktop Session Host role service to use the local RDS license server
+
+#### MS way
+```
+$obj = gwmi -namespace "Root/CIMV2/TerminalServices" Win32_TerminalServiceSetting
+$obj.ChangeMode("2")
+$obj.GetSpecifiedLicenseServerList()
+$obj.SetSpecifiedLicenseServerList("<licenseservername>")
+```
+
+### registry way
+```powershell
+$RDSLicenseServer = "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services"
+
+#Replace Value with the IP Address / FQDN of Valid RDS Licensing Server
+New-ItemProperty -Path $RDSLicenseServer -Name LicenseServers -PropertyType "String" -Value "192.168.1.169"
+
+#Set the Licensing Server to use Pre-Device Mode
+New-ItemProperty -Path $RDSLicenseServer -Name LicensingMode -PropertyType "DWord" -Value "2"
+```
+or with gpedit.msc
+
+### Revoke the RDS Device CAL license assigned to PC if the License is nearly full.
+```powershell
+$licensepacks = Get-WmiObject win32_tslicensekeypack | where {($_.keypacktype -ne 0) -and ($_.keypacktype -ne 4) -and ($_.keypacktype -ne 6)}
+
+#Check the total License installed for Device CAL only
+$licensepacks.TotalLicenses
+
+# Get all licenses currently assigned to devices
+$TSLicensesAssigned = gwmi win32_tsissuedlicense | where {$_.licensestatus -eq 2}
+
+#Specific the Name of the PC to revoke the Device CAL from
+$RevokePC = $TSLicensesAssigned | ? sIssuedToComputer -EQ "LAB-EX16"
+
+#Revoke the License 
+$RevokePC.Revoke() 
+```
+
+## publish an app
+
+### using registry
+
+```
+Windows Registry Editor Version 5.00
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Terminal Server\TSAppAllowList\Applications\MyAdobeReaderApp]
+"CommandLineSetting"=dword:00000000
+"RequiredCommandLine"=""
+"Name"="Adobe Reader"
+"Path"="C:\\Program Files\\Adobe\\Acrobat DC\\Acrobat\\Acrobat.exe"
+"ShortPath"="C:\\PROGRA~1\\Adobe\\Acrobat DC\\Acrobat\\Acrobat.exe"
+"IconPath"="C:\\PROGRA~1\\Adobe\\Acrobat DC\\Acrobat\\Acrobat.exe"
+"IconIndex"=dword:00000000
+"ShowInTSWA"=dword:00000001
+"SecurityDescriptor"=""
+```
+To automatically launch the published RemtoteApp, manually edit the *.RDP file. Add the following lines to the RDP file:
+```
+remoteapplicationmode:i:1
+alternate shell:s:||MyAdobeReaderApp
+remoteapplicationname:s:MyAdobeReaderApp
+remoteapplicationprogram:s:||MyAdobeReaderApp
+```
+
+### powershell (not working in workgroup )
+New-RDSessionDeployment -ConnectionBroker "nord.lab.local" -SessionHost "nord.lab.local"
+
+New-RDSessionCollection -CollectionName "SessionCollection1" `
+  -SessionHost "nord" `
+  -ConnectionBroker "nord" `
+  -CollectionDescription "Lab collection"
+
+ New-RDSessionDeployment
+
+New-RDRemoteApp -CollectionName "Session Collection" -DisplayName "Notepad" -FilePath "C:\Windows\System32\Notepad.exe"
+
+New-RDRemoteApp -CollectionName "SessionCollection1" -DisplayName "Microsoft Edge" -FilePath "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" -Alias "Edge"
+# db access
+
+```bash
+mysql -u root -p$(WABChangeDbRootPassword)
+# cat /etc/mysql/debian.cnf
+mysql -u root -p<passwd> -D wallix
+
+select * from device where uid = UNHEX('19944c766ff58873525400c02f9b');
+SELECT HEX(uid) ...
+
+```
 
 
 # plugins debug
 using by web interface of modified code will not work. Need to debug in command line
+
+to edit a plugin `devel = True` must be set in plugin `meta-info`
+
+The activation of debug mode is done inside code through `debug` property of the class (`debug = True`)
+
+
 
 ## plugin help
 ```bash
