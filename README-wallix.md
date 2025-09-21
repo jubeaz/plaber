@@ -35,12 +35,15 @@ plbr_api_key: {
   key: "8QlOMR0nr53XRVKjSEU2DtjapEmAmBPCYrVLgtpZHfM"
 }
 ```
+
 * as usuall  to build but before building ansible set default domain policy Minimum password age to 0
 * test with ssh:
     * ssh: `ssh jubeaz@bastion.haas.local`
     * rdp `xfreerdp /cert:ignore /u:jubeaz /p:Zaebuj12345+-   /v:bastion.haas.local /dynamic-resolution /drive:share,./ +drives`
     
-
+```bash
+curl -k -H 'X-Auth-User: admin' -H 'X-Auth-Key: 8QlOMR0nr53XRVKjSEU2DtjapEmAmBPCYrVLgtpZHfM' https://172.17.2.30/api/connectionpolicies/?q=connection_policy_name=RDP
+```
 
 # bastion access
 

@@ -159,3 +159,23 @@
 #    - name: Display wallix bastion AD domain fact
 #      ansible.builtin.debug:
 #        var: plbr_ad_domain
+
+    - name: Register connection policy as fact
+      ansible.builtin.set_fact:
+        plbr_rdp_connection_policy: {
+          'connection_policy_name': "RDP_domain_jubeaz",
+          'description': "DESCRIPTION",
+          'authentication_methods': ["PASSWORD_VAULT"],
+          'general': {'vault_transformation_rule': "jubeaz@haas.local" },
+          'session': "{{ plbr_connection_policy_rdp_session }}",
+          'rdp': "{{ plbr_connection_policy_rdp_rdp }}",
+          'session_probe': "{{ plbr_connection_policy_rdp_ssession_probe }}",
+          'server_cert': "{{ plbr_connection_policy_rdp_server_cert }}",
+          'session_log': "{{ plbr_connection_policy_rdp_session_log }}",
+          'file_verification': "{{ plbr_connection_policy_rdp_file_verification }}",
+          'file_storage': "{{ plbr_connection_policy_rdp_file_storage }}"
+        }
+
+#    - name: Display wallix bastion connection policy fact
+#      ansible.builtin.debug:
+#        var: plbr_rdp_connection_policy

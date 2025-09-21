@@ -103,3 +103,68 @@ plbr_usergroups: {
 plbr_domain_dc_inventory_key: "dc_haas"
 plbr_bastion_directory: ""
 plbr_external_authentication_domain_account: "lowpriv"
+
+
+plbr_connection_policy_rdp_session: {
+    inactivity_timeout: 0
+}
+
+plbr_connection_policy_rdp_rdp: {
+    enable_nla: true,
+    enable_kerberos: true,
+    allow_nla_ntlm_fallback: false,
+    allow_tls_only_fallback: false,
+    server_redirection: false,
+    load_balance_info: "",
+    use_client_provided_alternate_shell: false,
+    use_client_provided_remoteapp: false,
+    use_native_remoteapp_capability: true,
+    wabam_uses_translated_remoteapp: false,
+    enable_remotefx:  false,
+    enable_restricted_admin_mode:  false,
+    force_smartcard_authentication:  false,
+    enable_ipv6: true,
+    mode_console: "allow",
+    bogus_monitor_layout_treatment: false,
+    use_session_probe_to_launch_remote_program: true
+}
+
+plbr_connection_policy_rdp_ssession_probe: {
+    enable_session_probe: true,
+    use_smart_launcher: true,
+    on_launch_failure: "1",
+    start_launch_timeout_timer_only_after_logon: true,
+    on_keepalive_timeout: "2",
+    end_disconnected_session: false,
+    enable_autodeployed_appdriver_affinity: true,
+    extra_system_processes: "",
+    windows_of_these_applications_as_unidentified_input_field: "",
+    enable_bestsafe_interaction: false,
+    on_account_manipulation: "0",
+    public_session: false,
+    outbound_connection_monitoring_rules: "",
+    process_monitoring_rules: ""
+}
+
+plbr_connection_policy_rdp_server_cert: {
+  server_cert_store: true,
+  server_cert_check: "3"
+}
+
+plbr_connection_policy_rdp_session_log: {
+  keyboard_input_masking_level: "2"
+}
+
+ 
+plbr_connection_policy_rdp_file_verification: {
+  enable_up: false,
+  enable_down: false,
+  clipboard_text_up: false,
+  clipboard_text_down: false,
+  block_invalid_file_up: false,
+  block_invalid_file_down: false
+}
+
+plbr_connection_policy_rdp_file_storage: {
+  store_file: "never"
+}

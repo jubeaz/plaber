@@ -65,6 +65,15 @@
             }
           }
 
+    - name: Create test connection policy
+      ansible.builtin.include_role:
+        name: wallix_bastion_connection_policy
+      vars:
+        wallix_bastion_connection_policy_url: "{{ bastion_url }}"
+        wallix_bastion_connection_policy_api_key: "{{ plbr_api_key }}"
+        wallix_bastion_connection_policy_name: '{{ plbr_rdp_connection_policy.connection_policy_name }}'
+        wallix_bastion_connection_policy_data: "{{ plbr_rdp_connection_policy }}"
+        wallix_bastion_connection_policy_action: "create"
 
 # EXTERNAL AUTHENTICATION
     - name: Create AD external authentication
