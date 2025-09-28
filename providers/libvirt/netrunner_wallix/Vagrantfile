@@ -370,7 +370,7 @@ Vagrant.configure("2") do |config|
           libvirt__netmask: n_info[:mask],
           #libvirt__dhcp_enabled: false,
           libvirt__network_name: n_info[:name],
-          ip: "#{n_info[:network]}.#{box_def[:relative_ip]}"
+          ip: "#{n_info[:network]}.#{box_def[:relative_ip]}",
           autostart: true
         #  Provision a BRIDGED interface if needed on Ethernet 2 / eth2
         if box_def.has_key?(:ip_p)
@@ -401,7 +401,7 @@ Vagrant.configure("2") do |config|
             libvirt__netmask: n_info[:mask],
             #libvirt__dhcp_enabled: false,
             libvirt__network_name: n_info[:name],
-            ip: "#{n_info[:network]}.#{bn[:relative_ip]}"
+            ip: "#{n_info[:network]}.#{bn[:relative_ip]}",
             autostart: true
         end
       end
