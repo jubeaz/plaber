@@ -50,7 +50,7 @@
         cacheable: true
       when: ansible_hostname != plbr_hostname
   vars:
-    w_cfg_kbd_layout: "fr-FR"
+    w_cfg_kbd_layout: "0000040C"
     w_cfg_base_winrm_allow_ip: "{{ []  + [plbr_ansible_controller_ip] }}"
     w_cfg_base_rdp_allow_ip: "{{ []  + [plbr_ansible_controller_ip] }}"
     w_cfg_base_any_allow_ip: "{{ []  + [plbr_ansible_controller_ip] }}"
