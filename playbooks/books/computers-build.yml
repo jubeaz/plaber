@@ -36,9 +36,9 @@
       ansible.builtin.include_role:
         name: "windows_cfg_admin_password"
       when: ansible_hostname != plbr_hostname
-    - name: Hostname setup
+    - name: BGInfo setup
       ansible.builtin.include_role:
-        name: "windows_cfg_hostname"
+        name: "windows_cfg_bginfo"
       when: ansible_hostname != plbr_hostname
     - name: Hostname setup
       ansible.builtin.include_role:
