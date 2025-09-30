@@ -44,7 +44,7 @@
   tags: config
   max_fail_percentage: 0
   roles:
-#    - { role: 'windows_domain_cfgmgr_cfg_discovery', tags: 'cfgmgr_discovery'}
+    - { role: 'windows_domain_cfgmgr_cfg_discovery', tags: 'cfgmgr_discovery'}
     - { role: 'windows_domain_cfgmgr_cfg_boundary', tags: 'cfgmgr_boundary'}
     - { role: 'windows_domain_cfgmgr_cfg_accounts', tags: 'cfgmgr_accounts'}
     - { role: 'windows_domain_cfgmgr_cfg_users', tags: 'cfgmgr_accounts'}

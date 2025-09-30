@@ -2,6 +2,7 @@
 - name: "INSTALL USER DATA ON MEMBERS"
   hosts: domain_server, domain_workstation
   gather_facts: false
+  serial: 1 # because of chocolatey rate limit
   tasks:
     - name: Install softwares
       ansible.builtin.include_role:
