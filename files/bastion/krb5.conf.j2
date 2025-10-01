@@ -1,4 +1,3 @@
-#default_realm = {{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name | upper }}
 [libdefaults]
 
     default_tgs_encrypes = aes128-cts-hmac-sha256-128 aes256-cts-hmac-sha384-192 aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 camellia256-cts-cmac camellia128-cts-cmac
@@ -10,19 +9,19 @@
     ccache_type = 4
     forwardable = false
     proxiable = false
-    default_realm = {{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name | upper }}
+    default_realm = {{ item.value.domain_name | upper }}
 
 [realms]
-    {{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name | upper }} = {
-        kdc = {{ hostvars[plbr_domain_dc_inventory_key].plbr_hostname }}.{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}
-        admin_server = {{ hostvars[plbr_domain_dc_inventory_key].plbr_hostname }}.{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}
-        kpasswd_server = {{ hostvars[plbr_domain_dc_inventory_key].plbr_hostname }}.{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}
-        default_domain = {{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}
+    {{ item.value.domain_name | upper }} = {
+        kdc = {{ item.value.hostname }}.{{ item.value.domain_name }}
+        admin_server = {{ item.value.hostname }}.{{ item.value.domain_name }}
+        kpasswd_server = {{ item.value.hostname }}.{{ item.value.domain_name }}
+        default_domain = {{ item.value.domain_name }}
     }
 
 [domain_realm]
-    {{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }} = {{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name | upper }}
-    .{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }} = {{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name | upper }}
+    {{ item.value.domain_name }} = {{ item.value.domain_name | upper }}
+    .{{ item.value.domain_name }} = {{ item.value.domain_name | upper }}
     # python3 -c 'import socket; print(socket.getfqdn())'
-    {{ plbr_hostname }}.{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }} = {{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name | upper }}
+    {{ plbr_hostname }}.{{ item.value.domain_name }} = {{ item.value.domain_name | upper }}
 

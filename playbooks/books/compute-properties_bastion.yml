@@ -10,12 +10,65 @@
 #    - name: STOP
 #      ansible.builtin.fail:
 #        msg: "STOP"
-    - name: Register wallix bastion exchange directory as a fact
+    - name: Register exchange directory as a fact
       no_log: true
       ansible.builtin.set_fact:
         plbr_bastion_directory: "/{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}"
 
-    - name: Register wallix bastion targets as a fact
+# ######################
+# SESSION MANAGEMENT
+# ######################
+    - name: Register connection policy as fact
+      ansible.builtin.set_fact:
+        plbr_rdp_connection_policy: {
+          'connection_policy_name': "RDP_domain_jubeaz",
+          'description': "DESCRIPTION",
+          'authentication_methods': ["PASSWORD_VAULT"],
+          'general': {'vault_transformation_rule': "jubeaz@haas.local" },
+          'session': "{{ plbr_connection_policy_rdp_session }}",
+          'rdp': "{{ plbr_connection_policy_rdp_rdp }}",
+          'session_probe': "{{ plbr_connection_policy_rdp_ssession_probe }}",
+          'server_cert': "{{ plbr_connection_policy_rdp_server_cert }}",
+          'session_log': "{{ plbr_connection_policy_rdp_session_log }}",
+          'file_verification': "{{ plbr_connection_policy_rdp_file_verification }}",
+          'file_storage': "{{ plbr_connection_policy_rdp_file_storage }}"
+        }
+
+#    - name: Display connection policy fact
+#      ansible.builtin.debug:
+#        var: plbr_rdp_connection_policy
+
+# ######################
+# PASSWORD MANAGEMENT
+# ######################
+# PASSWORD CHANGE POLICY
+    - name: Register AD password change policy as fact
+      ansible.builtin.set_fact:
+        plbr_ad_password_change_policy: {
+          'password_change_policy_name': "active_directory_policy",
+          'description': "change every hour",
+          'password_length': 16,
+          'special_chars': 1,
+          'lower_chars': 1,
+          'upper_chars': 1,
+          'digit_chars': 1,
+          'exclude_chars': "",
+          'change_period': "0 * * * *",
+          'ssh_key_type': "RSA",
+          'ssh_key_size': 4096
+        }
+#
+#    - name: Display AD password change policy fact
+#      ansible.builtin.debug:
+#        var: plbr_ad_password_change_policy
+#
+
+
+# ######################
+# TARGETS
+# ######################
+## DEVICES
+    - name: Register devices as a fact
       no_log: true
       ansible.builtin.set_fact:
         plbr_devices: |
@@ -25,23 +78,103 @@
                    'host': item.value.plbr_hostname + '.' + item.value.plbr_domain_name,
                    'key': item.key,
                    'local_domain': item.value.plbr_wallix_bastion_local_domain,
-                   'services': item.value.plbr_wallix_bastion_services
+                   'services': item.value.plbr_wallix_bastion_services,
+                   'domain_name': item.value.plbr_domain_name
                 }
               })
           }}
         cacheable: true
-      when: "'haas_domain' in item.value.group_names"
+      when: item.value.plbr_hostname is defined and item.value.plbr_domain_name is defined
       with_dict: "{{ hostvars }}"
 
-#    - name: Display wallix bastion targets fact
+#    - name: Display targets fact
 #      ansible.builtin.debug:
 #        var: plbr_devices
+
+#    - name: Stop
+#      ansible.builtin.fail:
+#        msg: stop
 
 #    - name: Display hostvars in a readable format
 #      ansible.builtin.debug:
 #        var: hostvars['bastion']
 
+#    - name: Register a domain admin as fact
+#      ansible.builtin.set_fact:
+#        plbr_domain_admin_user: >-
+#          {{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_users_regular
+#            | dict2items
+#            | selectattr('value.groups', 'defined')
+#            | selectattr('value.groups', 'search', 'Domain Admins')
+#            | map(attribute='key')
+#            | list
+#            | first }}
+#
+#    - name: Display domain admin as fact
+#      ansible.builtin.debug:
+#        var: plbr_domain_admin_user
+# DOMAIN
+    - name: Register domains as a fact
+      no_log: true
+      ansible.builtin.set_fact:
+        plbr_ad_domains: |
+          {{ plbr_ad_domains | default([]) |
+              combine({
+                item.value.plbr_domain_name: {
+                   'domain_name': item.value.plbr_domain_name,
+                   'hostname': item.value.plbr_hostname,
+                   'domain_real_name': item.value.plbr_domain_name  | upper,
+                   'description': '',
+                   'admin_account': "administraor_" + item.value.plbr_domain_netbios_name,
+                   'admin_account_login': "administraor@" + item.value.plbr_domain_name,
+                   'admin_account_password': item.value.plbr_domain_password,
+                   'enable_password_change': true,
+                   'password_change_policy': plbr_ad_password_change_policy.password_change_policy_name,
+                   'password_change_plugin': "Windows",
+                   'password_change_plugin_parameters': {
+                     'change_method': "kerberos",
+                     'realm': item.value.plbr_domain_name  | upper,
+                     'krb_file': '/' +  item.value.plbr_domain_name + "/krb5.conf",
+                   },
+                   'ca_private_key': "",
+                   'passphrase': ""
+                }
+              })
+          }}
+        cacheable: true
+      when: "'dc' in item.value.group_names"
+      with_dict: "{{ hostvars }}"
 
+#    - name: Register AD domain as fact
+#      ansible.builtin.set_fact:
+#        plbr_ad_domain: {
+#          'domain_name': "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}",
+#          'domain_real_name': "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name | upper }}",
+#          'description': "",
+#          'admin_account': "{{ plbr_domain_admin_user }}",
+#          'enable_password_change': true,
+#          'password_change_policy': "{{ plbr_ad_password_change_policy.password_change_policy_name }}",
+#          'password_change_plugin': "Windows",
+#          'password_change_plugin_parameters': {
+#            'change_method': "kerberos",
+#            'realm': "{{ plbr_ad_password_change_policy.password_change_policy_name | upper }}",
+#            'krb_file': "{{ plbr_bastion_directory }}/krb5.conf"
+#          },
+#          'ca_private_key': "",
+#          'passphrase': ""
+#        }
+
+    - name: Display AD domain fact
+      ansible.builtin.debug:
+        var: plbr_ad_domains
+
+#    - name: Stop
+#      ansible.builtin.fail:
+#        msg: stop
+# ######################
+# CONFIGURATION
+# ######################
+# EXTERNAL AUTHENTICATION
     - name: Register AD external authentication as fact
       ansible.builtin.set_fact:
         plbr_ad_external_authentication: {
@@ -66,12 +199,13 @@
           'use_primary_auth_domain': false
         }
 #
-#    - name: Display wallix bastion AD external authentication fact
+#    - name: Display AD external authentication fact
 #      ansible.builtin.debug:
 #        var: plbr_ad_external_authentication
 #
 #
-    - name: Register AD external authentication as fact
+# AUTHENTICATION DOMAIN
+    - name: Register AD authentication domain as fact
       ansible.builtin.set_fact:
         plbr_ad_authentication_domain: {
           'domain_name': "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}",
@@ -96,86 +230,8 @@
           'enable_ca': false
         }
 #
-#    - name: Display wallix bastion AD external authentication fact
+#    - name: Display AD authentication domainn fact
 #      ansible.builtin.debug:
 #        var: plbr_ad_authentication_domain
 #
 #
-    - name: Register AD password change policy as fact
-      ansible.builtin.set_fact:
-        plbr_ad_password_change_policy: {
-          'password_change_policy_name': "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}",
-          'description': "change every hour",
-          'password_length': 16,
-          'special_chars': 1,
-          'lower_chars': 1,
-          'upper_chars': 1,
-          'digit_chars': 1,
-          'exclude_chars': "",
-          'change_period': "0 * * * *",
-          'ssh_key_type': "RSA",
-          'ssh_key_size': 4096
-        }
-#
-#    - name: Display wallix bastion AD password change policy fact
-#      ansible.builtin.debug:
-#        var: plbr_ad_password_change_policy
-#
-
-    - name: Register a domain admin as fact
-      ansible.builtin.set_fact:
-        plbr_domain_admin_user: >-
-          {{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_users_regular
-            | dict2items
-            | selectattr('value.groups', 'defined')
-            | selectattr('value.groups', 'search', 'Domain Admins')
-            | map(attribute='key')
-            | list
-            | first }}
-
-    - name: Display wallix bastion domain admin as fact
-      ansible.builtin.debug:
-        var: plbr_domain_admin_user
-
-    - name: Register AD domain as fact
-      ansible.builtin.set_fact:
-        plbr_ad_domain: {
-          'domain_name': "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}",
-          'domain_real_name': "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name | upper }}",
-          'description': "",
-          'admin_account': "{{ plbr_domain_admin_user }}",
-          'enable_password_change': true,
-          'password_change_policy': "{{ plbr_ad_password_change_policy.password_change_policy_name }}",
-          'password_change_plugin': "Windows",
-          'password_change_plugin_parameters': {
-            'change_method': "kerberos",
-            'realm': "{{ plbr_ad_password_change_policy.password_change_policy_name | upper }}",
-            'krb_file': "{{ plbr_bastion_directory }}/krb5.conf"
-          },
-          'ca_private_key': "",
-          'passphrase': ""
-        }
-
-#    - name: Display wallix bastion AD domain fact
-#      ansible.builtin.debug:
-#        var: plbr_ad_domain
-
-    - name: Register connection policy as fact
-      ansible.builtin.set_fact:
-        plbr_rdp_connection_policy: {
-          'connection_policy_name': "RDP_domain_jubeaz",
-          'description': "DESCRIPTION",
-          'authentication_methods': ["PASSWORD_VAULT"],
-          'general': {'vault_transformation_rule': "jubeaz@haas.local" },
-          'session': "{{ plbr_connection_policy_rdp_session }}",
-          'rdp': "{{ plbr_connection_policy_rdp_rdp }}",
-          'session_probe': "{{ plbr_connection_policy_rdp_ssession_probe }}",
-          'server_cert': "{{ plbr_connection_policy_rdp_server_cert }}",
-          'session_log': "{{ plbr_connection_policy_rdp_session_log }}",
-          'file_verification': "{{ plbr_connection_policy_rdp_file_verification }}",
-          'file_storage': "{{ plbr_connection_policy_rdp_file_storage }}"
-        }
-
-#    - name: Display wallix bastion connection policy fact
-#      ansible.builtin.debug:
-#        var: plbr_rdp_connection_policy

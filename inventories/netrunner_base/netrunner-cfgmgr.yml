@@ -8,6 +8,9 @@ all:
       hosts:
         fw: {} 
 #        rsc_lin01: {} 
+    wallix_bastion:
+      hosts:
+        bastion: {} 
     linux:
       hosts:
 #        rsc_lin01: {} 
@@ -111,4 +114,5 @@ all:
 
     fw:                   {ansible_host: 192.168.10.100, ansible_port: 22, disable_nat: true, ufw_in_ssh_allow: "192.168.10.1" }
 #    fw:               {ansible_host: 127.0.0.1, ansible_port: 2222, disable_nat: false, ufw_in_ssh_allow: "10.0.0.0/8", psrp_port: 1234}
+    bastion:              {ansible_host: bastion.haas.local, plbr_domain_ip: 172.17.2.30, ansible_port: 22, disable_nat: true, ufw_in_ssh_allow: "192.168.10.1" }
 

@@ -6,13 +6,15 @@
   tasks:
 
 
-    - name: Create a haas directory
+    - name: Create a domains directory
       ansible.builtin.file:
-        path: "{{ plbr_bastion_directory }}"
+        path: "/{{ item.key }}"
         state: directory
         owner: root
         group: root
         mode: '0777'
+      with_dict: "{{ plbr_ad_domains }}"
+
 
     - name: Set /etc/resolv.conf to domain
       ansible.builtin.copy:
@@ -27,6 +29,10 @@
       become: true
 
 
+
+# ######################
+# SESSION MANAGEMENT
+# ######################
     ## Update RDP connection policy to fix 'credssp kerberos authentication failed, ntlm not allowed'
     - name: Get Wallix Bastion RDP connection policy
       ansible.builtin.uri:
@@ -44,7 +50,7 @@
 #    - name: Display wallix_response
 #      ansible.builtin.debug:
 #        var: wallix_response
-#
+
     - name: Update RDP connection policy to allow nla ntlm fallback
       ansible.builtin.uri:
         url: "{{ bastion_url }}/connectionpolicies/{{ wallix_response.json[0].id }}"
@@ -75,27 +81,11 @@
         wallix_bastion_connection_policy_data: "{{ plbr_rdp_connection_policy }}"
         wallix_bastion_connection_policy_action: "create"
 
-# EXTERNAL AUTHENTICATION
-    - name: Create AD external authentication
-      ansible.builtin.include_role:
-        name: wallix_bastion_external_authentication
-      vars:
-        wallix_bastion_external_authentication_url: "{{ bastion_url }}"
-        wallix_bastion_external_authentication_api_key: "{{ plbr_api_key }}"
-        wallix_bastion_external_authentication_name: "{{ plbr_ad_external_authentication.authentication_name }}"
-        wallix_bastion_external_authentication_data: "{{ plbr_ad_external_authentication }}"
+# ######################
+# PASSWORD MANAGEMENT
+# ######################
 
-# AUTHENTICATION DOMAIN
-    - name: Create AD authentication domain
-      ansible.builtin.include_role:
-        name: wallix_bastion_authentication_domain
-      vars:
-        wallix_bastion_authentication_domain_url: "{{ bastion_url }}"
-        wallix_bastion_authentication_domain_api_key: "{{ plbr_api_key }}"
-        wallix_bastion_authentication_domain_name: "{{ plbr_ad_authentication_domain.auth_domain_name }}"
-        wallix_bastion_authentication_domain_data: "{{ plbr_ad_authentication_domain }}"
-
-# PASSWORD CHANGE POLICY
+## PASSWORD CHANGE POLICY
     - name: Create AD password change policy
       ansible.builtin.include_role:
         name: wallix_bastion_password_change_policy
@@ -105,89 +95,10 @@
         wallix_bastion_password_change_policy_name: "{{ plbr_ad_password_change_policy.password_change_policy_name }}"
         wallix_bastion_password_change_policy_data: "{{ plbr_ad_password_change_policy }}"
 
-# DOMAIN
-    - name: Render a krb5.conf
-      ansible.builtin.template:
-        src: ../../files/bastion/krb5.conf.j2
-        dest: "{{ plbr_ad_domain.password_change_plugin_parameters.krb_file }}"
-        owner: root
-        group: root
-        mode: '0644'
-
-    - name: Create AD domain
-      ansible.builtin.include_role:
-        name: wallix_bastion_domain
-      vars:
-        wallix_bastion_domain_url: "{{ bastion_url }}"
-        wallix_bastion_domain_api_key: "{{ plbr_api_key }}"
-        wallix_bastion_domain_name: "{{ plbr_ad_domain.domain_name }}"
-        wallix_bastion_domain_data: "{{ plbr_ad_domain }}"
-        wallix_bastion_domain_action: "create"
-
-    - name: Get AD domain
-      ansible.builtin.include_role:
-        name: wallix_bastion_domain
-      vars:
-        wallix_bastion_domain_url: "{{ bastion_url }}"
-        wallix_bastion_domain_api_key: "{{ plbr_api_key }}"
-        wallix_bastion_domain_name: "{{ plbr_ad_domain.domain_name }}"
-        wallix_bastion_domain_data: "{{ plbr_ad_domain }}"
-        wallix_bastion_domain_action: "get"
-
-    - name: Update wallix bastion AD domain fact with wallix ids
-      ansible.builtin.set_fact:
-        plbr_ad_domain: "{{ wallix_bastion_domain_data }}"
-
-#    - name: Display wallix bastion AD domain fact
-#      ansible.builtin.debug:
-#        var: plbr_ad_domain
-
-# DOMAIN ACCOUNT
-    - name: Register builtin AD domain accounts as fact
-      ansible.builtin.set_fact:
-        plbr_domain_accounts: |
-          {{ plbr_domain_accounts | default([]) |
-            combine({
-              item.key: {
-                'wallix_domain_id': plbr_ad_domain.wallix_domain_id,
-                'account_name': item.key,
-                'account_login': item.key,
-                'description': item.key,
-                'password': item.value.password,
-                'private_key': "",
-                'auto_change_password': false,
-                'auto_change_ssh_key': false,
-                'checkout_policy': "default"
-              }
-            })
-          }}
-      with_dict: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_users_regular }}"
-
-#    - name: Display wallix bastion AD domain accounts fact
-#      ansible.builtin.debug:
-#        var: plbr_domain_accounts
-#
-    - name: Create AD domain accounts
-      ansible.builtin.include_role:
-        name: wallix_bastion_domain_account
-      vars:
-        wallix_bastion_domain_account_url: "{{ bastion_url }}"
-        wallix_bastion_domain_account_api_key: "{{ plbr_api_key }}"
-        wallix_bastion_domain_account_name: "{{ item.key }}"
-        wallix_bastion_domain_account_data: "{{ item.value }}"
-      with_dict: "{{ plbr_domain_accounts }}"
-
-    - name: Set AD domain reconciliation account
-      ansible.builtin.include_role:
-        name: wallix_bastion_domain
-      vars:
-        wallix_bastion_domain_url: "{{ bastion_url }}"
-        wallix_bastion_domain_api_key: "{{ plbr_api_key }}"
-        wallix_bastion_domain_name: "{{ plbr_ad_domain.domain_name }}"
-        wallix_bastion_domain_data: "{{ plbr_ad_domain }}"
-        wallix_bastion_domain_action: "set_reconciliation"
-
-## USERS
+# ######################
+# USERS
+# ######################
+### USERS
     - name: Create users
       ansible.builtin.include_role:
         name: wallix_bastion_user
@@ -198,7 +109,7 @@
         wallix_bastion_user_data: "{{ item.value }}"
       with_dict: "{{ plbr_users }}"
 
-## GROUPS
+### GROUPS
     - name: Create user groups
       ansible.builtin.include_role:
         name: wallix_bastion_usergroup
@@ -209,37 +120,38 @@
         wallix_bastion_usergroup_data: "{{ item.value }}"
       with_dict: "{{ plbr_usergroups }}"
 
-## DEVICES
+# ######################
+# TARGETS
+# ######################
+### DEVICES
     - name: Create devices
       ansible.builtin.include_role:
         name: wallix_bastion_devices
       vars:
-        wallix_bastion_device_url: "{{ bastion_url }}"
-        wallix_bastion_device_api_key: "{{ plbr_api_key }}"
-        wallix_bastion_device_devices: "{{ plbr_devices }}"
-        wallix_bastion_device_action: "create"
-
+        wallix_bastion_devices_url: "{{ bastion_url }}"
+        wallix_bastion_devices_api_key: "{{ plbr_api_key }}"
+        wallix_bastion_devices_devices: "{{ plbr_devices }}"
+        wallix_bastion_devices_action: "create"
 
     - name: Get devices
       ansible.builtin.include_role:
         name: wallix_bastion_devices
       vars:
-        wallix_bastion_device_url: "{{ bastion_url }}"
-        wallix_bastion_device_api_key: "{{ plbr_api_key }}"
-        wallix_bastion_device_devices: "{{ plbr_devices }}"
-        wallix_bastion_device_action: "get"
+        wallix_bastion_devices_url: "{{ bastion_url }}"
+        wallix_bastion_devices_api_key: "{{ plbr_api_key }}"
+        wallix_bastion_devices_devices: "{{ plbr_devices }}"
+        wallix_bastion_devices_action: "get"
 
-
-    - name: Update wallix bastion targets fact with wallix ids
+    - name: Update devices fact with wallix ids
       ansible.builtin.set_fact:
-        plbr_devices: "{{ wallix_bastion_device_plbr_devices }}"
+        plbr_devices: "{{ wallix_bastion_devices_plbr_devices }}"
 
-    - name: Display wallix bastion targets fact
-      ansible.builtin.debug:
-        var: plbr_devices
+#    - name: Display devices fact
+#      ansible.builtin.debug:
+#        var: plbr_devices
 
 ### DEVICE ACCOUNTS
-    - name: Register builtin admins accounts for devices as fact
+    - name: Register device administrator accounts for devices as fact
       ansible.builtin.set_fact:
         plbr_devices_administator: |
           {{ plbr_devices_administator | default([]) |
@@ -275,6 +187,89 @@
         wallix_bastion_device_account_data: "{{ item.value }}"
       with_dict: "{{ plbr_devices_administator }}"
 
+
+
+### DOMAIN
+    - name: Render a krb5.conf
+      ansible.builtin.template:
+        src: ../../files/bastion/krb5.conf.j2
+        dest: "/{{ item.value.password_change_plugin_parameters.krb_file }}"
+        owner: root
+        group: root
+        mode: '0644'
+      with_dict: "{{ plbr_ad_domains }}"
+
+    - name: Create AD domains
+      ansible.builtin.include_role:
+        name: wallix_bastion_domains
+      vars:
+        wallix_bastion_domains_url: "{{ bastion_url }}"
+        wallix_bastion_domains_api_key: "{{ plbr_api_key }}"
+        wallix_bastion_domains_domains: "{{ plbr_ad_domains }}"
+        wallix_bastion_domains_action: "create"
+
+    - name: Get domains
+      ansible.builtin.include_role:
+        name: wallix_bastion_domains
+      vars:
+        wallix_bastion_domains_url: "{{ bastion_url }}"
+        wallix_bastion_domains_api_key: "{{ plbr_api_key }}"
+        wallix_bastion_domains_domains: "{{ plbr_ad_domains }}"
+        wallix_bastion_domains_action: "get"
+
+    - name: Update devices fact with wallix ids
+      ansible.builtin.set_fact:
+        plbr_ad_domains: "{{ wallix_bastion_domains_plbr_domains }}"
+
+#    - name: Display devices fact
+#      ansible.builtin.debug:
+#        var: plbr_ad_domains
+
+### DOMAIN ACCOUNT
+    - name: Register builtin AD domain accounts as fact
+      ansible.builtin.set_fact:
+        plbr_domain_accounts: |
+          {{ plbr_domain_accounts | default([]) |
+            combine({
+              item.value.admin_account_login: {
+                'wallix_domain_id': item.value.wallix_domain_id,
+                'account_name': item.value.admin_account,
+                'account_login': item.value.admin_account_login,
+                'description': item.value.admin_account_login,
+                'password': item.value.admin_account_password,
+                'private_key': "",
+                'auto_change_password': false,
+                'auto_change_ssh_key': false,
+                'checkout_policy': "default"
+              }
+            })
+          }}
+      with_dict: "{{ plbr_ad_domains }}"
+
+#    - name: Display wallix bastion AD domain accounts fact
+#      ansible.builtin.debug:
+#        var: plbr_domain_accounts
+
+    - name: Create AD domain accounts
+      ansible.builtin.include_role:
+        name: wallix_bastion_domain_account
+      vars:
+        wallix_bastion_domain_account_url: "{{ bastion_url }}"
+        wallix_bastion_domain_account_api_key: "{{ plbr_api_key }}"
+        wallix_bastion_domain_account_name: "{{ item.value.account_name }}"
+        wallix_bastion_domain_account_data: "{{ item.value }}"
+      with_dict: "{{ plbr_domain_accounts }}"
+
+    - name: Set AD domain reconciliation account
+      ansible.builtin.include_role:
+        name: wallix_bastion_domains
+      vars:
+        wallix_bastion_domains_url: "{{ bastion_url }}"
+        wallix_bastion_domains_api_key: "{{ plbr_api_key }}"
+        wallix_bastion_domains_domains: "{{ plbr_ad_domains }}"
+        wallix_bastion_domains_action: "set_reconciliation"
+
+
 ## TARGET GROUPS
     - name: Register target group for builtin admins accounts on devices as fact
       ansible.builtin.set_fact:
@@ -301,7 +296,9 @@
         wallix_bastion_target_group_name: 'lab_local_adm'
         wallix_bastion_target_group_data: "{{ plbr_lab_local_adm_targetgroup_data }}"
 
-
+# ######################
+# AUTHORIZATIONS
+# ######################
 ## Authorizations
     - name: Register authorizations for builtin admins accounts on devices as fact
       ansible.builtin.set_fact:
@@ -353,3 +350,28 @@
         wallix_bastion_authorization_api_key: "{{ plbr_api_key }}"
         wallix_bastion_authorization_name: 'lab_local_adm'
         wallix_bastion_authorization_data: "{{ plbr_lab_local_adm_authorization_data }}"
+
+# ######################
+# CONFIGURATION
+# ######################
+#
+## EXTERNAL AUTHENTICATION
+#    - name: Create AD external authentication
+#      ansible.builtin.include_role:
+#        name: wallix_bastion_external_authentication
+#      vars:
+#        wallix_bastion_external_authentication_url: "{{ bastion_url }}"
+#        wallix_bastion_external_authentication_api_key: "{{ plbr_api_key }}"
+#        wallix_bastion_external_authentication_name: "{{ plbr_ad_external_authentication.authentication_name }}"
+#        wallix_bastion_external_authentication_data: "{{ plbr_ad_external_authentication }}"
+#
+## AUTHENTICATION DOMAIN
+#    - name: Create AD authentication domain
+#      ansible.builtin.include_role:
+#        name: wallix_bastion_authentication_domain
+#      vars:
+#        wallix_bastion_authentication_domain_url: "{{ bastion_url }}"
+#        wallix_bastion_authentication_domain_api_key: "{{ plbr_api_key }}"
+#        wallix_bastion_authentication_domain_name: "{{ plbr_ad_authentication_domain.auth_domain_name }}"
+#        wallix_bastion_authentication_domain_data: "{{ plbr_ad_authentication_domain }}"
+#
