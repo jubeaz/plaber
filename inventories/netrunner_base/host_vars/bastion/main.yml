@@ -98,6 +98,17 @@ plbr_usergroups: {
       {action: "kill", rules: 'sudo\\s+.*', subprotocol: "SSH_SHELL_SESSION"},
     ]
   },
+  "lab_Domain_Admin": {
+    description: "Access with Domain Admin",
+    timeframes: ["allthetime"],
+    users: ["jubeaz"],
+    profile: "user",
+    language: "en",
+    email_list: "",
+    restrictions: [
+      {action: "kill", rules: 'sudo\\s+.*', subprotocol: "SSH_SHELL_SESSION"},
+    ]
+  }
 }
 
 plbr_domain_dc_inventory_key: "dc_haas"

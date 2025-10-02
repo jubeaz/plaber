@@ -6,6 +6,7 @@
   tasks:
 
 
+
     - name: Create a domains directory
       ansible.builtin.file:
         path: "/{{ item.key }}"
@@ -28,11 +29,25 @@
         mode: '0644'
       become: true
 
+    - name: Render /etc/hosts
+      ansible.builtin.template:
+        src: ../../files/bastion/hosts.j2
+        dest: /etc/hosts
+        owner: root
+        group: root
+        mode: '0644'
 
-
+    - name: Render /etc/krb5.conf
+      ansible.builtin.template:
+        src: ../../files/bastion/etc_krb5.conf.j2
+        dest: /etc/krb5.conf
+        owner: root
+        group: root
+        mode: '0644'
 # ######################
 # SESSION MANAGEMENT
 # ######################
+
     ## Update RDP connection policy to fix 'credssp kerberos authentication failed, ntlm not allowed'
     - name: Get Wallix Bastion RDP connection policy
       ansible.builtin.uri:
@@ -71,21 +86,26 @@
             }
           }
 
-    - name: Create test connection policy
+    - name: Create connection policies
       ansible.builtin.include_role:
         name: wallix_bastion_connection_policy
       vars:
         wallix_bastion_connection_policy_url: "{{ bastion_url }}"
         wallix_bastion_connection_policy_api_key: "{{ plbr_api_key }}"
-        wallix_bastion_connection_policy_name: '{{ plbr_rdp_connection_policy.connection_policy_name }}'
-        wallix_bastion_connection_policy_data: "{{ plbr_rdp_connection_policy }}"
+        wallix_bastion_connection_policy_name: '{{ item.key }}'
+        wallix_bastion_connection_policy_data: "{{ item.value }}"
         wallix_bastion_connection_policy_action: "create"
+      with_dict: "{{ plbr_rdp_da_connection_policies }}"
+
+#    - name: Stop
+#      ansible.builtin.fail:
+#        msg: stop
 
 # ######################
 # PASSWORD MANAGEMENT
 # ######################
 
-## PASSWORD CHANGE POLICY
+    ## PASSWORD CHANGE POLICY
     - name: Create AD password change policy
       ansible.builtin.include_role:
         name: wallix_bastion_password_change_policy
@@ -98,7 +118,8 @@
 # ######################
 # USERS
 # ######################
-### USERS
+
+    ### USERS
     - name: Create users
       ansible.builtin.include_role:
         name: wallix_bastion_user
@@ -109,7 +130,7 @@
         wallix_bastion_user_data: "{{ item.value }}"
       with_dict: "{{ plbr_users }}"
 
-### GROUPS
+    ### GROUPS
     - name: Create user groups
       ansible.builtin.include_role:
         name: wallix_bastion_usergroup
@@ -123,7 +144,8 @@
 # ######################
 # TARGETS
 # ######################
-### DEVICES
+
+    ### DEVICES
     - name: Create devices
       ansible.builtin.include_role:
         name: wallix_bastion_devices
@@ -149,8 +171,43 @@
 #    - name: Display devices fact
 #      ansible.builtin.debug:
 #        var: plbr_devices
+#
+    - name: Register ddevices DA RDP services as a fact
+      no_log: true
+      ansible.builtin.set_fact:
+        plbr_devices_DA_services: |
+          {{ plbr_devices_DA_services | default([]) |
+              combine({
+                item.value.key + '_RDP_administrator_' + item.value.domain_netbios_name: {
+                   'wallix_device_id': item.value.wallix_device_id,
+                   'service_name': "rdp_domain_admin",
+                   'protocol': "RDP",
+                   'port': 3389,
+                   'connection_policy': 'RDP_administrator_' + item.value.domain_netbios_name,
+                   'global_domains': [],
+                   'subprotocols': ["RDP_CLIPBOARD_UP", "RDP_CLIPBOARD_DOWN", "RDP_CLIPBOARD_FILE", "RDP_DRIVE" ],
+                   'device_name': item.key
+                }
+              })
+          }}
+        cacheable: true
+      with_dict: "{{ plbr_devices }}"
 
-### DEVICE ACCOUNTS
+#    - name: Display devices DA RDP services fact
+#      ansible.builtin.debug:
+#        var: plbr_devices_DA_services
+
+    - name: Creating devices DA RDP services
+      ansible.builtin.include_role:
+        name: wallix_bastion_device_service
+      vars:
+        wallix_bastion_device_service_url: "{{ bastion_url }}"
+        wallix_bastion_device_service_api_key: "{{ plbr_api_key }}"
+        wallix_bastion_device_service_name: "{{ item.key }}"
+        wallix_bastion_device_service_data: "{{ item.value }}"
+      with_dict: "{{ plbr_devices_DA_services }}"
+
+    ### DEVICE ACCOUNTS
     - name: Register device administrator accounts for devices as fact
       ansible.builtin.set_fact:
         plbr_devices_administator: |
@@ -187,9 +244,7 @@
         wallix_bastion_device_account_data: "{{ item.value }}"
       with_dict: "{{ plbr_devices_administator }}"
 
-
-
-### DOMAIN
+    ### DOMAIN
     - name: Render a krb5.conf
       ansible.builtin.template:
         src: ../../files/bastion/krb5.conf.j2
@@ -225,7 +280,7 @@
 #      ansible.builtin.debug:
 #        var: plbr_ad_domains
 
-### DOMAIN ACCOUNT
+    ### DOMAIN ACCOUNT
     - name: Register builtin AD domain accounts as fact
       ansible.builtin.set_fact:
         plbr_domain_accounts: |
@@ -269,14 +324,13 @@
         wallix_bastion_domains_domains: "{{ plbr_ad_domains }}"
         wallix_bastion_domains_action: "set_reconciliation"
 
-
-## TARGET GROUPS
+    ## TARGET GROUPS
     - name: Register target group for builtin admins accounts on devices as fact
       ansible.builtin.set_fact:
         plbr_lab_local_adm_targetgroup_data: {
           'description': 'builtin admins on devices',
           'accounts': "{{ plbr_devices_administator }}",
-          'account_mappings': "",
+          'account_mappings': {},
           'interactive_logins': "",
           'scenario_accounts': "",
           'password_retrieval': "",
@@ -296,10 +350,35 @@
         wallix_bastion_target_group_name: 'lab_local_adm'
         wallix_bastion_target_group_data: "{{ plbr_lab_local_adm_targetgroup_data }}"
 
+    - name: Register target group for DA RDP on devices as fact
+      ansible.builtin.set_fact:
+        plbr_lab_da_targetgroup_data: {
+          'description': 'DA RDP on devices',
+          'accounts': {},
+          'account_mappings': "{{ plbr_devices_DA_services }}",
+          'interactive_logins': "",
+          'scenario_accounts': "",
+          'password_retrieval': "",
+          'restrictions': ""
+        }
+
+#    - name: Display target group for builtin admins accounts on devices fact
+#      ansible.builtin.debug:
+#        var: plbr_lab_local_adm_targetgroup_data
+
+    - name: Create target groups local administrators
+      ansible.builtin.include_role:
+        name: wallix_bastion_target_group
+      vars:
+        wallix_bastion_target_group_url: "{{ bastion_url }}"
+        wallix_bastion_target_group_api_key: "{{ plbr_api_key }}"
+        wallix_bastion_target_group_name: 'lab_Domain_Admin'
+        wallix_bastion_target_group_data: "{{ plbr_lab_da_targetgroup_data }}"
+
 # ######################
 # AUTHORIZATIONS
 # ######################
-## Authorizations
+    ## Authorizations
     - name: Register authorizations for builtin admins accounts on devices as fact
       ansible.builtin.set_fact:
         plbr_lab_local_adm_authorization_data: {
@@ -350,6 +429,57 @@
         wallix_bastion_authorization_api_key: "{{ plbr_api_key }}"
         wallix_bastion_authorization_name: 'lab_local_adm'
         wallix_bastion_authorization_data: "{{ plbr_lab_local_adm_authorization_data }}"
+
+    - name: Register authorizations for builtin admins accounts on devices as fact
+      ansible.builtin.set_fact:
+        plbr_lab_da_authorization_data: {
+          'description': 'lab_Domain_Admin',
+          'user_group': "lab_Domain_Admin",
+          'target_group': "lab_Domain_Admin",
+          "subprotocols": [
+                RAWTCPIP,
+                RDP,
+                RDP_CLIPBOARD_UP,
+                RDP_CLIPBOARD_DOWN,
+                RDP_CLIPBOARD_FILE,
+                RDP_PRINTER,
+                RDP_COM_PORT,
+                RDP_DRIVE,
+                RDP_SMARTCARD,
+                RDP_AUDIO_OUTPUT,
+                RDP_AUDIO_INPUT,
+                RLOGIN,
+                SSH_SHELL_SESSION,
+                SSH_REMOTE_COMMAND,
+                SSH_SCP_UP,
+                SSH_SCP_DOWN,
+                SSH_X11,
+                SFTP_SESSION,
+                SSH_DIRECT_TCPIP,
+                SSH_REVERSE_TCPIP,
+                SSH_AUTH_AGENT,
+                SSH_DIRECT_UNIXSOCK,
+                SSH_REVERSE_UNIXSOCK,
+                TELNET,
+                VNC
+          ],
+          'is_critical': false,
+          'is_recorded': false,
+          'authorize_password_retrieval': true,
+          'authorize_sessions': true,
+          'approval_required': false,
+          'authorize_session_sharing': true,
+          'session_sharing_mode': "view_only"
+        }
+
+    - name: Create DA authorization
+      ansible.builtin.include_role:
+        name: wallix_bastion_authorization
+      vars:
+        wallix_bastion_authorization_url: "{{ bastion_url }}"
+        wallix_bastion_authorization_api_key: "{{ plbr_api_key }}"
+        wallix_bastion_authorization_name: 'lab_Domain_Admin'
+        wallix_bastion_authorization_data: "{{ plbr_lab_da_authorization_data }}"
 
 # ######################
 # CONFIGURATION

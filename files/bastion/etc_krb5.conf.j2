@@ -1,0 +1,30 @@
+[libdefaults]
+
+    default_tgs_encrypes = aes128-cts-hmac-sha256-128 aes256-cts-hmac-sha384-192 aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 camellia256-cts-cmac camellia128-cts-cmac
+    default_tkt_enctypes = aes128-cts-hmac-sha256-128 aes256-cts-hmac-sha384-192 aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 camellia256-cts-cmac camellia128-cts-cmac
+    permitted_enctypes   = aes128-cts-hmac-sha256-128 aes256-cts-hmac-sha384-192 aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 camellia256-cts-cmac camellia128-cts-cmac
+    clockskew = 300
+    kdc_timesync = 1
+    default_ccache_name = KEYRING:process:krb_cache
+    ccache_type = 4
+    forwardable = false
+    proxiable = false
+    default_realm = HAAS.LOCAL
+
+[realms]
+{% for key,value in plbr_ad_domains.items() %}
+    {{ value.domain_real_name}} = {
+        kdc = {{ value.hostname}}.{{ value.domain_name}}
+        admin_server = {{ value.hostname}}.{{ value.domain_name}}
+        kpasswd_server = {{ value.hostname}}.{{ value.domain_name}}
+        default_domain = {{ value.domain_name}}
+    }
+{% endfor %}
+
+[domain_realm]
+{% for key,value in plbr_ad_domains.items() %}
+    {{ value.domain_name}} = {{ value.domain_real_name}}
+    .{{ value.domain_name}} = {{ value.domain_real_name}}
+{% endfor %}
+    # python3 -c 'import socket; print(socket.getfqdn())'
+#    bastion.haas.local = HAAS.LOCAL

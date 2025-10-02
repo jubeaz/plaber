@@ -4,39 +4,11 @@
   gather_facts: false
   max_fail_percentage: 0
   tasks:
-#    - name: Display hostvars in a readable format
-#      ansible.builtin.debug:
-#        var: hostvars['haas_srv01']
-#    - name: STOP
-#      ansible.builtin.fail:
-#        msg: "STOP"
+
     - name: Register exchange directory as a fact
       no_log: true
       ansible.builtin.set_fact:
         plbr_bastion_directory: "/{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}"
-
-# ######################
-# SESSION MANAGEMENT
-# ######################
-    - name: Register connection policy as fact
-      ansible.builtin.set_fact:
-        plbr_rdp_connection_policy: {
-          'connection_policy_name': "RDP_domain_jubeaz",
-          'description': "DESCRIPTION",
-          'authentication_methods': ["PASSWORD_VAULT"],
-          'general': {'vault_transformation_rule': "jubeaz@haas.local" },
-          'session': "{{ plbr_connection_policy_rdp_session }}",
-          'rdp': "{{ plbr_connection_policy_rdp_rdp }}",
-          'session_probe': "{{ plbr_connection_policy_rdp_ssession_probe }}",
-          'server_cert': "{{ plbr_connection_policy_rdp_server_cert }}",
-          'session_log': "{{ plbr_connection_policy_rdp_session_log }}",
-          'file_verification': "{{ plbr_connection_policy_rdp_file_verification }}",
-          'file_storage': "{{ plbr_connection_policy_rdp_file_storage }}"
-        }
-
-#    - name: Display connection policy fact
-#      ansible.builtin.debug:
-#        var: plbr_rdp_connection_policy
 
 # ######################
 # PASSWORD MANAGEMENT
@@ -67,7 +39,7 @@
 # ######################
 # TARGETS
 # ######################
-## DEVICES
+    ## DEVICES
     - name: Register devices as a fact
       no_log: true
       ansible.builtin.set_fact:
@@ -79,7 +51,8 @@
                    'key': item.key,
                    'local_domain': item.value.plbr_wallix_bastion_local_domain,
                    'services': item.value.plbr_wallix_bastion_services,
-                   'domain_name': item.value.plbr_domain_name
+                   'domain_name': item.value.plbr_domain_name,
+                   'domain_netbios_name': item.value.plbr_domain_netbios_name
                 }
               })
           }}
@@ -95,25 +68,7 @@
 #      ansible.builtin.fail:
 #        msg: stop
 
-#    - name: Display hostvars in a readable format
-#      ansible.builtin.debug:
-#        var: hostvars['bastion']
-
-#    - name: Register a domain admin as fact
-#      ansible.builtin.set_fact:
-#        plbr_domain_admin_user: >-
-#          {{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_users_regular
-#            | dict2items
-#            | selectattr('value.groups', 'defined')
-#            | selectattr('value.groups', 'search', 'Domain Admins')
-#            | map(attribute='key')
-#            | list
-#            | first }}
-#
-#    - name: Display domain admin as fact
-#      ansible.builtin.debug:
-#        var: plbr_domain_admin_user
-# DOMAIN
+    ## DOMAIN
     - name: Register domains as a fact
       no_log: true
       ansible.builtin.set_fact:
@@ -125,8 +80,8 @@
                    'hostname': item.value.plbr_hostname,
                    'domain_real_name': item.value.plbr_domain_name  | upper,
                    'description': '',
-                   'admin_account': "administraor_" + item.value.plbr_domain_netbios_name,
-                   'admin_account_login': "administraor@" + item.value.plbr_domain_name,
+                   'admin_account': "administrator_" + item.value.plbr_domain_netbios_name,
+                   'admin_account_login': "administrator",
                    'admin_account_password': item.value.plbr_domain_password,
                    'enable_password_change': true,
                    'password_change_policy': plbr_ad_password_change_policy.password_change_policy_name,
@@ -145,36 +100,48 @@
       when: "'dc' in item.value.group_names"
       with_dict: "{{ hostvars }}"
 
-#    - name: Register AD domain as fact
-#      ansible.builtin.set_fact:
-#        plbr_ad_domain: {
-#          'domain_name': "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}",
-#          'domain_real_name': "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name | upper }}",
-#          'description': "",
-#          'admin_account': "{{ plbr_domain_admin_user }}",
-#          'enable_password_change': true,
-#          'password_change_policy': "{{ plbr_ad_password_change_policy.password_change_policy_name }}",
-#          'password_change_plugin': "Windows",
-#          'password_change_plugin_parameters': {
-#            'change_method': "kerberos",
-#            'realm': "{{ plbr_ad_password_change_policy.password_change_policy_name | upper }}",
-#            'krb_file': "{{ plbr_bastion_directory }}/krb5.conf"
-#          },
-#          'ca_private_key': "",
-#          'passphrase': ""
-#        }
+#    - name: Display AD domain fact
+#      ansible.builtin.debug:
+#        var: plbr_ad_domains
 
-    - name: Display AD domain fact
-      ansible.builtin.debug:
-        var: plbr_ad_domains
 
-#    - name: Stop
-#      ansible.builtin.fail:
-#        msg: stop
+# ######################
+# SESSION MANAGEMENT
+# ######################
+
+    - name: Register DA RDP connection policies
+      no_log: true
+      ansible.builtin.set_fact:
+        plbr_rdp_da_connection_policies: |
+          {{ plbr_rdp_da_connection_policies | default([]) |
+              combine({
+                'RDP_' + item.value.admin_account: {
+                   'connection_policy_name': "RDP_domain_jubeaz",
+                   'description': "DESCRIPTION",
+                   'authentication_methods': ["PASSWORD_VAULT"],
+                   'general': {'vault_transformation_rule': item.value.admin_account + '@' + item.value.domain_name },
+                   'session': plbr_connection_policy_rdp_session,
+                   'rdp': plbr_connection_policy_rdp_rdp,
+                   'session_probe': plbr_connection_policy_rdp_ssession_probe,
+                   'server_cert': plbr_connection_policy_rdp_server_cert,
+                   'session_log': plbr_connection_policy_rdp_session_log,
+                   'file_verification': plbr_connection_policy_rdp_file_verification,
+                   'file_storage': plbr_connection_policy_rdp_file_storage
+                }
+              })
+          }}
+        cacheable: true
+      with_dict: "{{ plbr_ad_domains }}"
+
+#    - name: Display connection policies
+#      ansible.builtin.debug:
+#        var: plbr_rdp_da_connection_policies
+
 # ######################
 # CONFIGURATION
 # ######################
-# EXTERNAL AUTHENTICATION
+
+    ## EXTERNAL AUTHENTICATION
     - name: Register AD external authentication as fact
       ansible.builtin.set_fact:
         plbr_ad_external_authentication: {
@@ -202,9 +169,8 @@
 #    - name: Display AD external authentication fact
 #      ansible.builtin.debug:
 #        var: plbr_ad_external_authentication
-#
-#
-# AUTHENTICATION DOMAIN
+
+    ## AUTHENTICATION DOMAIN
     - name: Register AD authentication domain as fact
       ansible.builtin.set_fact:
         plbr_ad_authentication_domain: {
@@ -233,5 +199,3 @@
 #    - name: Display AD authentication domainn fact
 #      ansible.builtin.debug:
 #        var: plbr_ad_authentication_domain
-#
-#
