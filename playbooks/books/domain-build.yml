@@ -20,11 +20,17 @@
         name: windows_domain_cfg_subnet
       when: not ansible_windows_domain_member
 
+    - name: Set NTP
+      ansible.builtin.include_role:
+        name: windows_cfg_ntp
+      when: not ansible_windows_domain_member
+
     - name: Register ansible_windows_domain_member for cache
       ansible.builtin.set_fact:
         ansible_windows_domain_member: true
         cacheable: true
       when: not ansible_windows_domain_member
+
   vars:
     wd_build_root_two_adapters: "{{ plbr_two_adapters }}"
     wd_build_root_pub_adapter: "{{ plbr_pub_adapter }}"
@@ -40,6 +46,7 @@
     wd_cfg_subnet_site_name: "{{ plbr_domain_default_first_site_name }}"
     wd_cfg_subnet_domain_name: "{{ plbr_domain_name }}"
     wd_cfg_subnet_domain_password: "{{ plbr_domain_password }}"
+    w_cfg_ntp_servers: "{{ plbr_ntp_servers }}"
 
 - name: CHILD DC BUILD
   hosts: child_dc
@@ -63,6 +70,11 @@
         windows_domain_dns_cond_forwarder_domain_password: "{{ plbr_domain_password }}"
       when: not ansible_windows_domain_member
 
+    - name: Set NTP
+      ansible.builtin.include_role:
+        name: windows_cfg_ntp
+      when: not ansible_windows_domain_member
+
     - name: Register ansible_windows_domain_member for cache
       ansible.builtin.set_fact:
         ansible_windows_domain_member: true
@@ -79,6 +91,7 @@
     wd_build_child_parent_dc_name: "{{ plbr_domain_parent_dc_name }}"
     wd_build_child_netbios_name: "{{ plbr_domain_netbios_name }}"
     wd_build_child_site_name: "{{ plbr_default_first_site_name }}"
+    w_cfg_ntp_servers: "{{ plbr_ntp_servers }}"
 
 - name: DC ADD DNS CONFIGURATION
   hosts: dc

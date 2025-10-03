@@ -63,3 +63,4 @@
     w_cfg_base_two_adapters: "{{ plbr_two_adapters }}"
     w_cfg_base_domain_adapter: "{{ plbr_domain_adapter }}"
     w_cfg_lap_password: "{{ plbr_local_admin_password }}"
+    w_cfg_base_timezone: "{{ plbr_timezone }}"

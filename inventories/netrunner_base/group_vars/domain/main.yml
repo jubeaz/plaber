@@ -19,3 +19,4 @@ plbr_two_adapters: "{{ true if public_ip is defined else false}}"
 plbr_nat_adapter: mgt
 plbr_domain_adapter: lab
 plbr_pub_adapter: internet
+plbr_timezone: Romance Standard Time
