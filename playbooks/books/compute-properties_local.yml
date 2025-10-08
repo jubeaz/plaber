@@ -81,7 +81,7 @@
           ansible.builtin.debug:
             var: plbr_domain_computers
 
-        - name: Register plbr_gpo
+        - name: Register plbr_gpo (merge global and local)
           ansible.builtin.set_fact:
             plbr_gpo: "{{ plbr_gpo_global | combine(plbr_gpo_local) }}"
             cacheable: true

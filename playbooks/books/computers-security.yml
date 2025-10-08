@@ -8,6 +8,7 @@
     - { role: "windows_cfg_windows_defender", tags: 'windows_security'}
     - { role: "windows_cfg_run_as_ppl", tags: 'windows_security'}
     - { role: "windows_cfg_firewall", tags: 'windows_security'}
+    - { role: "windows_cfg_deviceguard", tags: 'windows_security'}
   vars:
     w_cfg_uac_level: "{{ plbr_uac_level }}"
     w_cfg_run_as_ppl: "{{ plbr_run_as_ppl }}"
@@ -15,3 +16,6 @@
     w_cfg_defender: "{{ plbr_windows_defender }}"
     w_cfg_firewall_profiles: "{{ plbr_firewall_profiles }}"
     w_cfg_firewall_rules: "{{ plbr_firewall_rules }}"
+    w_cfg_deviceguard_vbs_dma: "{{ plbr_deviceguard_vbs_dma }}"
+    w_cfg_deviceguard_cg: "{{ plbr_deviceguard_cg }}"
+    w_cfg_deviceguard_hvci: "{{ plbr_deviceguard_hvci }}"

@@ -15,6 +15,23 @@ vagrant destroy --force && rm -rf .vagrant && rm /var/lib/libvirt/images/efi/*
 
 ```
 
+# nested virtualization
+
+`kvm_adm` or `kvm_intel` module must be configured for nesting
+```bash
+cat /sys/module/kvm_amd/parameters/nested
+cat /sys/module/kvm_intel/parameters/nested
+```
+
+if not enabled force it in `/etc/modprobe.d/kvm.conf`
+```bash
+options kvm_intel nested=1
+# options kvm_amd nested=1
+```
+
+then vm cpu must be set to `host-passthrough`
+
+
 # secure boot
 
 

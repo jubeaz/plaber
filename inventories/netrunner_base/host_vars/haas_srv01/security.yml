@@ -57,3 +57,7 @@
 #      #"group": "ansible" # default ansible
 #    }
 #}
+
+plbr_deviceguard_vbs_dma: false
+plbr_deviceguard_cg: uefi_lock # enabled, uefi_lock
+plbr_deviceguard_hvci: disabled

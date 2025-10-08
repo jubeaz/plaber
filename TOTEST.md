@@ -1,4 +1,3 @@
-
 # for local only
 essayer de voir si l'on peut creer un bridge sur un dummy qui permettrait de se passer du mode nat du firewall le probleme c'est que ca ne sortira pas sur le net.
 

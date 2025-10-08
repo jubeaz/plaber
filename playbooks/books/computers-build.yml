@@ -44,6 +44,7 @@
       ansible.builtin.include_role:
         name: "windows_cfg_hostname"
       when: ansible_hostname != plbr_hostname
+      
     - name: Register ansible_hostname for cache
       ansible.builtin.set_fact:
         ansible_hostname: "{{ plbr_hostname }}"

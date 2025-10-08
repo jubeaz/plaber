@@ -4,6 +4,12 @@
   gather_facts: false
   max_fail_percentage: 0
   tasks:
+    - name: Register domain  info
+      ansible.builtin.set_fact:
+        plbr_domain_name: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_name }}"
+        plbr_domain_password: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_password }}"
+        plbr_domain_netbios_name: "{{ hostvars[plbr_domain_dc_inventory_key].plbr_domain_netbios_name }}"
+        cacheable: true
 
     - name: Register exchange directory as a fact
       no_log: true
@@ -57,7 +63,7 @@
               })
           }}
         cacheable: true
-      when: item.value.plbr_hostname is defined and item.value.plbr_domain_name is defined
+      when: item.value.plbr_hostname is defined and item.value.plbr_domain_name is defined and item.key != "bastion"
       with_dict: "{{ hostvars }}"
 
 #    - name: Display targets fact

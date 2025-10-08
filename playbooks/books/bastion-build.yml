@@ -1,11 +1,53 @@
 - name: BASTION BUILD
+  hosts: wallix_bastion,dc
+  tags: dc
+  gather_facts: false
+  max_fail_percentage: 0
+  tasks:
+    - name: create keytab for bastion client armoring
+      ansible.windows.win_shell: >-
+        ktpass.exe
+        -out C:\setup\{{ plbr_hostname }}.keytab
+        -princ host/{{ plbr_hostname }}.{{ plbr_domain_name }}@{{ plbr_domain_name | upper }}
+        -mapUser {{ plbr_hostname | upper }}$@{{ plbr_domain_name | upper }}
+        +rndpass
+        -mapOp set
+        -crypto All
+        -ptype KRB5_NT_SRV_HST
+        +answer
+      args:
+        creates: C:\setup\{{ plbr_hostname }}.keytab
+      vars:
+        delegate_to: "{{ plbr_domain_dc_inventory_key }}"
+        ansible_become: true
+        ansible_become_method: runas
+        ansible_become_user: "{{ plbr_domain_name }}\\Administrator"
+        ansible_become_password: "{{ plbr_domain_password }}"
+
+    - name: stop
+      ansible.builtin.fail:
+        msg: stop
+        
+    - name: fetch the keytab
+      fetch:
+        src: C:\temp\linux.keytab
+        dest: linux.keytab
+        flat: yes
+      delegate_to: "{{ plbr_domain_dc_inventory_key }}"
+      become: False
+
+        
+- name: BASTION BUILD
   hosts: wallix_bastion
   tags: mandatory
   gather_facts: false
   max_fail_percentage: 0
   tasks:
 
-
+#    - name: copy keytabs to host
+#      copy:
+#        src: linux.keytab
+#        dest: /etc/linux.keytab
 
     - name: Create a domains directory
       ansible.builtin.file:

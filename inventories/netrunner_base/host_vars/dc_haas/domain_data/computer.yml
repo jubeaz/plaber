@@ -70,6 +70,26 @@ plbr_domain_fake_computers: {
             "DoesNotRequirePreAuth":             true
         }  
     },
+    "bastion" : {
+        "name":             "bastion",
+        "dns_hostname":     "bastion.haas.local",
+        "description":      "Wallix bastion",
+        "path":             "OU=Servers,OU=IT,OU=HQ,DC=haas,DC=local",            
+        "spns":             [],            
+        "delegates"       : [], # RBCD / must be DN msDS-AllowedToActOnBehalfOfOtherIdentity
+        "delegation_type" : false, # "KCD", "KUD", false
+        "constrained"     : [], # KCD / SPN list / msDS-AllowedToDelegateTo
+        "proto_transition": false,  # KCD default false
+        "sensitive"       : false,
+        "ADAC": {
+            "AllowReversiblePasswordEncryption": true,
+            "CannotChangePassword":              true,
+            "PasswordNeverExpires":              true,
+            "PasswordNotRequired":               true,
+            "AccountNotDelegated":               true,
+            "DoesNotRequirePreAuth":             true
+        }  
+    },
 #    "ws01" : {
 #        "name":             "ws01",
 #        "dns_hostname":     "ws01.haas.local",

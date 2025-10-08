@@ -80,3 +80,6 @@ plbr_firewall_rules: {
 #    }
 }
 
+plbr_deviceguard_vbs_dma: false
+plbr_deviceguard_cg: disabled # enabled, uefi_lock
+plbr_deviceguard_hvci: disabled

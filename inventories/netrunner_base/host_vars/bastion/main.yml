@@ -146,7 +146,7 @@ plbr_connection_policy_rdp_ssession_probe: {
     on_launch_failure: "1",
     start_launch_timeout_timer_only_after_logon: true,
     on_keepalive_timeout: "2",
-    end_disconnected_session: false,
+    end_disconnected_session: true,
     enable_autodeployed_appdriver_affinity: true,
     extra_system_processes: "",
     windows_of_these_applications_as_unidentified_input_field: "",
@@ -179,3 +179,4 @@ plbr_connection_policy_rdp_file_verification: {
 plbr_connection_policy_rdp_file_storage: {
   store_file: "never"
 }
+

@@ -1,5 +1,4 @@
 
-
 # Wifi
 
 * Configure PSK version
@@ -88,7 +87,6 @@ Log File
 ## Expiration date
  https://github.com/clong/DetectionLab/blob/master/Vagrant/scripts/fix-windows-expiration.ps1
 
-## bg info
  
 # Exchange
 https://github.com/jborean93/exchange-test-environment/tree/master
