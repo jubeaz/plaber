@@ -1,0 +1,39 @@
+- name: NPS Setup
+  hosts: dc
+  tags: nps_build
+  max_fail_percentage: 0
+  gather_facts: false
+  tasks:
+    - name: Register plbr_gpo (merge global and local)
+      ansible.builtin.set_fact:
+        plbr_gpo: "{{ plbr_gpo_global | combine(plbr_gpo_local) }}"
+        cacheable: true
+
+    #
+    - name: Display plbr_gpo
+      ansible.builtin.debug:
+        var: plbr_gpo
+
+- name: DOMAIN ADD GPO
+  hosts: dc
+  max_fail_percentage: 0
+  gather_facts: false
+  tasks:
+    - name: Install GPO
+      ansible.builtin.include_role:
+        name: "windows_domain_gpo_cfg"
+      vars:
+        windows_domain_gpo_cfg_domain_ldap_name: "{{ plbr_domain_ldap_name }}"
+        windows_domain_gpo_cfg_domain_name: "{{ plbr_domain_name }}"
+        windows_domain_gpo_cfg_domain_password: "{{ plbr_domain_password }}"
+        windows_domain_gpo_cfg_ous: "{{ g.value.gpo_ous }}"
+        windows_domain_gpo_cfg_name: "{{ g.key }}"
+        windows_domain_gpo_cfg_desc: "{{ g.value.gpo_desc }}"
+        windows_domain_gpo_cfg_registry: "{{ g.value.gpo_registry }}"
+        windows_domain_gpo_cfg_domain: "{{ g.value.gpo_domain }}"
+        windows_domain_gpo_cfg_domain_enforced: "{{ g.value.gpo_domain_enforced }}"
+        windows_domain_gpo_cfg_domain_enabled: "{{ g.value.gpo_domain_enabled }}"
+        windows_domain_gpo_cfg_domain_state: "{{ g.value.gpo_domain_state }}"
+      loop: "{{ plbr_gpo | dict2items }}"
+      loop_control:
+        loop_var: g

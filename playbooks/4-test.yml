@@ -28,8 +28,8 @@
 # End Extended inventory computing
 # ################################
 
-- name: test 1
-  import_playbook: books/members-nps.yml
+- name: COMPUTER SECURITY
+  import_playbook: books/computers-security.yml
 
 #- name: test 1
 #  import_playbook: test_books/_test_mssql.yml

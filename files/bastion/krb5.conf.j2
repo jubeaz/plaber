@@ -5,6 +5,7 @@
     permitted_enctypes   = aes128-cts-hmac-sha256-128 aes256-cts-hmac-sha384-192 aes256-cts-hmac-sha1-96 aes128-cts-hmac-sha1-96 camellia256-cts-cmac camellia128-cts-cmac
     clockskew = 300
     kdc_timesync = 1
+    # https://web.mit.edu/kerberos/krb5-1.12/doc/basic/ccache_def.html
     default_ccache_name = KEYRING:process:krb_cache
     ccache_type = 4
     forwardable = false

@@ -1,13 +1,13 @@
-- name: BASTION BUILD
+- name: BASTION BUILD KEYTAB
   hosts: wallix_bastion,dc
   tags: dc
   gather_facts: false
   max_fail_percentage: 0
   tasks:
-    - name: create keytab for bastion client armoring
+    - name: Create keytab for bastion client armoring
       ansible.windows.win_shell: >-
         ktpass.exe
-        -out C:\setup\{{ plbr_hostname }}.keytab
+        -out C:\{{ plbr_hostname }}.keytab
         -princ host/{{ plbr_hostname }}.{{ plbr_domain_name }}@{{ plbr_domain_name | upper }}
         -mapUser {{ plbr_hostname | upper }}$@{{ plbr_domain_name | upper }}
         +rndpass
@@ -16,27 +16,25 @@
         -ptype KRB5_NT_SRV_HST
         +answer
       args:
-        creates: C:\setup\{{ plbr_hostname }}.keytab
+        creates: C:\{{ plbr_hostname }}.keytab
       vars:
-        delegate_to: "{{ plbr_domain_dc_inventory_key }}"
         ansible_become: true
         ansible_become_method: runas
         ansible_become_user: "{{ plbr_domain_name }}\\Administrator"
         ansible_become_password: "{{ plbr_domain_password }}"
-
-    - name: stop
-      ansible.builtin.fail:
-        msg: stop
-        
-    - name: fetch the keytab
-      fetch:
-        src: C:\temp\linux.keytab
-        dest: linux.keytab
-        flat: yes
       delegate_to: "{{ plbr_domain_dc_inventory_key }}"
-      become: False
+      when: "'wallix_bastion' in group_names"
 
-        
+
+    - name: Fetch the keytab
+      ansible.builtin.fetch:
+        src: C:\{{ plbr_hostname }}.keytab
+        dest: "{{ inventory_dir }}/../../files/bastion/{{ plbr_hostname }}.keytab"
+        flat: true
+      delegate_to: "{{ plbr_domain_dc_inventory_key }}"
+      become: false
+      when: "'wallix_bastion' in group_names"
+
 - name: BASTION BUILD
   hosts: wallix_bastion
   tags: mandatory
@@ -44,10 +42,15 @@
   max_fail_percentage: 0
   tasks:
 
-#    - name: copy keytabs to host
-#      copy:
-#        src: linux.keytab
-#        dest: /etc/linux.keytab
+    - name: Copy keytabs
+      ansible.builtin.copy:
+        src: "{{ inventory_dir }}/../../files/bastion/{{ plbr_hostname }}.keytab"
+        dest: /etc/{{ plbr_hostname }}.keytab
+        mode: "0600"
+
+#    - name: Stop
+#      ansible.builtin.fail:
+#        msg: stop
 
     - name: Create a domains directory
       ansible.builtin.file:
@@ -73,7 +76,7 @@
 
     - name: Render /etc/hosts
       ansible.builtin.template:
-        src: ../../files/bastion/hosts.j2
+        src: "{{ inventory_dir }}/../../files/bastion/hosts.j2"
         dest: /etc/hosts
         owner: root
         group: root
@@ -81,7 +84,7 @@
 
     - name: Render /etc/krb5.conf
       ansible.builtin.template:
-        src: ../../files/bastion/etc_krb5.conf.j2
+        src: "{{ inventory_dir }}/../../files/bastion/etc_krb5.conf.j2"
         dest: /etc/krb5.conf
         owner: root
         group: root
@@ -214,7 +217,7 @@
 #      ansible.builtin.debug:
 #        var: plbr_devices
 #
-    - name: Register ddevices DA RDP services as a fact
+    - name: Register devices DA RDP services as a fact
       no_log: true
       ansible.builtin.set_fact:
         plbr_devices_DA_services: |
@@ -289,7 +292,7 @@
     ### DOMAIN
     - name: Render a krb5.conf
       ansible.builtin.template:
-        src: ../../files/bastion/krb5.conf.j2
+        src: "{{ inventory_dir }}/../../files/bastion/krb5.conf.j2"
         dest: "/{{ item.value.password_change_plugin_parameters.krb_file }}"
         owner: root
         group: root
@@ -314,11 +317,11 @@
         wallix_bastion_domains_domains: "{{ plbr_ad_domains }}"
         wallix_bastion_domains_action: "get"
 
-    - name: Update devices fact with wallix ids
+    - name: Update domains fact with wallix ids
       ansible.builtin.set_fact:
         plbr_ad_domains: "{{ wallix_bastion_domains_plbr_domains }}"
 
-#    - name: Display devices fact
+#    - name: Display domains fact
 #      ansible.builtin.debug:
 #        var: plbr_ad_domains
 
@@ -328,7 +331,7 @@
         plbr_domain_accounts: |
           {{ plbr_domain_accounts | default([]) |
             combine({
-              item.value.admin_account_login: {
+              item.value.admin_account: {
                 'wallix_domain_id': item.value.wallix_domain_id,
                 'account_name': item.value.admin_account,
                 'account_login': item.value.admin_account_login,

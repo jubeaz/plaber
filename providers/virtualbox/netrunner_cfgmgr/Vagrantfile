@@ -14,13 +14,34 @@ Vagrant.configure("2") do |config|
   # Uncomment this depending on the provider you want to use
   ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
   #ENV['VAGRANT_DEFAULT_PROVIDER'] = 'vmware_desktop'
-
+  management_network_prefix = "TODEFINE"
+  bridge = {
+    dev: "br0",
+    name: "virbr_plaber",
+    mask: "255.255.255.0",
+    network: "192.168.10",
+    gw: "192.168.10.254"
+  }
+#   bridge: {name: "br1", mask: "255.255.0.0", network: "192.168.58.0", gw: "192.168.2.1"}
   net_defs = { 
-    weyland:  {name: "weyland",  mask: "255.255.255.0", network: "172.17.1.0", gw: "172.17.1.254"},
-  	haas:     {name: "haas",     mask: "255.255.255.0", network: "172.17.2.0", gw: "172.17.2.254"},
-  	research: {name: "research", mask: "255.255.255.0", network: "172.17.3.0", gw: "172.17.3.254"},
-    bridge: {name: "br0", mask: "255.255.255.0", network: "192.168.10.0", gw: "192.168.10.254"}
-#    bridge: {name: "br1", mask: "255.255.0.0", network: "192.168.58.0", gw: "192.168.2.1"}
+    weyland: {
+      name: "weyland",  
+      mask: "255.255.255.0", 
+      network: "172.17.1", 
+      gw: "172.17.1.254"
+    },
+  	haas: {
+      name: "haas",
+      mask: "255.255.255.0",
+      network: "172.17.2",
+      gw: "172.17.2.254"
+    },
+  	research: {
+      name: "research",
+      mask: "255.255.255.0",
+      network: "172.17.3",
+      gw: "172.17.3.254"
+    }
   }
 
   boxes = [
@@ -30,15 +51,15 @@ Vagrant.configure("2") do |config|
       bname: "nrunner_fw", 
     	nets: [
     		{
-    			ip: "172.17.2.254",
+    			relative_ip: "254",
           net: net_defs[:haas], 
     		},
     		{
-    			ip: "172.17.1.254",
+    			relative_ip: "254",
           net: net_defs[:weyland], 
     		},
     		{
-    			ip: "172.17.3.254",
+    			relative_ip: "254",
           net: net_defs[:research], 
     		}
     	],
@@ -55,7 +76,7 @@ Vagrant.configure("2") do |config|
     { 
       # only internal
       bname: "nrunner_wld_dc", 
-      ip: "172.17.1.2", 
+      relative_ip: "2", 
   	  net: net_defs[:weyland], 
       #box: "gusztavvargadr/windows-server-core",
       box: "gusztavvargadr/windows-server",
@@ -68,7 +89,7 @@ Vagrant.configure("2") do |config|
     { 
       # internal and public
       bname: "nrunner_wld_srv01", 
-      ip: "172.17.1.10", 
+      relative_ip: "10", 
   	  net: net_defs[:weyland], 
       #box: "gusztavvargadr/windows-server-core",
       box: "gusztavvargadr/windows-server",
@@ -81,7 +102,7 @@ Vagrant.configure("2") do |config|
     { 
       # only internal
       bname: "nrunner_haas_dc", 
-      ip: "172.17.2.2", 
+      relative_ip: "2", 
   	  net: net_defs[:haas], 
       #box: "gusztavvargadr/windows-server-core",
       box: "gusztavvargadr/windows-server",
@@ -94,7 +115,7 @@ Vagrant.configure("2") do |config|
     { 
       # only internal
       bname: "nrunner_haas_srv01", 
-      ip: "172.17.2.10", 
+      relative_ip: "10", 
   	  net: net_defs[:haas], 
       #box: "gusztavvargadr/windows-server-core",
       box: "gusztavvargadr/windows-server",
@@ -107,7 +128,7 @@ Vagrant.configure("2") do |config|
     { 
       # only internal
       bname: "nrunner_haas_srv02", 
-      ip: "172.17.2.11", 
+      relative_ip: "11", 
   	  net: net_defs[:haas], 
       #box: "gusztavvargadr/windows-server-core",
       #ram: 2*1024,
@@ -121,7 +142,7 @@ Vagrant.configure("2") do |config|
 #    { 
 #      # only internal
 #      bname: "nrunner_haas_srv03", 
-#      ip: "172.17.2.12", 
+#      relative_ip: "12", 
 #  	  net: net_defs[:haas], 
 #      #box: "gusztavvargadr/windows-server-core",
 #      #ram: 2*1024,
@@ -135,8 +156,8 @@ Vagrant.configure("2") do |config|
 #    { 
 #      # only internal
 #      bname: "nrunner_haas_ws01", 
-#      ip: "172.17.2.20", 
-#  	  net: net_defs[:research], 
+#      relative_ip: "20", 
+#  	  net: net_defs[:haas], 
 #      box: "gusztavvargadr/windows-11", 
 #      #box_version: "2202.0.2409 ", 
 #      os: "windows", 
@@ -147,7 +168,7 @@ Vagrant.configure("2") do |config|
     { 
       # only internal
       bname: "nrunner_rsc_dc", 
-      ip: "172.17.3.2", 
+      relative_ip: "2", 
   	  net: net_defs[:research], 
       #box: "gusztavvargadr/windows-server-core",
       box: "gusztavvargadr/windows-server",
@@ -160,7 +181,7 @@ Vagrant.configure("2") do |config|
     { 
       # only internal
       bname: "nrunner_rsc_srv01", 
-      ip: "172.17.3.10", 
+      relative_ip: "10", 
   	  net: net_defs[:research], 
       #box: "gusztavvargadr/windows-server-core",
       box: "gusztavvargadr/windows-server",
@@ -173,7 +194,7 @@ Vagrant.configure("2") do |config|
     { 
       # only internal
       bname: "nrunner_rsc_ws01", 
-      ip: "172.17.3.20", 
+      relative_ip: "20", 
   	  net: net_defs[:research], 
       box: "gusztavvargadr/windows-11", 
       #box_version: "2202.0.2409 ", 
@@ -245,31 +266,35 @@ Vagrant.configure("2") do |config|
         target.vm.communicator = "winrm"
         #config.vm.communicator = 'winrm'
         #config.winssh.shell = 'powershell'
-      
+        
         #  alway provision an INTERNAL network on Ethernet 2
         n_info = box[:net]
-        target.vm.network :private_network, ip: box[:ip], virtualbox__intnet: n_info[:name]
-        
-        target.vm.provision :shell, :path => "../../scripts/all_in_one.ps1", privileged: false, args: ["-IFName", "Ethernet 2", "-IP", box[:ip], "-Mask", n_info[:mask], "-Gateway", n_info[:gw]]
+        target.vm.network :private_network, ip: "#{n_info[:network]}.#{box_def[:relative_ip]}", virtualbox__intnet: n_info[:name]
         if box.has_key?(:ip_p)
-          n_info_p = net_defs[:bridge]
           #  Provision a BRIDGED interface if needed on Ethernet 3 
-          target.vm.network :public_network, bridge: n_info_p[:name], ip: box[:ip_p]
-          target.vm.provision :shell, :path => "../../scripts/all_in_one.ps1", privileged: false, args: ["-IFName", "Ethernet 3", "-IP", box[:ip_p], "-Mask", n_info_p[:mask]]
+          target.vm.network :public_network, bridge: bridge[:name], ip: box[:ip_p]
+        end        
+        box.vm.provision :shell, :path => "../../scripts/rename-interface.ps1", privileged: false, args: ["-IFName", "mgt", "-NetPrefix", "#{management_network_prefix}*"]
+        box.vm.provision :shell, :path => "../../scripts/rename-interface.ps1", privileged: false, args: ["-IFName", "lab", "-NetPrefix", "#{n_info[:network]}*"]
+
+        target.vm.provision :shell, :path => "../../scripts/all_in_one.ps1", privileged: false, args: ["-IFName", "lab", "-IP", box[:ip], "-Mask", n_info[:mask], "-Gateway", n_info[:gw]]
+        if box.has_key?(:ip_p)
+          #  Provision a BRIDGED interface if needed on Ethernet 3 
+          box.vm.provision :shell, :path => "../../scripts/rename-interface.ps1", privileged: false, args: ["-IFName", "internet", "-NetPrefix", "#{bridge[:network]}*"]
+          target.vm.provision :shell, :path => "../../scripts/all_in_one.ps1", privileged: false, args: ["-IFName", "internet", "-IP", box[:ip_p], "-Mask", n_info_p[:mask]]
         end
       end
       # Arch specific
       if box[:os] == "arch"
         # Provision a BRIDGED interface on eth1	
-        n_info_p = net_defs[:bridge]
-        target.vm.network :public_network, bridge: n_info_p[:name], ip: box[:ip_p]
+        target.vm.network :public_network, bridge: bridge[:name], ip: box[:ip_p]
         target.vm.communicator = "ssh"
 
         # Provision INTERNAL interfaces
         box[:nets].each do |bn|
           n_info = bn[:net]
           puts "  Provision Network #{n_info[:name]} with IP #{bn[:ip]}"
-          target.vm.network :private_network, ip: bn[:ip], virtualbox__intnet: n_info[:name]
+          target.vm.network :private_network, ip: "#{n_info[:network]}.#{bn[:relative_ip]}", virtualbox__intnet: n_info[:name]
         end
         target.vm.provision :shell, :path => "../../scripts/arch_python.sh", privileged: true, args: ["France"]
         target.vm.provision :shell, :path => "../../scripts/fix_ip.sh", privileged: true, args: [box[:deployment_type], n_info_p[:gw]]

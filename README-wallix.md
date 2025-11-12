@@ -1,4 +1,5 @@
-# libvirt
+# Setup
+## libvirt
 
 * provision vms with vagrant
 * copy `cp /var/lib/libvirt/isos/bastion-12.0.14-openstack.qcow2 /var/lib/libvirt/images/vms/plaber_nrunner_bastion.qcow2`
@@ -8,7 +9,9 @@
     * CPU `2` / Memory `4096`
     * name `plaber_nrunner_bastion` / `Virtual network 'haas': Isolated network`
 
-# bastion setup
+
+
+## bastion setup
 
 * configure wallix bastion:
     * set users (initial pass of `wabadmin` is `SecureWabAdmin`)
@@ -26,7 +29,7 @@
         * `ssh -i ~/.ssh/id_wallix -p 2242 root@bastion.haas.local`
         * `scp -i ~/.ssh/id_wallix -P 2242 ~/dev/plaber/playbooks/books/haas.conf    root@bastion.haas.local:/opt/wab/share/plugins/cred_chg/windows/haas.conf` 
 
-# Ansible
+## Ansible
 * connect a first time to the web interface with wallix api account to change its password
 * generate an API key and set it in bastion inventory `inventories/netrunner_base/host_vars/bastion/main.yml`
 ```json
@@ -50,7 +53,7 @@ curl -k -H 'X-Auth-User: admin' -H 'X-Auth-Key: 8QlOMR0nr53XRVKjSEU2DtjapEmAmBPC
 * `xfreerdp /cert:ignore /u:jubeaz /p:Zaebuj12345+-   /v:bastion.haas.local /dynamic-resolution /drive:share,./ +drives`
 * `sshpass -p Zaebuj12345+- ssh jubeaz@bastion.haas.local`
 
-# Application
+# Application publication
 
 https://172.17.2.30/webhelp/en/administration_guide/dita_doc/ditamaps-en/guide-admin/applications/configure_the_jump_server.html
 
@@ -160,7 +163,8 @@ New-RDSessionCollection -CollectionName "SessionCollection1" `
 New-RDRemoteApp -CollectionName "Session Collection" -DisplayName "Notepad" -FilePath "C:\Windows\System32\Notepad.exe"
 
 New-RDRemoteApp -CollectionName "SessionCollection1" -DisplayName "Microsoft Edge" -FilePath "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" -Alias "Edge"
-# db access
+
+# Wallix db access
 
 ```bash
 mysql -u root -p$(WABChangeDbRootPassword)
@@ -173,7 +177,7 @@ SELECT HEX(uid) ...
 ```
 
 
-# plugins debug
+# Wallix plugins debug
 using by web interface of modified code will not work. Need to debug in command line
 
 to edit a plugin `devel = True` must be set in plugin `meta-info`
@@ -267,3 +271,15 @@ kinit: Malformed representation of principal when parsing name jubeaz@haas.local
 env KRB5_TRACE=/dev/stderr \
     KRB5_CONFIG=/opt/wab/share/plugins/cred_chg/windows/haas.conf \
     kpasswd-heimdal --admin-principal=jubeaz@HAAS.LOCAL hagen@HAAS.LOCAL
+
+
+# Probes
+
+## server sans rds:
+
+
+* `End disconnected session = false`
+  * close session si se deconnecte vi sign-out
+  * sinon (disconnect, perte de session avec le bastion) laisse en disconnected
+* `Disconnected session limit = 100 000`: une session disconnected est fermée au bout d'une minute i pas de reconnection. Attention ne sera pris en compte que par une nouvelle session
+

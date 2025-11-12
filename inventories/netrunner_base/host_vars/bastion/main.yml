@@ -19,7 +19,7 @@ plbr_api_user: "admin"
 plbr_api_password: "Zaebuj12345+-"
 plbr_api_key: {
   user: 'admin',
-  key: "8QlOMR0nr53XRVKjSEU2DtjapEmAmBPCYrVLgtpZHfM"
+  key: 4UlQ89atvPGvmsj3iuXmRypuVQP72anJxjEKcS45m9I
 }
 
 #bastion_url: "https://{{ ansible_host }}/api"

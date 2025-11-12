@@ -15,7 +15,7 @@ vagrant destroy --force && rm -rf .vagrant && rm /var/lib/libvirt/images/efi/*
 
 ```
 
-# nested virtualization
+# nested virtualization (for windows VBS/Credential Guard)
 
 `kvm_adm` or `kvm_intel` module must be configured for nesting
 ```bash
