@@ -1,0 +1,15 @@
+domains_interfaces: ["eth1"]
+bridged_interface: ""
+nat_interface: "eth0"
+internet_interface: "{{bridged_interface if disable_nat == true else nat_interface}}"
+public_interface: "{{ bridged_interface if disable_nat == true else nat_interface }}"
+
+domains: {
+  "HAAS": {
+    "ip": "10.0.0.254",
+    "adapter": "eth2",
+    "rules": [
+      # ufw route allow in on {{adapter}} out on eth1 to domain_range port 80 proto tcp
+    ]
+  }
+}

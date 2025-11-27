@@ -1,0 +1,4 @@
+elkf_elastic_password: 'password'
+elkf_kibana_password: 'password'
+elkf_iface_name: "eth1"
+

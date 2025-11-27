@@ -7,6 +7,7 @@ all:
     nonwindows:
       hosts:
         fw: {} 
+        elk: {} 
 #        rsc_lin01: {} 
     wallix_bastion:
       hosts:
@@ -14,6 +15,9 @@ all:
     linux:
       hosts:
 #        rsc_lin01: {} 
+    elkf:
+      hosts:
+        elkf: {} 
     domain:
       children:
         haas_domain:
@@ -97,11 +101,18 @@ all:
     dc_haas:              {ansible_host: haas01.haas.local, plbr_domain_ip: 172.17.2.2, ansible_connection: winrm}
     haas_srv01:           {ansible_host: eli.haas.local, plbr_domain_ip: 172.17.2.10, ansible_connection: winrm}
     haas_srv02:           {ansible_host: bran.haas.local, plbr_domain_ip: 172.17.2.11, ansible_connection: winrm}
-#    haas_srv03:           {ansible_host: pulse.haas.local, plbr_domain_ip: 172.17.2.12, ansible_connection: winrm}
-#    haas_ws01:             {ansible_host: hypoxia.haas.local, plbr_domain_ip: 172.17.2.20, ansible_connection: winrm}
     dc_rsc:               {ansible_host: rsc01.research.haas.local, plbr_domain_ip: 172.17.3.2, ansible_connection: winrm}
     rsc_srv01:            {ansible_host: fenris.research.haas.local, plbr_domain_ip: 172.17.3.10, ansible_connection: winrm}
     rsc_ws01:             {ansible_host: architect.research.haas.local, plbr_domain_ip: 172.17.3.20, ansible_connection: winrm}
+
+
+    elkf:                 {ansible_host: 172.17.2.200, ansible_port: 22, disable_nat: true, ufw_in_ssh_allow: "192.168.10.1" }
+    fw:                   {ansible_host: 192.168.10.100, ansible_port: 22, disable_nat: true, ufw_in_ssh_allow: "192.168.10.1" }
+#    bastion:              {ansible_host: bastion.haas.local, plbr_domain_ip: 172.17.2.30, ansible_port: 22, disable_nat: true, ufw_in_ssh_allow: "192.168.10.1" }
+
+#    haas_srv03:           {ansible_host: pulse.haas.local, plbr_domain_ip: 172.17.2.12, ansible_connection: winrm}
+#    haas_ws01:             {ansible_host: hypoxia.haas.local, plbr_domain_ip: 172.17.2.20, ansible_connection: winrm}
+#    fw:               {ansible_host: 127.0.0.1, ansible_port: 2222, disable_nat: false, ufw_in_ssh_allow: "10.0.0.0/8", psrp_port: 1234}
 #    dc_wld:               {ansible_host: 172.17.1.1, plbr_domain_ip: 172.17.1.2, ansible_connection: psrp}
 #    wld_srv01:            {ansible_host: 172.17.1.10, plbr_domain_ip: 172.17.1.10, ansible_connection: psrp}
 #    dc_haas:              {ansible_host: 172.17.2.1, plbr_domain_ip: 172.17.2.2, ansible_connection: psrp}
@@ -111,8 +122,3 @@ all:
 #    dc_rsc:               {ansible_host: 172.17.3.1, plbr_domain_ip: 172.17.3.2, ansible_connection: psrp}
 #    rsc_srv01:            {ansible_host: 172.17.3.10, plbr_domain_ip: 172.17.3.10, ansible_connection: psrp}
 #    rsc_ws01:             {ansible_host: 172.17.3.20, plbr_domain_ip: 172.17.3.20, ansible_connection: psrp}
-
-    fw:                   {ansible_host: 192.168.10.100, ansible_port: 22, disable_nat: true, ufw_in_ssh_allow: "192.168.10.1" }
-#    fw:               {ansible_host: 127.0.0.1, ansible_port: 2222, disable_nat: false, ufw_in_ssh_allow: "10.0.0.0/8", psrp_port: 1234}
-    bastion:              {ansible_host: bastion.haas.local, plbr_domain_ip: 172.17.2.30, ansible_port: 22, disable_nat: true, ufw_in_ssh_allow: "192.168.10.1" }
-

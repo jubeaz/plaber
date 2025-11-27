@@ -11,6 +11,9 @@ all:
     linux:
       hosts:
 #        rsc_lin01: {} 
+    elkf:
+      hosts:
+        fw: {} 
     domain:
       children:
         haas_domain:

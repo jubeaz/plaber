@@ -7,8 +7,8 @@
   max_fail_percentage: 0
   roles:
     - { role: plocate }
-    - { role: pacman, when: "ansible_distribution == 'Archlinux'" }
-    - { role: reflector, when: "ansible_distribution == 'Archlinux'" }
+    - { role: pacman, when: "ansible_facts['distribution'] == 'Archlinux'" }
+    - { role: reflector, when: "ansible_facts['distribution'] == 'Archlinux'" }
     - { role: pacman_upgrade }
     - { role: time-sync }
     - { role: gen-locale}
@@ -29,6 +29,7 @@
         owner: root
         group: root
         mode: '0644'
+
     - name: Copy other hostapd files
       ansible.builtin.copy:
         src: "../../files/fw/{{ item }}"

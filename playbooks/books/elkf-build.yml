@@ -1,0 +1,21 @@
+---
+- name: BASE BUILD FIREWALL
+  hosts: elkf
+  gather_facts: true
+  become: true
+  become_user: root
+  max_fail_percentage: 0
+  roles:
+    - { role: plocate }
+    - { role: pacman, when: "ansible_facts['distribution'] == 'Archlinux'" }
+    - { role: reflector, when: "ansible_facts['distribution'] == 'Archlinux'" }
+    - { role: pacman_upgrade }
+    - { role: time-sync }
+    - { role: gen-locale}
+    - { role: opensshd}
+    - { role: docker}
+    - { role: elkf}
+  tasks:
+
+    - name: Reboot
+      ansible.builtin.reboot:

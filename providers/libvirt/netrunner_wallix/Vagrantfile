@@ -417,13 +417,13 @@ Vagrant.configure("2") do |config|
         box.vm.communicator = "winssh"
         config.winssh.shell = 'powershell'
         #config.vm.communicator = 'winrm'
-        box.vm.provision :shell, :path => "../../scripts/manage-interface.ps1", privileged: false, args: ["-IFName", "mgt", "-Metric", 5, "-NetPrefix", "#{management_network_prefix}*"]
+        box.vm.provision :shell, :path => "../../scripts/manage-interface.ps1", privileged: false, args: ["-NewName", "mgt", "-Metric", 5, "-NetPrefix", "#{management_network_prefix}*"]
         n_info = box_def[:net]
-        box.vm.provision :shell, :path => "../../scripts/manage-interface.ps1", privileged: false, args: ["-IFName", "lab", "-Metric", 50, "-NetPrefix", "#{n_info[:network]}*"]
+        box.vm.provision :shell, :path => "../../scripts/manage-interface.ps1", privileged: false, args: ["-NewName", "lab", "-Metric", 50, "-NetPrefix", "#{n_info[:network]}*"]
         box.vm.provision :shell, :path => "../../scripts/flush-interface.ps1", privileged: false, args: ["-IFName", "lab"]
         box.vm.provision :shell, :path => "../../scripts/EnableWinRM.ps1", privileged: false
         if box_def.has_key?(:ip_p)
-          box.vm.provision :shell, :path => "../../scripts/manage-interface.ps1", privileged: false, args: ["-IFName", "internet", "-NetPrefix", "#{bridge[:network]}*"]
+          box.vm.provision :shell, :path => "../../scripts/manage-interface.ps1", privileged: false, args: ["-NewName", "internet", "-NetPrefix", "#{bridge[:network]}*"]
           box.vm.provision :shell, :path => "../../scripts/flush-interface.ps1", privileged: false, args: ["-IFName", "internet"]
         end
         # prevent ssh connection reset

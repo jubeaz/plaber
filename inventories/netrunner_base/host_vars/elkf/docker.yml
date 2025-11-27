@@ -1,0 +1,9 @@
+# defaults file for docker
+docker_net: "192.168.253.1/24"
+docker_dns: '["8.8.8.8"]'
+docker_data_root: /var/lib/docker
+docker_user_list:
+  - jubeaz
+    #docker_sockets: ["-H unix:///var/run/docker.sock", "-H tcp://0.0.0.0:4243"]
+docker_sockets: ["-H unix:///var/run/docker.sock"]
+

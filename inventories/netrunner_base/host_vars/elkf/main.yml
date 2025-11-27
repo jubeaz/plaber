@@ -1,0 +1,48 @@
+#ansible_connection: ssh 
+ansible_user: jubeaz
+ansible_password: jubeaz
+#ansible_sudo_pass: vagrant
+#ansible_python_interpreter: /usr/bin/python3
+
+
+# ######################
+# gen-locale vars
+# ######################
+locales_gen: ["en_US.UTF-8 UTF-8"]
+  #locales_gen: ["en_US.UTF-8 UTF-8", "fr_FR.UTF-8 UTF-8"]
+vconsole_content: "KEYMAP=fr-latin1"
+locale_lang: en_US.UTF-8
+
+# ######################
+# time-sync vars
+# ######################
+tz_timezone: Europe/Paris
+tz_ntp_servers: "0.fr.pool.ntp.org 1.fr.pool.ntp.org 2.fr.pool.ntp.org 3.fr.pool.ntp.org"
+
+# ######################
+# reflector vars
+# ######################
+reflector_protocols: 
+  - https
+reflector_countries:
+  - France
+  - Germany
+reflector_numberof: 5
+reflector_sort_method: rate
+
+pacman_arch_packages: [
+  "vim",
+  "openssh"
+]
+# ######################
+# AUR vars
+# ######################
+pacman_upgrade_ingore_list_str: ""
+pacman_aur_directory: /usr/src/aur
+pacman_aur_owner: jubeaz
+pacman_aur_group: jubeaz
+pacman_extra_args: ""
+# pacman_extra_args: "--ignore {{ pacman_upgrade_ingore_list_str }}"
+aur_directory: "{{ pacman_aur_directory }}"
+aur_owner: "{{ pacman_aur_owner }}"
+aur_group: "{{ pacman_aur_group }}"

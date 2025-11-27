@@ -5,3 +5,4 @@ downloaded_roles/
 .ansible/
 providers/ovmf/*
 !providers/ovmf/.gitkeep
+**/enrollment_token.txt

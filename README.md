@@ -74,6 +74,10 @@ Edit `Vagrantfile`:
       bname: "nrunner_fw", 
 ```
 
+### arch linux as member
+
+need to provision and build fw before beeing able to access internet
+
 ### Provision VMs
 * build all  vms
 ```bash
