@@ -180,3 +180,53 @@
 #
     - name: Reboot
       ansible.builtin.reboot:
+
+# Allow traffic between domain interfaces (both TCP and UDP)
+    - name: Allow traffic between domain interfaces (TCP)
+      community.general.ufw:
+        comment: "[L2D] ip forward from {{ interface_src }} to {{ interface_dst_info.ipv4.network }}/{{ interface_dst_info.ipv4.prefix }} on {{ interface_dst }}"
+        interface_in: "{{ interface_src }}"
+        interface_out: "{{ interface_dst }}"
+        to_ip: "{{ interface_dst_info.ipv4.network }}/{{ interface_dst_info.ipv4.prefix }}"
+        proto: tcp
+        route: true
+        rule: allow
+        state: enabled
+#      vars:
+#        info: "{{ hostvars[inventory_hostname].ansible_facts }}"
+      loop: "{{ domains_interfaces | product(domains_interfaces) | list }}"
+      loop_control:
+        loop_var: domain_pair
+      vars:
+        interface_src: "{{ domain_pair[0] }}"
+        interface_dst: "{{ domain_pair[1] }}"
+        info: "{{ hostvars[inventory_hostname].ansible_facts }}"
+        interface_dst_info: "{{ info[interface_dst] }}"
+      when: domain_pair[0] != domain_pair[1]
+
+    - name: Allow traffic between domain interfaces (UDP)
+      community.general.ufw:
+        comment: "[L2D] ip forward from {{ interface_src }} to {{ interface_dst_info.ipv4.network }}/{{ interface_dst_info.ipv4.prefix }} on {{ interface_dst }}"
+        interface_in: "{{ interface_src }}"
+        interface_out: "{{ interface_dst }}"
+        to_ip: "{{ interface_dst_info.ipv4.network }}/{{ interface_dst_info.ipv4.prefix }}"
+        proto: udp
+        route: true
+        rule: allow
+        state: enabled
+#      vars:
+#        info: "{{ hostvars[inventory_hostname].ansible_facts }}"
+      loop: "{{ domains_interfaces | product(domains_interfaces) | list }}"
+      loop_control:
+        loop_var: domain_pair
+      vars:
+        interface_src: "{{ domain_pair[0] }}"
+        interface_dst: "{{ domain_pair[1] }}"
+        info: "{{ hostvars[inventory_hostname].ansible_facts }}"
+        interface_dst_info: "{{ info[interface_dst] }}"
+      when: domain_pair[0] != domain_pair[1]
+
+    - name: Disable default routing
+      community.general.ufw:
+        default: deny
+        direction: routed

@@ -1,11 +1,14 @@
-plbr_HardeningKitty: {
-  "cis_2022_dc": {
-    FileFindingList: "https://github.com/scipag/HardeningKitty/raw/refs/heads/master/lists/finding_list_cis_microsoft_windows_server_2022_22h2_3.0.0_machine.csv",
-    FileCriteria: "cis_microsoft_windows_server_2022_22h2_3.0.0_machine.csv",
-    Filter: '$_.DC -eq "Y" -and $_.DEFAULT -eq "APPLY" -and $_.Category -ne "Windows Firewall"',
-    FileOut: "findings_dc_machine.csv",
-  }
-}
+plbr_elastic_endpoint_install: true
 
 
-
+#plbr_HardeningKitty: {
+#  "cis_2022_dc": {
+#    FileFindingList: "https://github.com/scipag/HardeningKitty/raw/refs/heads/master/lists/finding_list_cis_microsoft_windows_server_2022_22h2_3.0.0_machine.csv",
+#    FileCriteria: "cis_microsoft_windows_server_2022_22h2_3.0.0_machine.csv",
+#    Filter: '$_.DC -eq "Y" -and $_.DEFAULT -eq "APPLY" -and $_.Category -ne "Windows Firewall"',
+#    FileOut: "findings_dc_machine.csv",
+#  }
+#}
+#
+#
+#

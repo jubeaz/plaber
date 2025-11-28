@@ -1,5 +1,8 @@
 # Elastic
 
+https://www.elastic.co/docs/solutions/security/manage-elastic-defend/endpoints
+
+
 [GOAD with VMware on Windows — Elastic 8 & Agents](https://medium.com/@m4uz/goad-with-vmware-on-windows-elastic-8-agents-8faeb467ba24)
 [GOAD-ELK-Update](https://github.com/m4uz/GOAD-ELK-Update/tree/main)
 [Setting Up Elastic 8 with Kibana, Fleet, Endpoint Security, and Windows Log Collection](https://www.youtube.com/watch?v=Ts-ofIVRMo4)

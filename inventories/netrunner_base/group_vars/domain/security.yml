@@ -13,6 +13,15 @@ plbr_enable_webdav: false
 plbr_enable_run_as_ppl: false
 #windows_defender: true
 plbr_windows_defender: false
+plbr_elastic_endpoint_install: false
+plbr_elastic_endpoint_server: 172.17.2.200
+#plbr_elastic_endpoint_agent_version: false
+#w_cfg_elastic_endpoint_install: false
+#w_cfg_elastic_endpoint_server:
+#w_cfg_elastic_endpoint_version: 9.2.1
+
+
+
 
 plbr_connection_profiles: {
 #  #"domain":  {"interface": "{{domain_adapter}}", "NetworkCategory": "Public", "IPv4Connectivity": "", "IPv6Connectivity": ""}

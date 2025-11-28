@@ -8,7 +8,7 @@
 #plbr_uac_level: 5
 #plbr_run_as_ppl: false,
 #plbr_windows_defender: true
-
+plbr_elastic_endpoint_install: true
 #plbr_firewall_profiles: {
 #  "Domain": {"enabled": "False", "inbound": "allow", "outbound": "allow"},
 #  "Public": {"enabled": "False", "inbound": "allow", "outbound": "allow"},

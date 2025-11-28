@@ -6,6 +6,7 @@
   roles:
     - { role: "windows_cfg_uac", tags: 'windows_security'}
     - { role: "windows_cfg_windows_defender", tags: 'windows_security'}
+    - { role: "windows_cfg_elastic_endpoint", when: "plbr_elastic_endpoint_install", tags: 'windows_security'}
     - { role: "windows_cfg_run_as_ppl", tags: 'windows_security'}
     - { role: "windows_cfg_firewall", tags: 'windows_security'}
     - { role: "windows_cfg_deviceguard", tags: 'windows_security'}
@@ -19,3 +20,5 @@
     w_cfg_deviceguard_vbs_dma: "{{ plbr_deviceguard_vbs_dma }}"
     w_cfg_deviceguard_cg: "{{ plbr_deviceguard_cg }}"
     w_cfg_deviceguard_hvci: "{{ plbr_deviceguard_hvci }}"
+    w_cfg_elastic_endpoint_server: "{{ plbr_elastic_endpoint_server }}"
+    # w_cfg_elastic_endpoint_version:

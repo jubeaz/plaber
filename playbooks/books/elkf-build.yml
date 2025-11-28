@@ -16,6 +16,25 @@
     - { role: docker}
     - { role: elkf}
   tasks:
+    - name: Install ufw
+      ansible.builtin.include_role:
+        name: "ufw"
+      vars:
+        ufw_in_ssh_ip: "{{ [] + [ufw_in_ssh_allow] }}"
+        ufw_forward: false
+        ufw_nat: false
+
+    - name: Allow elfk
+      community.general.ufw:
+        comment: "elkf"
+        rule: allow
+        proto: tcp
+        direction: in
+        to_port: "{{ item }}"
+        state: enabled
+      with_items:
+        - 5601 # kibana
+        - 8220 # fleet API
 
     - name: Reboot
       ansible.builtin.reboot:

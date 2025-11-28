@@ -13,7 +13,7 @@ sed -i 's/Name=eth.*/Name=eth0/g' /etc/systemd/network/80-dhcp.network
 
 if [[ "$1" == "routed" ]]; then
     echo "Will use routed interface (eth1)"    
-    sed -i 's/24/16/g' /etc/systemd/network/eth1.network
+    #sed -i 's/24/16/g' /etc/systemd/network/eth1.network
     echo "[Route]" >>  /etc/systemd/network/eth1.network
     echo "Gateway=$2" >>  /etc/systemd/network/eth1.network
 fi
