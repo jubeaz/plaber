@@ -22,7 +22,7 @@
 
     - name: Register plbr_is_server_os (ansible_os_installation_type)
       ansible.builtin.set_fact:
-        plbr_is_server_os: "{{ true if ansible_os_installation_type is search('Server') else false }}"
+        plbr_is_server_os: "{{ true if ansible_facts.os_installation_type is search('Server') else false }}"
         cacheable: true
 
 #    - name: Check InstallationType
@@ -34,7 +34,7 @@
 
     - name: Register plbr_is_core_install
       ansible.builtin.set_fact:
-        plbr_is_core_install: "{{ true if ansible_os_installation_type is search('Core') else false }}"
+        plbr_is_core_install: "{{ true if ansible_facts.os_installation_type is search('Core') else false }}"
         cacheable: true
 
     - name: Register domain interface definition

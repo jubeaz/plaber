@@ -8,7 +8,13 @@
 #plbr_uac_level: 5
 #plbr_run_as_ppl: false,
 #plbr_windows_defender: true
+plbr_windows_defender: true
+windows_defender_exclusions: ["c:\\tools", "c:\\users"]
+plbr_uac_level: 0
 
+plbr_enable_run_as_ppl: false
+
+plbr_cis_hardening: false
 #plbr_firewall_profiles: {
 #  "Domain": {"enabled": "False", "inbound": "allow", "outbound": "allow"},
 #  "Public": {"enabled": "False", "inbound": "allow", "outbound": "allow"},

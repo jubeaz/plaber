@@ -28,19 +28,37 @@ plbr_extra_features: [
 
 #features: ["NET-Framework-Core"]
 ## https://community.chocolatey.org/packages
-plbr_softwares: [  "git", "visualstudio2022community", "notepadplusplus", "python", "libreoffice","7zip"]
+plbr_softwares:
+    - git
+    - visualstudio2022community
+    - visualstudio2022-workload-manageddesktop
+    - visualstudio2022-workload-nativedesktop
+#    - reshaper
+#    - dotpeek
+    - notepadplusplus
+    - python
+    - 7zip
+    - wireshark
 
 plbr_user_repos: {
     rubeaz: [
-        ["Mimikatz", "https://github.com/gentilkiwi/mimikatz.git"],
-        ["Rubeus", "https://github.com/GhostPack/Rubeus"],
-        [HardeningKitty, https://github.com/scipag/HardeningKitty.git]
+        [Certify, https://github.com/GhostPack/Certify],
+        [Mimikatz, https://github.com/gentilkiwi/mimikatz.git],
+        [Rubeus, https://github.com/GhostPack/Rubeus],
+        [impacket , https://github.com/fortra/impacket.git],
+        [ThreatCheck , https://github.com/rasta-mouse/ThreatCheck.git],
+        [ThreatCheck_new , https://github.com/PACHAKUTlQ/ThreatCheck.git],
+        [GodPotato, https://github.com/BeichenDream/GodPotato],
+        [PPLcontrol, https://github.com/itm4n/PPLcontrol],
+        [zlib-win-build, https://github.com/kiyolee/zlib-win-build],
+        [ThreatCheck_x64.exe, https://github.com/PACHAKUTlQ/ThreatCheck]
     ]
 }
 
 plbr_user_downloads: {
     rubeaz: [
-        ["GRMWDK_EN_7600_1.ISO", "https://download.microsoft.com/download/4/A/2/4A25C7D5-EFBE-4182-B6A9-AE6850409A78/GRMWDK_EN_7600_1.ISO"]
+        [GRMWDK_EN_7600_1.ISO, https://download.microsoft.com/download/4/A/2/4A25C7D5-EFBE-4182-B6A9-AE6850409A78/GRMWDK_EN_7600_1.ISO],
+        [SysinternalsSuite.zip, https://download.sysinternals.com/files/SysinternalsSuite.zip],
     ]
 }
 

@@ -1,4 +1,5 @@
 
+pacman -Sy archlinux-keyring
 pacman -Syu --noconfirm
 pacman -S --noconfirm python reflector
 

@@ -5,6 +5,12 @@ plbr_mssql_sa_password: "52DT_MFkqdCyuEH3Shprm"
 #plbr_mssql_svcaccount_key: '' # for domain or gmsa mssql_svcaccount_method
 plbr_mssql_svcaccount_method: 'domain' # domain, gmsa, local
 plbr_mssql_svcaccount_key: "drafter" # default : 'NT AUTHORITY\\NETWORK SERVICE'
+#plbr_mssql_svcaccount_method: 'local' # domain, gmsa, local
+#plbr_mssql_svcaccount_local: NetworkService #  "NetworkService, System, LocalService"'
+# NT AUTHORITY\NetworkService
+#plbr_mssql_svcaccount_method: 'domain' # domain, gmsa, local
+#plbr_mssql_svcaccount_key: "eli" # default : 'NT AUTHORITY\\NETWORK SERVICE'
+
 
 plbr_mssql_sysadmins: ["HAAS\\G_SYSADMIN_ELI"]
 

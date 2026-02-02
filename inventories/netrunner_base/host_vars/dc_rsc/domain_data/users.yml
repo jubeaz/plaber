@@ -15,7 +15,7 @@ plbr_domain_users_regular: {
     "rubeaz" : {
         "firstname"       : "Mr.",
         "surname"         : "Jubeaz",
-        "password"        : "jubeaz", 
+        "password"        : "Zaebuj12345+-", 
         "city"            : "-",
         "description"     : "",
         "groups"          : ["Domain Admins"], # only built-in

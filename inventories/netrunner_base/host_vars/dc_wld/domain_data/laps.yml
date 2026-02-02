@@ -3,7 +3,8 @@ plbr_domain_laps_path:  {
 #    "S_workstations"    : { "name": "Workstations", "path": "OU=Sales,OU=Argus,DC=weyland,DC=local"},
 #    "PR_workstations"   : { "name": "Workstations", "path": "OU=Public relationships,OU=Argus,DC=weyland,DC=local"},
 #    "TI_workstations"   : { "name": "Workstations", "path": "OU=Transparency Initiatives,OU=Argus,DC=weyland,DC=local"},
-    "IT_workstations"   : { "name": "Workstations", "path": "OU=IT,OU=Argus,DC=weyland,DC=local"}
+    "IT_workstations"   : { "name": "Workstations", "path": "OU=IT,OU=Argus,DC=weyland,DC=local"},
+    "IT_server"   : { "name": "Servers", "path": "OU=IT,OU=Argus,DC=weyland,DC=local"}
 }
 
 plbr_laps_readers: ["L_LAPS_READER"]

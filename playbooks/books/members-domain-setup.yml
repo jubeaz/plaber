@@ -21,12 +21,12 @@
     wd_gmsa_install_domain_password: "{{ plbr_domain_password }}"
     wd_gmsa_install_installed_gmsa: "{{ plbr_domain_installed_gmsa }}"
 
-- name: CONFIGURE LAPS ON DOMAIN MEMBERS
-  hosts: domain_server,  domain_workstation
-  max_fail_percentage: 0
-  gather_facts: false
-  roles:
-    - { role: 'windows_domain_laps_member', tags: 'laps-server', when: plbr_domain_laps_path  | length > 0 and plbr_use_laps == true }
+#- name: CONFIGURE LAPS ON DOMAIN MEMBERS
+#  hosts: domain_server,  domain_workstation
+#  max_fail_percentage: 0
+#  gather_facts: false
+#  roles:
+#    - { role: 'windows_domain_laps_member', tags: 'laps-server', when: plbr_domain_laps_path  | length > 0 and plbr_use_laps == true }
 
 #- name: VERIFY AND SHOW LAPS PASSWORDS ON DOMAIN MEMBERS
 #  hosts: dc
