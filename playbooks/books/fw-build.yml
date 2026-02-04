@@ -140,6 +140,42 @@
         interface: "{{ item }}"
       with_items: "{{ domains_interfaces }}"
 
+    - name: Allow specific ip from public interface (ufw_in_ssh_allow) to domain networks (TCP)
+      community.general.ufw:
+        comment: "[L2D] ip forward from {{ ip_from }} on ({{ public_interface }}) to {{ info[interface].ipv4.network }}/{{ info[interface].ipv4.prefix }} on {{ interface }}"
+        interface_in: "{{ public_interface }}"
+        from_ip: "{{ ip_from }}"
+        interface_out: "{{ interface }}"
+        to_ip: "{{ info[interface].ipv4.network }}/{{ info[interface].ipv4.prefix }}"
+        proto: tcp
+        route: true
+        rule: allow
+        state: enabled
+      vars:
+        info: "{{ hostvars[inventory_hostname].ansible_facts }}"
+        interface: "{{ item.0 }}"
+        ip_from: "{{ item.1 }}"
+      loop: "{{ domains_interfaces | product(ip_allowed_to_domains) | list }}"
+
+    - name: llow specific ip from public interface (ufw_in_ssh_allow) to domain networks (UDP)
+      community.general.ufw:
+        comment: "[L2D] ip forward from {{ ip_from }} on ({{ public_interface }}) to {{ info[interface].ipv4.network }}/{{ info[interface].ipv4.prefix }} on {{ interface }} (UDP)"
+        interface_in: "{{ public_interface }}"
+        from_ip: "{{ ip_from }}"
+        interface_out: "{{ interface }}"
+        to_ip: "{{ info[interface].ipv4.network }}/{{ info[interface].ipv4.prefix }}"
+        proto: udp
+        route: true
+        rule: allow
+        state: enabled
+      vars:
+        info: "{{ hostvars[inventory_hostname].ansible_facts }}"
+        interface: "{{ item.0 }}"
+        ip_from: "{{ item.1 }}"
+      loop: "{{ domains_interfaces | product(ip_allowed_to_domains) | list }}"
+
+
+
     - name: Allow Domain to internet
       community.general.ufw:
         comment: "[D2L] ip forward from {{ interface }} to {{ internet_interface }}"
