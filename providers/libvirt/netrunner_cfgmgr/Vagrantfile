@@ -15,8 +15,8 @@ Vagrant.configure("2") do |config|
     dev: "br0",
     name: "virbr_plaber",
     mask: "255.255.255.0",
-    network: "192.168.10.0",
-    gw: "192.168.10.254"
+    network: "192.168.1.0",
+    gw: "192.168.1.1"
   }
 #   bridge: {name: "br1", mask: "255.255.0.0", network: "192.168.58.0", gw: "192.168.2.1"}
   net_defs = { 
@@ -60,7 +60,7 @@ Vagrant.configure("2") do |config|
           net: net_defs[:research], 
     		}
     	],
-      ip_p: "192.168.10.100",
+      ip_p: "192.168.1.100",
       box_img: "jubeaz/archlinux_x64_bios",
       box_version: "2026.04.01",
       box_img_insecure: true,

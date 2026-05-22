@@ -4,7 +4,7 @@ nat_interface: "eth0"
 internet_interface: "{{bridged_interface if disable_nat == true else nat_interface}}"
 public_interface: "{{ bridged_interface if disable_nat == true else nat_interface }}"
 ip_allowed_to_domains: 
-  - 192.168.10.21
+  - 192.168.1.21
 domains: {
   "HAAS": {
     "ip": "10.0.0.254",
